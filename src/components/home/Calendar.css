@@ -1,0 +1,10 @@
+.CalendarContent{
+  background-color: blue;
+  float: left;
+  margin: 50px;
+}
+.TopBar{
+  text-align: center;
+  color: white;
+  font-size: 40px;
+}
