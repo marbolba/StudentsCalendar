@@ -1,7 +1,6 @@
 .CalendarContent{
-  background-color: blue;
+  width: 90%;
   float: left;
-  margin: 50px;
 }
 .TopBar{
   text-align: center;

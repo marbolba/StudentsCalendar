@@ -1,15 +1,12 @@
 .dateCell {
-    background-color: aqua;
-    width: 150px;
+    width: 12vw;
     height: 150px;
 }
 .fadedCell {
-    background-color: lightslategrey;
-    width: 150px;
+    width: 12vw;
     height: 150px;
 }
 .currentCell {
-    background-color: lightskyblue;
-    width: 150px;
+    width: 12vw;
     height: 150px;
 }

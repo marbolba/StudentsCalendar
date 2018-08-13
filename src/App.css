@@ -2,15 +2,13 @@ ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 200px;
+  width: 10%;
   height: 100vh;
-  background-color: #f1f1f1;
   float: left;
 }
 
 li a {
   display: block;
-  color: #000;
   padding: 8px 16px;
   text-decoration: none;
 }
@@ -18,5 +16,4 @@ li a {
 /* Change the link color on hover */
 li a:hover {
   background-color: #555;
-  color: white;
 }
