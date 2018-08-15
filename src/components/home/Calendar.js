@@ -71,7 +71,7 @@ class Calendar extends Component {
                     if (this.state.thisMonthDates[(i * 7 + j)] !== null) {
                         var thisDate = new Date(this.state.currentDate)
                         thisDate.setDate(this.state.thisMonthDates[(i * 7 + j)])
-                        if(thisDate.getDate()===(new Date()).getDate()&&thisDate.getMonth()===(new Date()).getMonth()&&thisDate.getFullYear()===(new Date()).getFullYear()){
+                        if (thisDate.getDate() === (new Date()).getDate() && thisDate.getMonth() === (new Date()).getMonth() && thisDate.getFullYear() === (new Date()).getFullYear()) {
                             cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} type="current" /></td>)
                         }
                         else if ((i * 7 + j + 1) % 7 !== 0) {
@@ -100,15 +100,11 @@ class Calendar extends Component {
     getThisMonthTopBar = () => {
         var monthEnum = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień']
         var thisDate = new Date(this.state.currentDate)
-        var buttonStyle = {
-            margin: '10px',
-            float: 'left'
-          };
         return (
-            <div>
-                <button style={buttonStyle} onClick={this.setPreviousMonth}>Wcześniej</button>
-                <button style={buttonStyle} onClick={() => {this.setCurrentDate(new Date())}}>Dzisiaj</button>
-                <button style={buttonStyle} onClick={this.setNextMonth}>Później</button>
+            <div className="topBar">
+                <button onClick={this.setPreviousMonth}>Wcześniej</button>
+                <button onClick={() => { this.setCurrentDate(new Date()) }}>Dzisiaj</button>
+                <button onClick={this.setNextMonth}>Później</button>
                 {monthEnum[thisDate.getMonth()]} {thisDate.getFullYear()}
             </div>
         )
@@ -120,14 +116,14 @@ class Calendar extends Component {
     render() {
         return (
             <div className='CalendarContent'>
-                <div className='TopBar'>
-                    {this.getThisMonthTopBar()}
+                {this.getThisMonthTopBar()}
+                <div className='Calendar'>
+                    <table>
+                        <tbody >
+                            {this.getThisMonthCallendar()}
+                        </tbody>
+                    </table>
                 </div>
-                <table>
-                    <tbody >
-                        {this.getThisMonthCallendar()}
-                    </tbody>
-                </table>
             </div>
         );
     }

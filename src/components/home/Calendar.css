@@ -1,9 +1,38 @@
 .CalendarContent{
-  width: 90%;
+  border-radius: 20px;
+  background-color: white;
+  position: relative;
   float: left;
+  z-index: -1;
+  color: black;
+  font-size: 30px;
+  background:linear-gradient(180deg, #d9d9d9, #808080);
 }
-.TopBar{
+.topBar{
   text-align: center;
-  color: white;
+  color: black;
   font-size: 40px;
+}
+
+.topBar button {
+  color: #000000;
+  border: #000000 solid 1px;
+  padding: 10px;
+  background-color: #ffffff;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.topBar button:hover {
+  color: #ffffff;
+  background-color: #000000;
+}
+
+.Calendar{
+  box-sizing:border-box;
+}
+
+.Calendar table, th, td {
+  border: outset ;
 }

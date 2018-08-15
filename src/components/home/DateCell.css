@@ -1,12 +1,18 @@
 .dateCell {
-    width: 12vw;
-    height: 150px;
+    text-align: right;
+    width: calc(12vw);
+    height: calc(15vh);
+    min-height: 100px;
 }
 .fadedCell {
-    width: 12vw;
-    height: 150px;
+    text-align: right;
+    width: calc(12vw);
+    height: calc(15vh);
+    min-height: 100px;
 }
 .currentCell {
-    width: 12vw;
-    height: 150px;
+    text-align: right;
+    width: calc(12vw);
+    height: calc(15vh);
+    min-height: 100px;
 }
