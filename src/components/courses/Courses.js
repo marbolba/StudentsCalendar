@@ -2,23 +2,39 @@ import React, { Component } from 'react';
 import './Courses.css'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import axios from 'axios';
 
 
 class Courses extends Component {
     state = {
         NewCourseName: "",
         NewCourseType: "Typ",
-        NewCouseDay: "Dzień",
-        NewCouseStartTime: null,
-        NewCouseEndTime: null,
+        NewCourseDay: "Dzień",
+        NewCourseStartTime: null,
+        NewCourseEndTime: null,
         StartDate: null,
         EndDate: null
     }
     onSubmitHandler = () => {
-        if (this.state.NewCourseName !== "" && this.state.NewCourseType !== "Typ" && this.state.NewCouseDay !== "Dzień" && this.state.NewCouseStartTime && this.state.NewCouseEndTime &&this.state.StartDate && this.state.EndDate)
-            console.log("ok")
-        else
-            console.log("err")
+        if (this.state.NewCourseName !== "" && this.state.NewCourseType !== "Typ" && this.state.NewCourseDay !== "Dzień" && this.state.NewCourseStartTime && this.state.NewCourseEndTime && this.state.StartDate && this.state.EndDate) {
+            console.log("sending")
+            let data = {
+                "courseName": this.state.NewCourseName,
+                "courseType": this.state.NewCourseType,
+                "courseDay" : this.state.NewCourseDay,
+                "startTime" : this.state.NewCourseStartTime,
+                "endTime"   : this.state.NewCourseEndTime,
+                "startDate" : this.state.StartDate,
+                "endDate"   : this.state.EndDate
+            }
+
+            let url = "http://localhost:8081/api/courses"
+            axios.post(url, data)
+        }
+        else {
+            console.log(new Date(this.state.EndDate))
+        }
+
     }
     inputFrom = () => {
         return (
@@ -26,28 +42,28 @@ class Courses extends Component {
                 <td><input type="text" onChange={(e) => { this.setState({ NewCourseName: e.target.value }) }} value={this.state.NewCourseName} /></td>
                 <td>
                     <div className="dropdown">
-                        <div>{this.state.NewCouseDay}</div>
+                        <div>{this.state.NewCourseDay}</div>
                         <div className="dropdown-content">
-                            <a onClick={() => { this.setState({ NewCouseDay: "Pon" }) }}    >Poniedziałek</a>
-                            <a onClick={() => { this.setState({ NewCouseDay: "Wt" }) }}     >Wtorek</a>
-                            <a onClick={() => { this.setState({ NewCouseDay: "Śr" }) }}     >Środa</a>
-                            <a onClick={() => { this.setState({ NewCouseDay: "Czw" }) }}    >Czwartek</a>
-                            <a onClick={() => { this.setState({ NewCouseDay: "Pt" }) }}     >Piątek</a>
-                            <a onClick={() => { this.setState({ NewCouseDay: "Sob" }) }}    >Sobota</a>
-                            <a onClick={() => { this.setState({ NewCouseDay: "Nd" }) }}     >Niedziela</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: "Pon" }) }}    >Poniedziałek</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: "Wt" }) }}     >Wtorek</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: "Śr" }) }}     >Środa</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: "Czw" }) }}    >Czwartek</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: "Pt" }) }}     >Piątek</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: "Sob" }) }}    >Sobota</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: "Nd" }) }}     >Niedziela</a>
                         </div>
                     </div>
                 </td>
-                <td><input type="time" id="appt-time" name="appt-time" onChange={(e)=>{
+                <td><input type="time" id="appt-time" name="appt-time" onChange={(e) => {
                     this.setState({
-                        NewCouseStartTime: e.target.value
+                        NewCourseStartTime: e.target.value
                     })
-                }}/></td>
-                <td><input type="time" id="appt-time" name="appt-time" onChange={(e)=>{
+                }} /></td>
+                <td><input type="time" id="appt-time" name="appt-time" onChange={(e) => {
                     this.setState({
-                        NewCouseEndTime: e.target.value
+                        NewCourseEndTime: e.target.value
                     })
-                }}/></td>
+                }} /></td>
                 <td>
                     <div className="dropdown">
                         <div>{this.state.NewCourseType}</div>
