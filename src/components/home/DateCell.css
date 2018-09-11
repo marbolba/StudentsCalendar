@@ -1,26 +1,43 @@
+:root {
+    --cell-width: 200px;
+    --cell-height: 150px;
+    --cell-margin: 7px;
+    --cell-radius: 5px;
+}
+
 .dateCell {
-    width: 200px;
-    height: 150px;
+    width: var(--cell-width);
+    height: var(--cell-height);
+    margin: var(--cell-margin);
+    border-radius: var(--cell-radius);
+    background: #F4ECB8;
 }
 .fadedCell {
-    width: 200px;
-    height: 150px;
+    width: var(--cell-width);
+    height: var(--cell-height);
+    margin: var(--cell-margin);
+    border-radius: var(--cell-radius);
+    background: #F4ECB8;
 }
 .currentCell {
-    width: 200px;
-    height: 150px;
-    background: grey;
+    width: var(--cell-width);
+    height: var(--cell-height);
+    margin: var(--cell-margin);
+    border-radius: var(--cell-radius);
+    background: #EFB93A;
 }
 .header{
     width: 100%;
     height: 35px;
     position: relative;
-    background-color: darkgrey;
+    background-color: #C2C2C2;
+    border-top-left-radius: var(--cell-radius);
+    border-top-right-radius: var(--cell-radius);
 }
 .header img{
     width: 30px;
     height: 30px;
-    margin: 0px 5px;
+    margin: 2px 5px;
 }
 .header span{
     margin: 0;

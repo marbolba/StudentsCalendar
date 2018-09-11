@@ -54,13 +54,13 @@ class Calendar extends Component {
     getThisMonthCallendar = () => {
         let rows = []
         let cell = []
-        cell.push(<th key="Poniedzialek">Poniedzialek</th>)
-        cell.push(<th key="Wtorek">Wtorek</th>)
-        cell.push(<th key="Środa">Środa</th>)
-        cell.push(<th key="Czwartek">Czwartek</th>)
-        cell.push(<th key="Piątek">Piątek</th>)
-        cell.push(<th key="Sobota">Sobota</th>)
-        cell.push(<th key="Niedziela">Niedziela</th>)
+        cell.push(<th key="Poniedzialek">Pon</th>)
+        cell.push(<th key="Wtorek">Wt</th>)
+        cell.push(<th key="Środa">Śr</th>)
+        cell.push(<th key="Czwartek">Czw</th>)
+        cell.push(<th key="Piątek">Pt</th>)
+        cell.push(<th key="Sobota">Sob</th>)
+        cell.push(<th key="Niedziela">Nd</th>)
         rows.push(<tr key={-1}>{cell}</tr>)
 
 
@@ -102,10 +102,12 @@ class Calendar extends Component {
         var thisDate = new Date(this.state.currentDate)
         return (
             <div className="topBar">
-                <button onClick={this.setPreviousMonth}>Wcześniej</button>
-                <button onClick={() => { this.setCurrentDate(new Date()) }}>Dzisiaj</button>
-                <button onClick={this.setNextMonth}>Później</button>
-                {monthEnum[thisDate.getMonth()]} {thisDate.getFullYear()}
+                <div className="topBar-buttons">
+                    <button onClick={this.setPreviousMonth}>Wcześniej</button>
+                    <button onClick={() => { this.setCurrentDate(new Date()) }}>Dzisiaj</button>
+                    <button onClick={this.setNextMonth}>Później</button>
+                </div>
+                <span>{monthEnum[thisDate.getMonth()]} {thisDate.getFullYear()}</span>
             </div>
         )
     }
