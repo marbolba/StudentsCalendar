@@ -1,18 +1,30 @@
 .dateCell {
-    text-align: right;
-    width: calc(12vw);
-    height: calc(15vh);
-    min-height: 100px;
+    width: 200px;
+    height: 150px;
 }
 .fadedCell {
-    text-align: right;
-    width: calc(12vw);
-    height: calc(15vh);
-    min-height: 100px;
+    width: 200px;
+    height: 150px;
 }
 .currentCell {
-    text-align: right;
-    width: calc(12vw);
-    height: calc(15vh);
-    min-height: 100px;
+    width: 200px;
+    height: 150px;
+    background: grey;
+}
+.header{
+    width: 100%;
+    height: 35px;
+    position: relative;
+    background-color: darkgrey;
+}
+.header img{
+    width: 30px;
+    height: 30px;
+    margin: 0px 5px;
+}
+.header span{
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 5px;
 }

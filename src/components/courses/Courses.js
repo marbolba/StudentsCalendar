@@ -103,7 +103,6 @@ class Courses extends Component {
         )
     }
     render() {
-        var today = new Date()
         return (
             <div>
                 <table>
