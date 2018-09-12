@@ -39,7 +39,19 @@ class Courses extends Component {
     inputFrom = () => {
         return (
             <tr>
-                <td><input type="text" onChange={(e) => { this.setState({ NewCourseName: e.target.value }) }} value={this.state.NewCourseName} /></td>
+                <td>
+                    <input type="text" onChange={(e) => { this.setState({ NewCourseName: e.target.value }) }} value={this.state.NewCourseName} />
+                </td>
+                <td>
+                    <div className="dropdown">
+                        <div>{this.state.NewCourseType}</div>
+                        <div className="dropdown-content">
+                            <a onClick={() => { this.setState({ NewCourseType: "Wykład" }) }}       >Wykład</a>
+                            <a onClick={() => { this.setState({ NewCourseType: "Laboratoria" }) }}  >Laboratoria</a>
+                            <a onClick={() => { this.setState({ NewCourseType: "Zajęcia" }) }}      >Zajęcia</a>
+                        </div>
+                    </div>
+                </td>
                 <td>
                     <div className="dropdown">
                         <div>{this.state.NewCourseDay}</div>
@@ -55,24 +67,10 @@ class Courses extends Component {
                     </div>
                 </td>
                 <td><input type="time" id="appt-time" name="appt-time" onChange={(e) => {
-                    this.setState({
-                        NewCourseStartTime: e.target.value
-                    })
-                }} /></td>
+                    this.setState({NewCourseStartTime: e.target.value})}} />
+                </td>
                 <td><input type="time" id="appt-time" name="appt-time" onChange={(e) => {
-                    this.setState({
-                        NewCourseEndTime: e.target.value
-                    })
-                }} /></td>
-                <td>
-                    <div className="dropdown">
-                        <div>{this.state.NewCourseType}</div>
-                        <div className="dropdown-content">
-                            <a onClick={() => { this.setState({ NewCourseType: "Wykład" }) }}       >Wykład</a>
-                            <a onClick={() => { this.setState({ NewCourseType: "Laboratoria" }) }}  >Laboratoria</a>
-                            <a onClick={() => { this.setState({ NewCourseType: "Zajęcia" }) }}      >Zajęcia</a>
-                        </div>
-                    </div>
+                    this.setState({NewCourseEndTime: e.target.value})}} />
                 </td>
                 <td>
                     <DatePicker
@@ -98,20 +96,21 @@ class Courses extends Component {
                         placeholderText="Data końca kursu"
                     />
                 </td>
-                <td><input type="submit" onClick={this.onSubmitHandler} /></td>
+                <td>
+                    <input type="submit" onClick={this.onSubmitHandler} />
+                </td>
             </tr>
         )
     }
     render() {
-        var today = new Date()
         return (
             <div>
                 <table>
                     <thead className="TableHead">
                         <tr>
                             <th>Przedniot</th>
-                            <th colSpan="3">Dzień i godzina zajęć</th>
                             <th>Typ Zajęć</th>
+                            <th colSpan="3">Dzień i godzina zajęć</th>
                             <th>Od</th>
                             <th>Do</th>
                             <th></th>

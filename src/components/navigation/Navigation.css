@@ -1,21 +1,21 @@
 ul {
-    margin: 0;
-    padding: 0;
-    width: 130px;
-    float: left;
-  }
+  margin: 0;
+  padding: 0;
+  width: 130px;
+  float: left;
+}
   
   /*
   Do a - linku na li (navig)
   */
-  li a {    
-    display: block;
-    padding: 8px 16px;
-    text-decoration: none;
-    color: salmon;
-  }
+li a {    
+  display: block;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: salmon;
+}
   
-  /* Change the link color on hover */
-  li a:hover {
-    background:linear-gradient(45deg, #49a09d, #5f2c82);
-  }
+/* Change the link color on hover */
+li a:hover {
+  background:linear-gradient(45deg, #49a09d, #5f2c82);
+}

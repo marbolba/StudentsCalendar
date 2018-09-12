@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './DateCell.css'
+import ClassesIcon from '../../icon/classes.png'
+import AddEvent from '../../icon/add-event.png'
 
 /**
  * Props list:
@@ -8,7 +10,7 @@ import './DateCell.css'
  */
 class DateCell extends Component {
     onDateCellClick = () => {
-        if (this.props.type === "date"||this.props.type === "current") {
+        if (this.props.type === "date" || this.props.type === "current") {
             console.log(this.props.date)
         }
         else if (this.props.type === "prev")
@@ -17,23 +19,31 @@ class DateCell extends Component {
             this.props.setNextMonth()
     }
     renderContent = () => {
-        if (this.props.type === "current"){return(          //the same
-            <div className='currentCell' onClick={this.onDateCellClick}>
-                {this.props.date.getDate()}
-            </div>
+        if (this.props.type === "current"){   //the same
+            return(          
+                <div className='currentCell' onClick={this.onDateCellClick}>
+                    <div className='header'>
+                        <img src={ClassesIcon} alt="ClassesIcon"/>
+                        <img src={AddEvent} alt="AddEvent"/>
+                        <span>{this.props.date.getDate()}</span>
+                    </div>
+                </div>
         )}
-        else if (this.props.type === "date"){return(        //the same
-            <div className='dateCell' onClick={this.onDateCellClick}>
-                {this.props.date.getDate()}
-            </div>
+        else if (this.props.type === "date"){
+            return(        
+                <div className='dateCell' onClick={this.onDateCellClick}>
+                    <div className='header'>
+                        <img src={ClassesIcon} alt="ClassesIcon"/>
+                        <img src={AddEvent} alt="AddEvent"/>
+                        <span>{this.props.date.getDate()}</span>
+                    </div>
+                </div>
         )}
-        else if (this.props.type === "prev"){return(
-            <div className='fadedCell' onClick={this.onDateCellClick}>
-            </div>
-        )}
-        else if (this.props.type === "next"){return(
-            <div className='fadedCell' onClick={this.onDateCellClick}>
-            </div>
+        else if (this.props.type === "prev" || this.props.type === "next"){
+            return(
+                <div className='fadedCell' onClick={this.onDateCellClick}>
+                    {null}
+                </div>
         )}
     }
     render() {
