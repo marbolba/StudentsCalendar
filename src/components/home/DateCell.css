@@ -1,7 +1,7 @@
 :root {
-    --cell-width: 200px;
+    --cell-width: 13vw;
     --cell-height: 150px;
-    --cell-margin: 7px;
+    --cell-margin: 0;
     --cell-radius: 5px;
 }
 
