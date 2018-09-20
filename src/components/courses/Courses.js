@@ -9,19 +9,22 @@ class Courses extends Component {
     state = {
         NewCourseName: "",
         NewCourseType: "Typ",
-        NewCourseDay: "Dzień",
+        NewCourseDay: {
+            "Name":"Dzień",
+            "Nr"  :null
+        },
         NewCourseStartTime: null,
         NewCourseEndTime: null,
         StartDate: null,
         EndDate: null
     }
     onSubmitHandler = () => {
-        if (this.state.NewCourseName !== "" && this.state.NewCourseType !== "Typ" && this.state.NewCourseDay !== "Dzień" && this.state.NewCourseStartTime && this.state.NewCourseEndTime && this.state.StartDate && this.state.EndDate) {
+        if (this.state.NewCourseName !== "" && this.state.NewCourseType !== "Typ" && this.state.NewCourseDay.Name !== "Dzień" && this.state.NewCourseStartTime && this.state.NewCourseEndTime && this.state.StartDate && this.state.EndDate) {
             console.log("sending")
             let data = {
                 "courseName": this.state.NewCourseName,
                 "courseType": this.state.NewCourseType,
-                "courseDay" : this.state.NewCourseDay,
+                "courseDay" : this.state.NewCourseDay.Nr,
                 "startTime" : this.state.NewCourseStartTime,
                 "endTime"   : this.state.NewCourseEndTime,
                 "startDate" : this.state.StartDate,
@@ -54,15 +57,15 @@ class Courses extends Component {
                 </td>
                 <td>
                     <div className="dropdown">
-                        <div>{this.state.NewCourseDay}</div>
+                        <div>{this.state.NewCourseDay.Name}</div>
                         <div className="dropdown-content">
-                            <a onClick={() => { this.setState({ NewCourseDay: "Pon" }) }}    >Poniedziałek</a>
-                            <a onClick={() => { this.setState({ NewCourseDay: "Wt" }) }}     >Wtorek</a>
-                            <a onClick={() => { this.setState({ NewCourseDay: "Śr" }) }}     >Środa</a>
-                            <a onClick={() => { this.setState({ NewCourseDay: "Czw" }) }}    >Czwartek</a>
-                            <a onClick={() => { this.setState({ NewCourseDay: "Pt" }) }}     >Piątek</a>
-                            <a onClick={() => { this.setState({ NewCourseDay: "Sob" }) }}    >Sobota</a>
-                            <a onClick={() => { this.setState({ NewCourseDay: "Nd" }) }}     >Niedziela</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Pon" ,"Nr":1} }) }}    >Poniedziałek</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Wt"  ,"Nr":2} }) }}     >Wtorek</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Sr"  ,"Nr":3} }) }}     >Środa</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Czw" ,"Nr":4} }) }}    >Czwartek</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Pt"  ,"Nr":5} }) }}     >Piątek</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Sob" ,"Nr":6} }) }}    >Sobota</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Nd"  ,"Nr":0} }) }}     >Niedziela</a>
                         </div>
                     </div>
                 </td>
