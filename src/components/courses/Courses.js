@@ -7,37 +7,99 @@ import axios from 'axios';
 
 class Courses extends Component {
     state = {
+        CoursesTableData: null,
         NewCourseName: "",
         NewCourseType: "Typ",
         NewCourseDay: {
-            "Name":"Dzień",
-            "Nr"  :null
+            "Name": "Dzień",
+            "Nr": null
         },
         NewCourseStartTime: null,
         NewCourseEndTime: null,
         StartDate: null,
         EndDate: null
     }
+    componentDidMount = () => {
+        this.getCoursesData()
+    }
     onSubmitHandler = () => {
-        if (this.state.NewCourseName !== "" && this.state.NewCourseType !== "Typ" && this.state.NewCourseDay.Name !== "Dzień" && this.state.NewCourseStartTime && this.state.NewCourseEndTime && this.state.StartDate && this.state.EndDate) {
-            console.log("sending")
+        if (this.state.NewCourseName !== "" && this.state.NewCourseType !== "Typ" &&
+            this.state.NewCourseDay.Name !== "Dzień" && this.state.NewCourseStartTime &&
+            this.state.NewCourseEndTime && this.state.StartDate && this.state.EndDate) {
+
             let data = {
                 "courseName": this.state.NewCourseName,
                 "courseType": this.state.NewCourseType,
-                "courseDay" : this.state.NewCourseDay.Nr,
-                "startTime" : this.state.NewCourseStartTime,
-                "endTime"   : this.state.NewCourseEndTime,
-                "startDate" : this.state.StartDate,
-                "endDate"   : this.state.EndDate
+                "courseDay": this.state.NewCourseDay.Nr,
+                "startTime": this.state.NewCourseStartTime,
+                "endTime": this.state.NewCourseEndTime,
+                "startDate": this.state.StartDate,
+                "endDate": this.state.EndDate
             }
 
             let url = "http://localhost:4141/api/courses"
             axios.post(url, data)
+                .then(()=>{
+                    this.getCoursesData()
+                    document.getElementById("appt-timeS").value=null;
+                    document.getElementById("appt-timeE").value=null;
+                    this.setState({
+                        NewCourseName: "",
+                        NewCourseType: "Typ",
+                        NewCourseDay: {
+                            "Name": "Dzień",
+                            "Nr": null
+                        },
+                        NewCourseStartTime: null,
+                        NewCourseEndTime: null,
+                        StartDate: null,
+                        EndDate: null
+                    })
+                })
         }
         else {
             console.log(new Date(this.state.EndDate))
         }
 
+    }
+    getCoursesData = () => {
+        let url = "http://localhost:4141/api/courses"
+        axios.get(url)
+            .then(res => {
+                let rows = []
+                let dayEnum = ["Nd", "Pon", "Wt", "Sr", "Czw", "Pt", "Sob"]
+                res.data.forEach(course => {
+                    rows.push(
+                        <tr>
+                            <td>
+                                {course.courseName}
+                            </td>
+                            <td>
+                                {course.courseType}
+                            </td>
+                            <td>
+                                {dayEnum[course.courseDay]}
+                            </td>
+                            <td>
+                                {course.startTime}
+                            </td>
+                            <td>
+                                {course.endTime}
+                            </td>
+                            <td>
+                                {course.startDate.substring(0, 10)}
+                            </td>
+                            <td>
+                                {course.startDate.substring(0, 10)}
+                            </td>
+                        </tr>
+                    )
+                });
+                console.log(rows)
+                this.setState({
+                    CoursesTableData: rows
+                })
+            })
     }
     inputFrom = () => {
         return (
@@ -59,21 +121,23 @@ class Courses extends Component {
                     <div className="dropdown">
                         <div>{this.state.NewCourseDay.Name}</div>
                         <div className="dropdown-content">
-                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Pon" ,"Nr":1} }) }}    >Poniedziałek</a>
-                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Wt"  ,"Nr":2} }) }}     >Wtorek</a>
-                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Sr"  ,"Nr":3} }) }}     >Środa</a>
-                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Czw" ,"Nr":4} }) }}    >Czwartek</a>
-                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Pt"  ,"Nr":5} }) }}     >Piątek</a>
-                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Sob" ,"Nr":6} }) }}    >Sobota</a>
-                            <a onClick={() => { this.setState({ NewCourseDay: {"Name":"Nd"  ,"Nr":0} }) }}     >Niedziela</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: { "Name": "Pon", "Nr": 1 } }) }}    >Poniedziałek</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: { "Name": "Wt", "Nr": 2 } }) }}     >Wtorek</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: { "Name": "Sr", "Nr": 3 } }) }}     >Środa</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: { "Name": "Czw", "Nr": 4 } }) }}    >Czwartek</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: { "Name": "Pt", "Nr": 5 } }) }}     >Piątek</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: { "Name": "Sob", "Nr": 6 } }) }}    >Sobota</a>
+                            <a onClick={() => { this.setState({ NewCourseDay: { "Name": "Nd", "Nr": 0 } }) }}     >Niedziela</a>
                         </div>
                     </div>
                 </td>
-                <td><input type="time" id="appt-time" name="appt-time" onChange={(e) => {
-                    this.setState({NewCourseStartTime: e.target.value})}} />
+                <td><input type="time" id="appt-timeS" name="appt-time" onChange={(e) => {
+                    this.setState({ NewCourseStartTime: e.target.value })
+                }} />
                 </td>
-                <td><input type="time" id="appt-time" name="appt-time" onChange={(e) => {
-                    this.setState({NewCourseEndTime: e.target.value})}} />
+                <td><input type="time" id="appt-timeE" name="appt-time" onChange={(e) => {
+                    this.setState({ NewCourseEndTime: e.target.value })
+                }} />
                 </td>
                 <td>
                     <DatePicker
@@ -111,7 +175,7 @@ class Courses extends Component {
                 <table>
                     <thead className="TableHead">
                         <tr>
-                            <th>Przedniot</th>
+                            <th>Przedmiot</th>
                             <th>Typ Zajęć</th>
                             <th colSpan="3">Dzień i godzina zajęć</th>
                             <th>Od</th>
@@ -120,6 +184,7 @@ class Courses extends Component {
                         </tr>
                     </thead>
                     <tbody>
+                        {this.state.CoursesTableData}
                         {this.inputFrom()}
                     </tbody>
                 </table>
