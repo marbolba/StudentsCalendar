@@ -3,6 +3,8 @@ import './Courses.css'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 class Courses extends Component {
@@ -41,8 +43,8 @@ class Courses extends Component {
             axios.post(url, data)
                 .then(()=>{
                     this.getCoursesData()
-                    document.getElementById("appt-timeS").value=null;
-                    document.getElementById("appt-timeE").value=null;
+                    document.getElementById("appt-timeS").value="";
+                    document.getElementById("appt-timeE").value="";
                     this.setState({
                         NewCourseName: "",
                         NewCourseType: "Typ",
@@ -55,10 +57,12 @@ class Courses extends Component {
                         StartDate: null,
                         EndDate: null
                     })
+                    toast.success("Added new Course");
                 })
         }
         else {
             console.log(new Date(this.state.EndDate))
+            toast.error("Please fill data properly");
         }
 
     }
@@ -143,9 +147,20 @@ class Courses extends Component {
                     <DatePicker
                         selected={this.state.StartDate}
                         onChange={(date) => {
-                            this.setState({
-                                StartDate: date
-                            })
+                            if(date==null || this.state.EndDate==null){
+                                this.setState({
+                                    StartDate: date
+                                })
+                            }else if(this.state.EndDate > date){
+                                this.setState({
+                                    StartDate: date
+                                })
+                            }else{
+                                this.setState({
+                                    StartDate: null
+                                })
+                                toast.error("Start date must be before end date");
+                            }
                         }}
                         isClearable={true}
                         placeholderText="Data początku kursu"
@@ -155,9 +170,20 @@ class Courses extends Component {
                     <DatePicker
                         selected={this.state.EndDate}
                         onChange={(date) => {
-                            this.setState({
-                                EndDate: date
-                            })
+                            if(date==null || this.state.StartDate==null){
+                                this.setState({
+                                    EndDate: date
+                                })
+                            }else if(this.state.StartDate < date){
+                                this.setState({
+                                    EndDate: date
+                                })
+                            }else{
+                                this.setState({
+                                    EndDate: null
+                                })
+                                toast.error("End date must be after start date");
+                            }
                         }}
                         isClearable={true}
                         placeholderText="Data końca kursu"
@@ -188,6 +214,7 @@ class Courses extends Component {
                         {this.inputFrom()}
                     </tbody>
                 </table>
+                <ToastContainer />
             </div>
         );
     }
