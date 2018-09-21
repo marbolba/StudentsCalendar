@@ -35,8 +35,8 @@ class Courses extends Component {
                 "courseDay": this.state.NewCourseDay.Nr,
                 "startTime": this.state.NewCourseStartTime,
                 "endTime": this.state.NewCourseEndTime,
-                "startDate": this.state.StartDate,
-                "endDate": this.state.EndDate
+                "startDate": this.state.StartDate.toISOString().slice(0, 10),
+                "endDate": this.state.EndDate.toISOString().slice(0, 10)
             }
 
             let url = "http://localhost:4141/api/courses"
@@ -73,6 +73,7 @@ class Courses extends Component {
                 let rows = []
                 let dayEnum = ["Nd", "Pon", "Wt", "Sr", "Czw", "Pt", "Sob"]
                 res.data.forEach(course => {
+                    console.log(new Date(course.startDate))
                     rows.push(
                         <tr>
                             <td>
@@ -91,10 +92,10 @@ class Courses extends Component {
                                 {course.endTime}
                             </td>
                             <td>
-                                {course.startDate.substring(0, 10)}
+                                {course.startDate}
                             </td>
                             <td>
-                                {course.startDate.substring(0, 10)}
+                                {course.startDate}
                             </td>
                         </tr>
                     )
