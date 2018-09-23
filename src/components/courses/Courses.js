@@ -41,9 +41,9 @@ class Courses extends Component {
 
             let url = "http://localhost:4141/api/courses"
             axios.post(url, data)
-                .then(()=>{
-                    this.getCoursesData()
-                    document.getElementById("appt-timeS").value="";
+                .then(() => {
+                    //this.getCoursesData()
+                    /*document.getElementById("appt-timeS").value="";
                     document.getElementById("appt-timeE").value="";
                     this.setState({
                         NewCourseName: "",
@@ -56,7 +56,7 @@ class Courses extends Component {
                         NewCourseEndTime: null,
                         StartDate: null,
                         EndDate: null
-                    })
+                    })*/
                     toast.success("Added new Course");
                 })
         }
@@ -73,7 +73,6 @@ class Courses extends Component {
                 let rows = []
                 let dayEnum = ["Nd", "Pon", "Wt", "Sr", "Czw", "Pt", "Sob"]
                 res.data.forEach(course => {
-                    console.log(new Date(course.startDate))
                     rows.push(
                         <tr>
                             <td>
@@ -95,16 +94,16 @@ class Courses extends Component {
                                 {course.startDate}
                             </td>
                             <td>
-                                {course.startDate}
+                                {course.endDate}
                             </td>
                         </tr>
                     )
                 });
-                console.log(rows)
                 this.setState({
                     CoursesTableData: rows
                 })
             })
+            
     }
     inputFrom = () => {
         return (
@@ -148,15 +147,15 @@ class Courses extends Component {
                     <DatePicker
                         selected={this.state.StartDate}
                         onChange={(date) => {
-                            if(date==null || this.state.EndDate==null){
+                            if (date == null || this.state.EndDate == null) {
                                 this.setState({
-                                    StartDate: date
+                                    StartDate: date.hour(6)
                                 })
-                            }else if(this.state.EndDate > date){
+                            } else if (this.state.EndDate > date) {
                                 this.setState({
-                                    StartDate: date
+                                    StartDate: date.hour(6)
                                 })
-                            }else{
+                            } else {
                                 this.setState({
                                     StartDate: null
                                 })
@@ -171,15 +170,15 @@ class Courses extends Component {
                     <DatePicker
                         selected={this.state.EndDate}
                         onChange={(date) => {
-                            if(date==null || this.state.StartDate==null){
+                            if (date == null || this.state.StartDate == null) {
                                 this.setState({
-                                    EndDate: date
+                                    EndDate: date.hour(6)
                                 })
-                            }else if(this.state.StartDate < date){
+                            } else if (this.state.StartDate < date) {
                                 this.setState({
-                                    EndDate: date
+                                    EndDate: date.hour(6)
                                 })
-                            }else{
+                            } else {
                                 this.setState({
                                     EndDate: null
                                 })
