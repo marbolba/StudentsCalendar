@@ -6,7 +6,6 @@ export default function reducer(state = {
     name: "",
     surname: ""
 }, action) {
-    console.log(state)
     switch (action.type) {
         case "LOGIN_USER":
             return {

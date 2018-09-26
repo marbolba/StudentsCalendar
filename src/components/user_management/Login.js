@@ -72,7 +72,7 @@ class Login extends Component {
             <div className="user-management-view">
                 <p>uzytkownik: {this.props.userName}</p>
                 {this.state.loginView ?
-                    <div>
+                    <div className="form">
                         <h1>Logowanie</h1>
                         <p>Login</p>
                         <input type="text" value={this.state.newLogin} onChange={(e) => this.setState({ newLogin: e.target.value })}></input>
@@ -83,7 +83,7 @@ class Login extends Component {
                             <button onClick={this.toggleLoginView}>Zajerestruj się</button>
                         </div>
                     </div> :
-                    <div>
+                    <div className="form">
                         <h1>Rejestracja</h1>
                         <p>Login</p>
                         <input type="text" value={this.state.newLogin} onChange={(e) => this.setState({ newLogin: e.target.value })}></input>
@@ -100,7 +100,6 @@ class Login extends Component {
                             <button onClick={this.toggleLoginView}>Login</button>
                         </div>
                     </div>}
-                    <button onClick={this.props.logoutUser}>logout</button>
                 <ToastContainer />
             </div>
         );

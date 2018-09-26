@@ -1,21 +1,69 @@
+/*
+DO ZMIANY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
 ul {
+  list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 130px;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
   float: left;
 }
-  
-  /*
-  Do a - linku na li (navig)
-  */
-li a {    
-  display: block;
-  padding: 8px 16px;
-  text-decoration: none;
-  color: salmon;
+
+#user-management{
+  float: right;
 }
-  
-/* Change the link color on hover */
-li a:hover {
-  background:linear-gradient(45deg, #49a09d, #5f2c82);
+
+#user-manager{
+  position: relative;
+  width: 150px;
+  height: 50px;
+}
+#user-manager p{
+  position: absolute;
+  left: 55px;
+}
+#avatar{
+  position: absolute;
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+}
+#expand{
+  position: absolute;
+  right: 0px;
+
+  padding: 15px 10px;
+  width: 20px;
+  height: 20px;
+}
+
+#user-drop-down span{
+  position: absolute;
+  background-color: #333;
+  right: 0;
+  top: 50px;
+  padding: 10px 10px;
+  border: 1px solid white;
+}
+
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4CAF50;
 }
