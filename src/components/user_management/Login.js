@@ -114,6 +114,7 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
     return {
         loginUser: (userObj) => {
+            console.log(userObj)
             dispatch(
                 loginUser(userObj.userName, userObj.userId, userObj.email, userObj.name, userObj.surname)
             )

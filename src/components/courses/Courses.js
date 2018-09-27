@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { connect } from 'react-redux'
 
 
 class Courses extends Component {
@@ -30,13 +31,14 @@ class Courses extends Component {
             this.state.NewCourseEndTime && this.state.StartDate && this.state.EndDate) {
 
             let data = {
+                "user_id"   : this.props.userId,
                 "courseName": this.state.NewCourseName,
                 "courseType": this.state.NewCourseType,
-                "courseDay": this.state.NewCourseDay.Nr,
-                "startTime": this.state.NewCourseStartTime,
-                "endTime": this.state.NewCourseEndTime,
-                "startDate": this.state.StartDate.toISOString().slice(0, 10),
-                "endDate": this.state.EndDate.toISOString().slice(0, 10)
+                "courseDay" : this.state.NewCourseDay.Nr,
+                "startTime" : this.state.NewCourseStartTime,
+                "endTime"   : this.state.NewCourseEndTime,
+                "startDate" : this.state.StartDate.toISOString().slice(0, 10),
+                "endDate"   : this.state.EndDate.toISOString().slice(0, 10)
             }
 
             let url = "http://localhost:4141/api/courses"
@@ -48,7 +50,6 @@ class Courses extends Component {
                 })
         }
         else {
-            console.log(new Date(this.state.EndDate))
             toast.error("Please fill data properly");
         }
 
@@ -212,6 +213,7 @@ class Courses extends Component {
         )
     }
     render() {
+        console.log(this.props.userId)
         return (
             <div>
                 <table>
@@ -219,7 +221,7 @@ class Courses extends Component {
                         <tr>
                             <th>Przedmiot</th>
                             <th>Typ Zajęć</th>
-                            <th colSpan="3">Dzień i godzina zajęć</th>
+                            Id       <th colSpan="3">Dzień i godzina zajęć</th>
                             <th>Od</th>
                             <th>Do</th>
                             <th></th>
@@ -235,4 +237,12 @@ class Courses extends Component {
         );
     }
 };
-export default Courses;
+const mapStateToProps = store => {
+    return {
+        userId: store.user.userId,
+        userAuthorized: store.user.userAuthorized
+    }
+}
+export default connect(
+    mapStateToProps
+)(Courses)
