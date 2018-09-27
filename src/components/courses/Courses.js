@@ -213,7 +213,6 @@ class Courses extends Component {
         )
     }
     render() {
-        console.log(this.props.userId)
         return (
             <div>
                 <table>
@@ -221,7 +220,7 @@ class Courses extends Component {
                         <tr>
                             <th>Przedmiot</th>
                             <th>Typ Zajęć</th>
-                            Id       <th colSpan="3">Dzień i godzina zajęć</th>
+                            <th colSpan="3">Dzień i godzina zajęć</th>
                             <th>Od</th>
                             <th>Do</th>
                             <th></th>

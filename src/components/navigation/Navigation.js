@@ -12,17 +12,27 @@ import expand_button from '../../icon/expand_button.png'
 
 class Navigation extends Component {
     state = {
-        user_drop_down_toggle: "hidden",
+        user_drop_down_toggle: false,
     }
 
-    toggle_dropdown_visibility = () => {
-        console.log(this.state.user_drop_down_toggle)
-        if(this.state.user_drop_down_toggle==="visible"){
-            this.setState({user_drop_down_toggle:"hidden"})
-        }else{
-            this.setState({user_drop_down_toggle:"visible"})
+    componentWillMount() {
+        document.addEventListener('mousedown', this.handleOutDropdownClick, false);
+    }
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleOutDropdownClick, false);
+    }
+
+    handleOutDropdownClick = (event) => {
+        if (!this.dropdown.contains(event.target)&&!this.dropdown_arrow.contains(event.target)) {
+            this.setState({
+                user_drop_down_toggle: false
+            })
         }
-        
+    }
+    toggle_dropdown_visibility = () => {
+        this.setState({
+            user_drop_down_toggle: !this.state.user_drop_down_toggle
+        })
     }
 
     render() {
@@ -39,13 +49,16 @@ class Navigation extends Component {
                                     <div id="user-manager">
                                         <img id="avatar" src={default_avatar} alt="avatar"></img>
                                         <p>{this.props.userName}</p>
-                                        <img id="expand" onClick={this.toggle_dropdown_visibility} src={expand_button} alt="expand button"></img>
+                                        <img id="expand" onClick={this.toggle_dropdown_visibility} src={expand_button} alt="expand button" ref={dropdown_arrow => this.dropdown_arrow = dropdown_arrow}></img>
                                     </div>
                                 </li>
                             </ul>
                         </nav>
-                        <div id="user-drop-down" style={{ visibility: this.state.user_drop_down_toggle }}>
-                            <span onClick={this.props.logoutUser}>wyloguj</span>
+                        <div id="user-drop-down" style={this.state.user_drop_down_toggle ? { visibility: 'visible' } : { visibility: 'hidden' }}>
+                            <span ref={dropdown => this.dropdown = dropdown} onClick={() => {
+                                this.toggle_dropdown_visibility()
+                                this.props.logoutUser()
+                            }}>Wyloguj</span>
                         </div>
 
                         <Switch>
