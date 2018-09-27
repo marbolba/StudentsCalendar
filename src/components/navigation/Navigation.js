@@ -28,7 +28,7 @@ class Navigation extends Component {
     render() {
         return (
             <BrowserRouter>
-                {this.props.userAuthorized ?
+                {//this.props.userAuthorized ?
                     <div>
                         <nav>
                             <ul>
@@ -54,14 +54,14 @@ class Navigation extends Component {
                             <Route path="/login" component={Login} exact />
                         </Switch>
                     </div>
-                    :
+                    /*:
                     <div>
                         <Switch>
                             <Route path="/" component={Login} exact />
                             <Route path="/przedmioty" component={Login} exact />
                             <Route path="/login" component={Login} exact />
                         </Switch>
-                    </div>
+                    </div>*/
                 }
             </BrowserRouter>
         );
