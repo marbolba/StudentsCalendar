@@ -31,7 +31,7 @@ class Courses extends Component {
             this.state.NewCourseEndTime && this.state.StartDate && this.state.EndDate) {
 
             let data = {
-                "user_id"   : this.props.userId,
+                "userId"   : this.props.userId,
                 "courseName": this.state.NewCourseName,
                 "courseType": this.state.NewCourseType,
                 "courseDay" : this.state.NewCourseDay.Nr,
@@ -71,7 +71,7 @@ class Courses extends Component {
         })
     }
     getCoursesData = () => {
-        let url = "http://localhost:4141/api/courses"
+        let url = "http://localhost:4141/api/courses?userId="+this.props.userId
         axios.get(url)
             .then(res => {
                 let rows = []

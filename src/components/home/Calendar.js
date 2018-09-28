@@ -6,7 +6,13 @@ import './Calendar.css'
 class Calendar extends Component {
     state = {
         currentDate: null,
-        thisMonthDates: []
+        thisMonthDates: [],
+        thisMonthEvents: []
+    }
+    componentDidMount = () => {
+        var data = new Date()
+        this.setCurrentDate(data)
+        this.getThisMonthEvents(data.getFullYear(),data.getMonth())
     }
     daysInMonth = (month, year) => {
         return new Date(year, month + 1, 0).getDate();
@@ -50,6 +56,9 @@ class Calendar extends Component {
         this.setState({
             thisMonthDates: thisMonth
         })
+    }
+    getThisMonthEvents = (year,month) => {
+        console.log(year,month+1)
     }
     getThisMonthCallendar = () => {
         let rows = []
@@ -110,10 +119,6 @@ class Calendar extends Component {
                 <span>{monthEnum[thisDate.getMonth()]} {thisDate.getFullYear()}</span>
             </div>
         )
-    }
-    componentDidMount = () => {
-        var data = new Date()
-        this.setCurrentDate(data)
     }
     render() {
         return (
