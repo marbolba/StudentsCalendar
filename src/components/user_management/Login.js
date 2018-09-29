@@ -70,7 +70,6 @@ class Login extends Component {
     render() {
         return (
             <div className="user-management-view">
-                <p>uzytkownik: {this.props.userName}</p>
                 {this.state.loginView ?
                     <div className="form">
                         <h1>Logowanie</h1>
@@ -114,7 +113,6 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
     return {
         loginUser: (userObj) => {
-            console.log(userObj)
             dispatch(
                 loginUser(userObj.userName, userObj.userId, userObj.email, userObj.name, userObj.surname)
             )

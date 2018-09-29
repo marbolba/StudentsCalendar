@@ -23,7 +23,7 @@ class Navigation extends Component {
     }
 
     handleOutDropdownClick = (event) => {
-        if (!this.dropdown.contains(event.target)&&!this.dropdown_arrow.contains(event.target)) {
+        if (!this.dropdown.contains(event.target) && !this.dropdown_arrow.contains(event.target)) {
             this.setState({
                 user_drop_down_toggle: false
             })
@@ -38,13 +38,12 @@ class Navigation extends Component {
     render() {
         return (
             <BrowserRouter>
-                {//this.props.userAuthorized ?
+                {this.props.userAuthorized ?
                     <div>
                         <nav>
                             <ul>
                                 <li><NavLink exact to="/">Kalendarz</NavLink></li>
                                 <li><NavLink to="/przedmioty">Zajęcia</NavLink></li>
-                                <li><NavLink to="/login">Login</NavLink></li>
                                 <li id="user-management">
                                     <div id="user-manager">
                                         <img id="avatar" src={default_avatar} alt="avatar"></img>
@@ -67,14 +66,17 @@ class Navigation extends Component {
                             <Route path="/login" component={Login} exact />
                         </Switch>
                     </div>
-                    /*:
+                    :
                     <div>
+                        <span style={{visibility:"hidden"}} ref={dropdown => this.dropdown = dropdown}></span>
+                        <img style={{visibility:"hidden"}} alt="expand button" ref={dropdown_arrow => this.dropdown_arrow = dropdown_arrow}></img>
+
                         <Switch>
                             <Route path="/" component={Login} exact />
                             <Route path="/przedmioty" component={Login} exact />
                             <Route path="/login" component={Login} exact />
                         </Switch>
-                    </div>*/
+                    </div>
                 }
             </BrowserRouter>
         );

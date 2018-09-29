@@ -1,12 +1,14 @@
 :root {
     --cell-width: 13vw;
-    --cell-height: 150px;
+    --cell-min-width: 100px;
+    --cell-height: 155px;
     --cell-margin: 0;
     --cell-radius: 5px;
 }
 
 .dateCell {
     width: var(--cell-width);
+    min-width: var(--cell-min-width);
     height: var(--cell-height);
     margin: var(--cell-margin);
     border-radius: var(--cell-radius);
@@ -14,6 +16,7 @@
 }
 .fadedCell {
     width: var(--cell-width);
+    min-width: var(--cell-min-width);
     height: var(--cell-height);
     margin: var(--cell-margin);
     border-radius: var(--cell-radius);
@@ -21,6 +24,7 @@
 }
 .currentCell {
     width: var(--cell-width);
+    min-width: var(--cell-min-width);
     height: var(--cell-height);
     margin: var(--cell-margin);
     border-radius: var(--cell-radius);
@@ -44,4 +48,11 @@
     padding: 0;
     position: absolute;
     right: 5px;
+}
+.classes-short-info{
+    width: 100%;
+    min-width: var(--cell-min-width);
+    height: 40px;
+
+    background: rgb(241, 224, 112);
 }
