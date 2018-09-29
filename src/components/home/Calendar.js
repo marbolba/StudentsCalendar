@@ -1,18 +1,31 @@
 import React, { Component } from 'react';
 import DateCell from './DateCell'
 import './Calendar.css'
+import { connect } from "react-redux"
+import axios from "axios"
 
 
 class Calendar extends Component {
     state = {
         currentDate: null,
         thisMonthDates: [],
-        thisMonthEvents: []
+        thisMonthEvents: [],
+        isFetched: false
     }
     componentDidMount = () => {
-        var data = new Date()
-        this.setCurrentDate(data)
-        this.getThisMonthEvents(data.getFullYear(),data.getMonth())
+        var date = new Date()
+        this.setCurrentDate(date)
+    }
+    setCurrentDate = (date) => {
+        var thisDate = new Date(date)
+        this.createThisMonthArray(thisDate)
+        this.getThisMonthEvents(thisDate.getFullYear(), thisDate.getMonth())
+            .then(() => {
+                this.setState({
+                    currentDate: thisDate
+                })
+            })
+
     }
     daysInMonth = (month, year) => {
         return new Date(year, month + 1, 0).getDate();
@@ -30,13 +43,6 @@ class Calendar extends Component {
         var thisDate = new Date(this.state.currentDate)
         thisDate.setMonth(thisDate.getMonth() + 1)
         this.setCurrentDate(thisDate)
-    }
-    setCurrentDate = (date) => {
-        var thisDate = new Date(date)
-        this.setState({
-            currentDate: thisDate
-        })
-        this.createThisMonthArray(thisDate)
     }
     createThisMonthArray = (date) => {
         var dateIterate = new Date(date)
@@ -57,8 +63,27 @@ class Calendar extends Component {
             thisMonthDates: thisMonth
         })
     }
-    getThisMonthEvents = (year,month) => {
-        console.log(year,month+1)
+    getThisMonthEvents = (year, month) => {
+        let getThisMonthEvents = new Promise((resolve, reject) => {
+            var monthLength = parseInt(this.daysInMonth(month, year), 10)
+            let url = "http://localhost:4141/api/classes?userId=" + parseInt(this.props.userId, 10) + "&year=" + parseInt(year, 10) + "&month=" + parseInt(month + 1, 10) + "&lastDayOfMonth=" + monthLength
+            axios.get(url)
+                .then(response => {
+                    resolve()
+                    this.setState({
+                        thisMonthEvents: response.data
+                    })
+                })
+        })
+        return getThisMonthEvents
+
+    }
+    getThisDateEvents = (day) => {
+        let found = this.state.thisMonthEvents.filter(classEntity => {
+            return new Date(classEntity.classesFullStartDate).getDate() === day
+        });
+        return found
+
     }
     getThisMonthCallendar = () => {
         let rows = []
@@ -81,13 +106,13 @@ class Calendar extends Component {
                         var thisDate = new Date(this.state.currentDate)
                         thisDate.setDate(this.state.thisMonthDates[(i * 7 + j)])
                         if (thisDate.getDate() === (new Date()).getDate() && thisDate.getMonth() === (new Date()).getMonth() && thisDate.getFullYear() === (new Date()).getFullYear()) {
-                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} type="current" /></td>)
+                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} classes={this.getThisDateEvents(thisDate.getDate())} type="current" /></td>)
                         }
                         else if ((i * 7 + j + 1) % 7 !== 0) {
-                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} type="date" /></td>)
+                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} classes={this.getThisDateEvents(thisDate.getDate())} type="date" /></td>)
                         }
                         else {
-                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} type="date" /></td>)
+                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} classes={this.getThisDateEvents(thisDate.getDate())} type="date" /></td>)
                             rows.push(<tr key={i}>{cell}</tr>)
                         }
                     }
@@ -135,5 +160,12 @@ class Calendar extends Component {
         );
     }
 }
-
-export default Calendar;
+const mapStateToProps = store => {
+    return {
+        userId: store.user.userId,
+        userAuthorized: store.user.userAuthorized
+    }
+}
+export default connect(
+    mapStateToProps
+)(Calendar)

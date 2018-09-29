@@ -151,7 +151,6 @@ class Courses extends Component {
                     <DatePicker
                         selected={this.state.StartDate}
                         onChange={(date) => {
-                            console.log(date)
                             if(date != null){
                                 if(this.state.EndDate == null){
                                     this.setState({
