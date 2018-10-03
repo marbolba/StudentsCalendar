@@ -6,11 +6,11 @@ import AddEvent from '../../icon/add-event.png'
 /**
  * Props list:
  * date - Obj
- * type - {date,prev,next,current}
+ * type - {date,prev,next,current,weekend}
  */
 class DateCell extends Component {
     onDateCellClick = () => {
-        if (this.props.type === "date" || this.props.type === "current") {
+        if (this.props.type === "date" || this.props.type === "current" || this.props.type === "weekend") {
             console.log(this.props.date)
         }
         else if (this.props.type === "prev")
@@ -29,6 +29,13 @@ class DateCell extends Component {
         else if (this.props.type === "date") {
             return (
                 <div className='dateCell' onClick={this.onDateCellClick}>
+                    {this.renderDateContent()}
+                </div>
+            )
+        }
+        else if (this.props.type === "weekend") {
+            return (
+                <div className='weekendCell' onClick={this.onDateCellClick}>
                     {this.renderDateContent()}
                 </div>
             )

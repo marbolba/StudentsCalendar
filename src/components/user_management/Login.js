@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import './Login.css'
+import './Login.css';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { connect } from 'react-redux'
-import { loginUser,logoutUser} from '../../redux/actions/userActions'
+import { connect } from 'react-redux';
+import { loginUser, logoutUser } from '../../redux/actions/userActions';
+
+import padlock from '../../icon/padlock.png';
+import user from '../../icon/user.png';
 
 class Login extends Component {
     state = {
@@ -72,28 +75,38 @@ class Login extends Component {
             <div className="user-management-view">
                 {this.state.loginView ?
                     <div className="form">
-                        <h1>Logowanie</h1>
+                        <p id="topTitle">Logowanie</p>
+                        <hr />
                         <p>Login</p>
-                        <input type="text" value={this.state.newLogin} onChange={(e) => this.setState({ newLogin: e.target.value })}></input>
-                        <p>Haslo</p>
-                        <input type="password" value={this.state.newPassword} onChange={(e) => this.setState({ newPassword: e.target.value })}></input>
+                        <div className="credentialsInput">
+                            <img src={user} alt="user_img" />
+                            <input type="text" value={this.state.newLogin} onChange={(e) => this.setState({ newLogin: e.target.value })}></input>
+                        </div>
+                        <p>Hasło</p>
+                        <div className="credentialsInput">
+                            <img src={padlock} alt="padlock_img" />
+                            <input type="password" value={this.state.newPassword} onChange={(e) => this.setState({ newPassword: e.target.value })}></input>
+                        </div>
                         <div className="buttons">
                             <button onClick={this.handleLogin}>Login</button>
                             <button onClick={this.toggleLoginView}>Zajerestruj się</button>
                         </div>
                     </div> :
                     <div className="form">
-                        <h1>Rejestracja</h1>
-                        <p>Login</p>
-                        <input type="text" value={this.state.newLogin} onChange={(e) => this.setState({ newLogin: e.target.value })}></input>
-                        <p>Email</p>
-                        <input type="email" value={this.state.email} onChange={(e) => this.setState({ email: e.target.value })}></input>
-                        <p>Imie</p>
-                        <input type="text" value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })}></input>
-                        <p>Nazwisko</p>
-                        <input type="text" value={this.state.surname} onChange={(e) => this.setState({ surname: e.target.value })}></input>
-                        <p>Haslo</p>
-                        <input type="password" value={this.state.newPassword} onChange={(e) => this.setState({ newPassword: e.target.value })}></input>
+                        <p id="topTitle">Rejestracja</p>
+                        <hr />
+                        <div className="register-inputs">
+                            <p>Login</p>
+                            <input type="text" value={this.state.newLogin} onChange={(e) => this.setState({ newLogin: e.target.value })}></input>
+                            <p>Email</p>
+                            <input type="email" value={this.state.email} onChange={(e) => this.setState({ email: e.target.value })}></input>
+                            <p>Imię</p>
+                            <input type="text" value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })}></input>
+                            <p>Nazwisko</p>
+                            <input type="text" value={this.state.surname} onChange={(e) => this.setState({ surname: e.target.value })}></input>
+                            <p>Hasło</p>
+                            <input type="password" value={this.state.newPassword} onChange={(e) => this.setState({ newPassword: e.target.value })}></input>
+                        </div>
                         <div className="buttons">
                             <button onClick={this.handleRegister}>Rejestracja</button>
                             <button onClick={this.toggleLoginView}>Login</button>
@@ -117,7 +130,7 @@ const mapDispatchToProps = dispatch => {
                 loginUser(userObj.userName, userObj.userId, userObj.email, userObj.name, userObj.surname)
             )
         },
-        logoutUser: ()=>{
+        logoutUser: () => {
             dispatch(logoutUser())
         }
     }

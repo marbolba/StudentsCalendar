@@ -206,7 +206,7 @@ class Courses extends Component {
                     />
                 </td>
                 <td>
-                    <input type="submit" onClick={this.onSubmitHandler} />
+                    <button onClick={this.onSubmitHandler}>Prześlij</button>
                 </td>
             </tr>
         )

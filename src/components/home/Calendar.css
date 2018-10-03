@@ -26,12 +26,7 @@
 
 .topBar-buttons {
   position: absolute;
-  left: 10px;
-}
-
-.topBar button:hover {
-  color: #ffffff;
-  background-color: #000000;
+  left: 20px;
 }
 
 .Calendar{

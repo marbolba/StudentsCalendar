@@ -108,12 +108,14 @@ class Calendar extends Component {
                         if (thisDate.getDate() === (new Date()).getDate() && thisDate.getMonth() === (new Date()).getMonth() && thisDate.getFullYear() === (new Date()).getFullYear()) {
                             cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} classes={this.getThisDateEvents(thisDate.getDate())} type="current" /></td>)
                         }
-                        else if ((i * 7 + j + 1) % 7 !== 0) {
+                        else if (!(((i * 7 + j + 1) % 7 !== 0) ^ ((i * 7 + j + 1) % 7 !== 6))) {
                             cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} classes={this.getThisDateEvents(thisDate.getDate())} type="date" /></td>)
                         }
                         else {
-                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} classes={this.getThisDateEvents(thisDate.getDate())} type="date" /></td>)
-                            rows.push(<tr key={i}>{cell}</tr>)
+                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} classes={this.getThisDateEvents(thisDate.getDate())} type="weekend" /></td>)
+                            if ((i * 7 + j + 1) % 7 !== 0) {
+                                rows.push(<tr key={i}>{cell}</tr>)
+                            }
                         }
                     }
                     else {
@@ -137,15 +139,16 @@ class Calendar extends Component {
         return (
             <div className="topBar">
                 <div className="topBar-buttons">
-                    <button onClick={this.setPreviousMonth}>Wcześniej</button>
-                    <button onClick={() => { this.setCurrentDate(new Date()) }}>Dzisiaj</button>
-                    <button onClick={this.setNextMonth}>Później</button>
+                    <button onClick={this.setPreviousMonth} title="Wyświetl poprzedni miesiąc">Wcześniej</button>
+                    <button onClick={() => { this.setCurrentDate(new Date()) }} title="Wyświetl obecny miesiąc">Dzisiaj</button>
+                    <button onClick={this.setNextMonth} title="Wyświetl następny miesiąc">Później</button>
                 </div>
                 <span>{monthEnum[thisDate.getMonth()]} {thisDate.getFullYear()}</span>
             </div>
         )
     }
     render() {
+        console.log(this.state.thisMonthEvents)
         return (
             <div className='CalendarContent'>
                 {this.getThisMonthTopBar()}

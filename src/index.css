@@ -1,7 +1,21 @@
+html{
+	height: 100%;
+}
+
 body {
 	margin: 0;
   padding: 0;
-	background: #1E2B87;
-	font-family: serif;
-  color: ghostwhite;
+	background: linear-gradient(0deg, rgba(70,130,180,1) 0%, rgba(176,196,222,1) 100%);
+	color: ghostwhite;
+}
+
+button{
+	outline:none;
+	background: linear-gradient(0deg, rgba(247,247,247,1) 0%, rgba(209,209,209,1) 50%, rgba(247,247,247,1) 100%);
+	padding: 6px 10px;
+	border-radius: 10px;
+}
+
+button:hover{
+  background: linear-gradient(0deg, rgba(224,224,224,1) 0%, rgba(173,173,173,1) 50%, rgba(224,224,224,1) 100%);
 }

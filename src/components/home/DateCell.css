@@ -20,7 +20,6 @@
     height: var(--cell-height);
     margin: var(--cell-margin);
     border-radius: var(--cell-radius);
-    background: #F4ECB8;
 }
 .currentCell {
     width: var(--cell-width);
@@ -29,6 +28,14 @@
     margin: var(--cell-margin);
     border-radius: var(--cell-radius);
     background: #EFB93A;
+}
+.weekendCell {
+    width: var(--cell-width);
+    min-width: var(--cell-min-width);
+    height: var(--cell-height);
+    margin: var(--cell-margin);
+    border-radius: var(--cell-radius);
+    background:#dbd3a4 ;
 }
 .header{
     width: 100%;
