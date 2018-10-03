@@ -1,6 +1,6 @@
 :root {
-    --cell-width: 13vw;
-    --cell-min-width: 100px;
+    --cell-width: 13.5vw;
+    --cell-min-width: 160px;
     --cell-height: 155px;
     --cell-margin: 0;
     --cell-radius: 5px;
@@ -50,9 +50,29 @@
     right: 5px;
 }
 .classes-short-info{
+    position: relative;
     width: 100%;
     min-width: var(--cell-min-width);
     height: 40px;
 
     background: rgb(241, 224, 112);
+}
+#classes-hours{
+    position: absolute;
+    width: 37px;
+    font-size: 17px;
+    padding-left: 3px;
+}
+#classes-name{
+    position: absolute;
+    left: 40px;
+    width: 150px;
+    font-size: 30px;
+    padding: 3px 10px;
+}
+#classes-type{
+    position: absolute;
+    right: 0px;
+    font-size: 30px;
+    padding: 3px 10px;
 }

@@ -62,14 +62,20 @@ class DateCell extends Component {
     renderShortInfo = (classEntity) => {
         let startHour = new Date(classEntity.classesFullStartDate)
         let endHour = new Date(classEntity.classesFullEndDate)
-        //let startHourString =
+        let classesTypeShort = classEntity.classesType.toString().toUpperCase().substr(0,1)
         return (
             <li className="classes-short-info" key={classEntity.classes_id}>
-                <div id="hours">
-                    {startHour.getHours()+":"+startHour.getMinutes()}
-                    {endHour.getHours()+":"+endHour.getMinutes()}
+                <div id="classes-hours">
+                    {startHour.getHours()+":"+(startHour.getMinutes()<10?'0':'')+startHour.getMinutes()}
+                    <br/>
+                    {endHour.getHours()+":"+(endHour.getMinutes()<10?'0':'')+endHour.getMinutes()}
                 </div>
-                {classEntity.classesName}
+                <div id="classes-name">
+                    {classEntity.classesName}
+                </div>  
+                <div id="classes-type">
+                    {classesTypeShort}
+                </div>
             </li>
         )
     }
