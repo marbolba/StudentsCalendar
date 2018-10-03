@@ -1,5 +1,4 @@
 :root {
-    --cell-width: 13.5vw;
     --cell-min-width: 160px;
     --cell-height: 155px;
     --cell-margin: 0;
@@ -7,7 +6,6 @@
 }
 
 .dateCell {
-    width: var(--cell-width);
     min-width: var(--cell-min-width);
     height: var(--cell-height);
     margin: var(--cell-margin);
@@ -15,14 +13,12 @@
     background: #F4ECB8;
 }
 .fadedCell {
-    width: var(--cell-width);
     min-width: var(--cell-min-width);
     height: var(--cell-height);
     margin: var(--cell-margin);
     border-radius: var(--cell-radius);
 }
 .currentCell {
-    width: var(--cell-width);
     min-width: var(--cell-min-width);
     height: var(--cell-height);
     margin: var(--cell-margin);
@@ -30,7 +26,6 @@
     background: #EFB93A;
 }
 .weekendCell {
-    width: var(--cell-width);
     min-width: var(--cell-min-width);
     height: var(--cell-height);
     margin: var(--cell-margin);

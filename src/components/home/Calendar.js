@@ -148,7 +148,6 @@ class Calendar extends Component {
         )
     }
     render() {
-        console.log(this.state.thisMonthEvents)
         return (
             <div className='CalendarContent'>
                 {this.getThisMonthTopBar()}
