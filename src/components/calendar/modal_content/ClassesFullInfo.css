@@ -1,0 +1,74 @@
+.classes-list-info{
+    position: relative;
+    display: block;
+    width: 100%;
+    min-width: var(--cell-min-width);
+    height: 80px;
+
+    background: rgb(241, 224, 112);
+}
+.classes-list-info #classes-hours{
+    position: absolute;
+    width: 70px;
+    font-size: 34px;
+    padding-left: 3px;
+}
+.classes-list-info #classes-name{
+    position: absolute;
+    left:85px;
+
+    font-size: 34px;
+    width: 300px;
+}
+.classes-list-info #classes-type{
+    position: relative;
+    float: right;
+    font-size: 27px;
+    padding: 3px 10px;
+
+
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+.materials-header{
+    position: relative;
+    height: 30px;
+}
+
+.add-dropdown{
+    position: absolute;
+    width: 130px;
+    right: 0px;
+    top: 30px;
+    z-index: 100;
+    padding: 5px;
+
+    background: rgb(255, 103, 43);
+    border-width: 2px;
+    border-style: inset;
+    border-radius: 3px;
+}
+.add-dropdown li{
+    width: 130px;
+    padding: 5px;
+    
+    cursor: pointer;
+    font-size: 25px;
+    background: rgb(255, 103, 43);
+}
+.add-dropdown span{
+    width: 130px;
+    padding: 5px;
+
+    font-size: 25px;
+}
+
+.materials{
+    display: block;
+}
+.materials #addMaterials{
+    float: right;
+}
+

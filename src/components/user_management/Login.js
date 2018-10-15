@@ -41,7 +41,11 @@ class Login extends Component {
                 .then((res) => {
                     this.props.loginUser(res.data)
                 }).catch((err) => {
-                    toast.error("Nieprawidłowy login lub hasło")
+                    if (err.response.status!==403) {
+                        toast.error("Błąd sieci")
+                    } else {
+                        toast.error("Nieprawidłowy login lub hasło")
+                    }
                 })
         } else {
             toast.error("Prosze podac login i hasło")

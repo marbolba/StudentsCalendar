@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import './DateCell.css'
-import ClassesIcon from '../../icon/classes.png'
-import AddEvent from '../../icon/add-event.png'
+import './DateCell.css';
+import AddEvent from '../../icon/add-event.png';
+import Exit from '../../icon/exit.png';
+import Modal from 'react-modal';
+import ModalClassesContent from './modal_content/ModalClassesContent';
 
 /**
  * Props list:
@@ -9,9 +11,20 @@ import AddEvent from '../../icon/add-event.png'
  * type - {date,prev,next,current,weekend}
  */
 class DateCell extends Component {
+    state = {
+        isModalOpen: false
+    }
+    componentWillMount() {
+        Modal.setAppElement('body');
+    }
+    toggleModalOpen = () => {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        })
+    }
     onDateCellClick = () => {
         if (this.props.type === "date" || this.props.type === "current" || this.props.type === "weekend") {
-            console.log(this.props.date)
+            this.toggleModalOpen()
         }
         else if (this.props.type === "prev")
             this.props.setPreviousMonth()
@@ -52,7 +65,6 @@ class DateCell extends Component {
         return (
             <React.Fragment>
                 <div className='header'>
-                    <img src={ClassesIcon} alt="ClassesIcon" />
                     <img src={AddEvent} alt="AddEvent" />
                     <span>{this.props.date.getDate()}</span>
                 </div>
@@ -69,26 +81,51 @@ class DateCell extends Component {
     renderShortInfo = (classEntity) => {
         let startHour = new Date(classEntity.classesFullStartDate)
         let endHour = new Date(classEntity.classesFullEndDate)
-        let classesTypeShort = classEntity.classesType.toString().toUpperCase().substr(0,1)
+        let classesTypeShort = classEntity.classesType.toString().toUpperCase().substr(0, 1)
         return (
             <li className="classes-short-info" key={classEntity.classes_id}>
                 <div id="classes-hours">
-                    {startHour.getHours()+":"+(startHour.getMinutes()<10?'0':'')+startHour.getMinutes()}
-                    <br/>
-                    {endHour.getHours()+":"+(endHour.getMinutes()<10?'0':'')+endHour.getMinutes()}
+                    {startHour.getHours() + ":" + (startHour.getMinutes() < 10 ? '0' : '') + startHour.getMinutes()}
+                    <br />
+                    {endHour.getHours() + ":" + (endHour.getMinutes() < 10 ? '0' : '') + endHour.getMinutes()}
                 </div>
                 <div id="classes-name">
                     {classEntity.classesName}
-                </div>  
+                </div>
                 <div id="classes-type">
                     {classesTypeShort}
                 </div>
             </li>
         )
     }
+    rednerModal = () => {
+        var monthEnum = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień']
+        return (
+            <Modal
+                isOpen={this.state.isModalOpen}
+                onRequestClose={this.toggleModalOpen}
+                contentLabel="Example Modal"
+                className="modal"
+            >
+                <div className="modal-top-bar">
+                    <span>{this.props.date.getDate()} {monthEnum[this.props.date.getMonth()]} {this.props.date.getFullYear()}</span>
+                    <img src={Exit} onClick={this.toggleModalOpen} alt="exit-button" />
+                </div>
+                <hr />
+                <ModalClassesContent classes={this.props.classes}/>
+            </Modal>
+        )
+    }
     render() {
         return (
-            this.renderContent()
+            <React.Fragment>
+                {this.renderContent()}
+                {this.props.date !== null ?
+                    this.rednerModal()
+                    :
+                    null
+                }
+            </React.Fragment>
         );
     }
 }

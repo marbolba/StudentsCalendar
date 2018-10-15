@@ -119,12 +119,12 @@ class Calendar extends Component {
                         }
                     }
                     else {
-                        cell.push(<td key={(i * 7 + j)}><DateCell type="prev" setPreviousMonth={this.setPreviousMonth} /></td>)
+                        cell.push(<td key={(i * 7 + j)}><DateCell date={null} type="prev" setPreviousMonth={this.setPreviousMonth} /></td>)
                     }
                 }
                 else {
                     while ((i * 7 + j) % 7 !== 0) {
-                        cell.push(<td key={(i * 7 + j++)}><DateCell type="next" setNextMonth={this.setNextMonth} /></td>)
+                        cell.push(<td key={(i * 7 + j++)}><DateCell date={null} type="next" setNextMonth={this.setNextMonth} /></td>)
                     }
                     rows.push(<tr key={i}>{cell}</tr>)
                     break

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
-import Calendar from '../home/Calendar'
+import Calendar from '../calendar/Calendar'
 import Courses from '../courses/Courses'
 import Login from '../user_management/Login'
 import './Navigation.css'

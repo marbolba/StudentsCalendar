@@ -53,28 +53,69 @@
 }
 .classes-short-info{
     position: relative;
+    display: block;
     width: 100%;
-    min-width: var(--cell-min-width);
     height: 40px;
 
     background: rgb(241, 224, 112);
 }
-#classes-hours{
+.classes-short-info #classes-hours{
     position: absolute;
     width: 37px;
     font-size: 17px;
     padding-left: 3px;
 }
-#classes-name{
+.classes-short-info #classes-name{
     position: absolute;
     left: 40px;
-    width: 150px;
+    width: 70%;
     font-size: 30px;
     padding: 3px 10px;
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-#classes-type{
+.classes-short-info #classes-type{
     position: absolute;
     right: 0px;
     font-size: 30px;
     padding: 3px 10px;
+}
+
+.modal{
+    position: relative;
+    width: 600px;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background: lightgray;
+    padding: 30px;
+    border-radius: 20px;
+    outline: none;
+
+    color: black;
+}
+.modal-top-bar{
+    position: relative;
+    width: 600px;
+    height: 40px;
+
+    margin-bottom: 20px;
+}
+.modal-top-bar span{
+    float: left;
+    width: 500px;
+    height: 40px;
+
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+}
+.modal-top-bar img{
+    float: right;
+    width: 40px;
+    height: 40px;
 }
