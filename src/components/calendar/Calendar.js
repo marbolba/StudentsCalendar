@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import DateCell from './DateCell'
-import './Calendar.css'
-import { connect } from "react-redux"
-import axios from "axios"
+import DateCell from './DateCell';
+import './Calendar.css';
+import { connect } from "react-redux";
+import axios from "axios";
 
 
 class Calendar extends Component {
