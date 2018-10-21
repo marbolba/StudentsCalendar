@@ -65,6 +65,10 @@
   float: left;
   font-size: 27px;
   padding: 5px;
+  width: 375px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .materials .materials-dropdown .fileInfo img {
   float: left;

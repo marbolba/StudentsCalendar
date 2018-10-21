@@ -10,8 +10,13 @@ import SettingsIcon from '../../../icon/padlock.png'
 import DownloadIcon from '../../../icon/down-arrow.png'
 import DeleteIcon from '../../../icon/exit.png'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 class ClassesFullInfo extends Component {
+    //this.fileSelected <--- declare it somewhere
     state = {
+        classEntity: null,
         selectedFile: null,
         documentsVisibility: false,
         notesVisibility: false,
@@ -20,6 +25,9 @@ class ClassesFullInfo extends Component {
     }
     componentWillMount() {
         Modal.setAppElement('body');
+        this.setState({
+            classEntity:this.props.classEntity
+        })
     }
     fileSelectedHandler = (event) => {
         console.log(event.target.files[0]);
@@ -28,19 +36,32 @@ class ClassesFullInfo extends Component {
         })
     }
     fileUploadHandler = () => {
-        let url = 'http://localhost:4141/api/files?fileOwnerId=' + this.props.userId + '&classesId=' + this.props.classEntity.classes_id
+        let url = 'http://localhost:4141/api/files?fileOwnerId=' + this.props.userId + '&classesId=' + this.state.classEntity.classes_id
         const fd = new FormData();
         fd.append('file', this.state.selectedFile);
         axios.post(url, fd)
             .then(res => {
-                console.log(res)
+                toast.success("Przesłano plik pomyślnie");
+                this.getThisClassesFiles()
+            })
+    }
+    deleteFile = (file) => {
+        let url = 'http://localhost:4141/api/files?fileId=' + file.fileId
+        axios.delete(url)
+            .then((response) => {
+                toast.success("Usunięto plik pomyślnie");
+                this.getThisClassesFiles()
             })
     }
     getThisClassesFiles = () => {
-        let url = 'http://localhost:4141/api/files?classesId=' + this.props.classEntity.classes_id
+        let newClassesArray = this.state.classEntity
+        let url = 'http://localhost:4141/api/files?fileOwnerId=' + this.props.userId + '&classesId=' + this.state.classEntity.classes_id
         axios.get(url)
-            .then(res => {
-                console.log(res)
+            .then((response) => {
+                newClassesArray.files = response.data
+                this.setState({
+                    classEntity: newClassesArray
+                })
             })
     }
     toggleDocumentsVisibility = () => {
@@ -59,7 +80,6 @@ class ClassesFullInfo extends Component {
         })
     }
     toggleModalOpen = () => {
-        console.log("toggleModalOpen")
         this.setState({
             isModalOpen: !this.state.isModalOpen
         })
@@ -71,16 +91,18 @@ class ClassesFullInfo extends Component {
                 isOpen={this.state.isModalOpen}
                 onRequestClose={this.toggleModalOpen}
                 contentLabel="Example Modal"
-                onClick={(event)=>console.log("elo",event)}
             >
-                <DisplayFiles classEntity={this.props.classEntity}/>
+                <DisplayFiles classEntity={this.state.classEntity} fileSelected={this.fileSelected} />
             </Modal>
         )
     }
     renderFileInfo = (file) => {
         return (
             <div className='fileInfo'>
-                <div onClick={this.state.isModalOpen?null:this.toggleModalOpen}>
+                <div onClick={this.state.isModalOpen ? null : () => {
+                    this.fileSelected = file.fileId;
+                    this.toggleModalOpen();
+                }}>
                     {this.state.isModalOpen ? this.showDocument() : null}
                     <img src={DownArrow} alt={"DownArrow"} ></img>
                     <span>{file.fileName}</span>
@@ -88,7 +110,7 @@ class ClassesFullInfo extends Component {
                 <div className='options'>
                     <img src={SettingsIcon} alt={"SettingsIcon"}></img>
                     <img src={DownloadIcon} alt={"DownloadIcon"}></img>
-                    <img src={DeleteIcon} alt={"DeleteIcon"}></img>
+                    <img src={DeleteIcon} alt={"DeleteIcon"} onClick={this.deleteFile.bind(this, file)}></img>
                 </div>
             </div >
         );
@@ -100,7 +122,7 @@ class ClassesFullInfo extends Component {
             text: []
         }
 
-        this.props.classEntity.files.forEach(file => {
+        this.state.classEntity.files.forEach(file => {
             if (file.fileFormat.indexOf("application") === 0) {
                 imgsToggle.application.push(file);
             } else if (file.fileFormat.indexOf("image") === 0) {
@@ -111,6 +133,7 @@ class ClassesFullInfo extends Component {
         })
         return (
             <div>
+                <button onClick={this.props.setClassesSelected.bind(this, null)}>Wróć</button>
                 {imgsToggle.application.length !== 0 ?
                     <div>
                         <div className='materials-list-header' onClick={this.toggleDocumentsVisibility}>
@@ -129,12 +152,12 @@ class ClassesFullInfo extends Component {
                     null}
                 {imgsToggle.image.length !== 0 ?
                     <div >
-                        <div className='materials-list-header' onClick={this.toggleNotesVisibility}>
-                            <img src={DownArrow} alt={"DownArrow"} style={this.state.notesVisibility ? { transform: "rotate(180deg)" } : { transform: "rotate(0deg)" }}></img>
-                            <span>notes </span>
+                        <div className='materials-list-header' onClick={this.togglePhotosVisibility}>
+                            <img src={DownArrow} alt={"DownArrow"} style={this.state.photosVisibility ? { transform: "rotate(180deg)" } : { transform: "rotate(0deg)" }}></img>
+                            <span>photos </span>
                         </div>
-                        {this.state.notesVisibility ?
-                            <div className='materials-dropdown' style={this.state.notesVisibility ? { visibility: "visible", height: "auto" } : { visibility: "hidden", height: "0px" }}>
+                        {this.state.photosVisibility ?
+                            <div className='materials-dropdown' style={this.state.photosVisibility ? { visibility: "visible", height: "auto" } : { visibility: "hidden", height: "0px" }}>
                                 {imgsToggle.image.map(file => {
                                     return (this.renderFileInfo(file))
                                 })}
@@ -145,12 +168,12 @@ class ClassesFullInfo extends Component {
                     null}
                 {imgsToggle.text.length !== 0 ?
                     <div>
-                        <div className='materials-list-header' onClick={this.togglePhotosVisibility}>
-                            <img src={DownArrow} alt={"DownArrow"} style={this.state.photosVisibility ? { transform: "rotate(180deg)" } : { transform: "rotate(0deg)" }}></img>
-                            <span>photos </span>
+                        <div className='materials-list-header' onClick={this.toggleNotesVisibility}>
+                            <img src={DownArrow} alt={"DownArrow"} style={this.state.notesVisibility ? { transform: "rotate(180deg)" } : { transform: "rotate(0deg)" }}></img>
+                            <span>notes </span>
                         </div>
-                        {this.state.photosVisibility ?
-                            <div className='materials-dropdown' style={this.state.photosVisibility ? { visibility: "visible", height: "auto" } : { visibility: "hidden", height: "0px" }}>
+                        {this.state.notesVisibility ?
+                            <div className='materials-dropdown' style={this.state.notesVisibility ? { visibility: "visible", height: "auto" } : { visibility: "hidden", height: "0px" }}>
                                 {imgsToggle.text.map(file => {
                                     return (this.renderFileInfo(file))
                                 })}
@@ -159,13 +182,14 @@ class ClassesFullInfo extends Component {
                     </div>
                     :
                     null}
+                <ToastContainer />
             </div>
         )
     }
 
     render() {
-        let startHour = new Date(this.props.classEntity.classesFullStartDate)
-        let endHour = new Date(this.props.classEntity.classesFullEndDate)
+        let startHour = new Date(this.state.classEntity.classesFullStartDate)
+        let endHour = new Date(this.state.classEntity.classesFullEndDate)
         return (
             <React.Fragment>
                 <div className="classes-full-info">
@@ -175,10 +199,10 @@ class ClassesFullInfo extends Component {
                         {endHour.getHours() + ":" + (endHour.getMinutes() < 10 ? '0' : '') + endHour.getMinutes()}
                     </div>
                     <div id="classes-type">
-                        {this.props.classEntity.classesType}
+                        {this.state.classEntity.classesType}
                     </div>
                     <div id="classes-name">
-                        {this.props.classEntity.classesName}
+                        {this.state.classEntity.classesName}
                     </div>
                 </div>
                 <div className='materials'>

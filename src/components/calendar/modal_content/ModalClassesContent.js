@@ -5,7 +5,8 @@ import './Modal.css';
 
 class ModalClassesContent extends Component {
     state = {
-        classesSelected: null
+        classesSelected: null,
+        refresh: false
     }
     setClassesSelected = (classesSelected) => {
         this.setState({
@@ -13,18 +14,21 @@ class ModalClassesContent extends Component {
         });
     }
     render() {
+        console.log(this.state.classesSelected,this.props.classes)
         return (
             <div className="modal-classes-content">
                 {this.state.classesSelected == null ?
                     <React.Fragment>
                         <button>Dodaj wydarzenie</button>
                         {this.props.classes.map(classEntity =>
-                            <ClassesListInfo classEntity={classEntity} setClassesSelected={this.setClassesSelected} />
+                            <ClassesListInfo classEntity={classEntity} 
+                                            setClassesSelected={this.setClassesSelected} />
                         )}
                     </React.Fragment>
                     :
                     <React.Fragment>
-                        <ClassesFullInfo classEntity={this.state.classesSelected} setClassesSelected={this.setClassesSelected} />
+                        <ClassesFullInfo classEntity={this.state.classesSelected} 
+                                        setClassesSelected={this.setClassesSelected} />
                     </React.Fragment>
                 }
             </div>

@@ -10,6 +10,12 @@ class DisplayFiles extends Component {
         notesVisibility: false,
         showFile: null
     }
+    componentDidMount = () => {     
+        let selectedFile = this.props.classEntity.files.find((element)=>{
+            return element.fileId===this.props.fileSelected
+        });
+        this.showFile(selectedFile);
+    }
     toggleDocumentsVisibility = () => {
         this.setState({
             documentsVisibility: !this.state.documentsVisibility
@@ -26,7 +32,7 @@ class DisplayFiles extends Component {
         })
     }
     showFile = (file) => {
-        console.log(file)
+        console.log("show file:",file)
         let url = 'http://localhost:4141/api/files?fileId=' + file.fileId;
         axios.get(url)
             .then((response) => {
@@ -34,8 +40,6 @@ class DisplayFiles extends Component {
                     showFile: response.data
                 })
             })
-
-
     }
     renderFileInfo = (file) => {
         return (
@@ -45,11 +49,36 @@ class DisplayFiles extends Component {
         )
     }
     displayFile = () => {
-        
-        return(
-            <div className='fileDisplayer'>
-
-            </div>
+        if (this.state.showFile.fileFormat.indexOf("image") === 0) {
+            return this.displayImage()
+        } else if (this.state.showFile.fileFormat.indexOf("text") === 0) {
+            return this.displayNote()
+        } else if (this.state.showFile.fileFormat.indexOf("application/pdf") === 0) {
+            return this.displayPdf()
+        } else if (this.state.showFile.fileFormat.indexOf("application/msword") === 0) {
+            return this.displayDoc()
+        }
+    }
+    displayImage = () => {
+        return (
+            <img id="mapLoaded" src={"data:image/jpg+jpeg;base64," + this.state.showFile.fileBytes} alt="file" />
+        )
+    }
+    displayNote = () => {
+        return (
+            <span>
+                {atob(this.state.showFile.fileBytes)}
+            </span>
+        )
+    }
+    displayPdf = () => {
+        return (
+            <iframe src={"data:application/pdf;base64,"+this.state.showFile.fileBytes} title="pdf-file"></iframe>
+        )
+    }
+    displayDoc = () => {
+        return (
+            <iframe src={"data:"+atob(this.state.showFile.fileBytes)} title="doc-file"></iframe>
         )
     }
     renderSidebar = () => {
