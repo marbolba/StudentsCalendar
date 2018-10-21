@@ -2,15 +2,24 @@ import React, { Component } from 'react';
 import './ClassesFullInfo.css';
 import axios from 'axios';
 import { connect } from "react-redux";
-import DropdownArrow from '../../../icon/expand_button.png'
+import DownArrow from '../../../icon/down-arrow.png'
+import Modal from 'react-modal';
+import DisplayFiles from './files_displayer/DisplayFiles.js';
 
+import SettingsIcon from '../../../icon/padlock.png'
+import DownloadIcon from '../../../icon/down-arrow.png'
+import DeleteIcon from '../../../icon/exit.png'
 
 class ClassesFullInfo extends Component {
     state = {
         selectedFile: null,
         documentsVisibility: false,
         notesVisibility: false,
-        photosVisibility: false
+        photosVisibility: false,
+        isModalOpen: false
+    }
+    componentWillMount() {
+        Modal.setAppElement('body');
     }
     fileSelectedHandler = (event) => {
         console.log(event.target.files[0]);
@@ -49,6 +58,41 @@ class ClassesFullInfo extends Component {
             notesVisibility: !this.state.notesVisibility
         })
     }
+    toggleModalOpen = () => {
+        console.log("toggleModalOpen")
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        })
+    }
+    showDocument = () => {
+        return (
+            <Modal
+                className='secondModal'
+                isOpen={this.state.isModalOpen}
+                onRequestClose={this.toggleModalOpen}
+                contentLabel="Example Modal"
+                onClick={(event)=>console.log("elo",event)}
+            >
+                <DisplayFiles classEntity={this.props.classEntity}/>
+            </Modal>
+        )
+    }
+    renderFileInfo = (file) => {
+        return (
+            <div className='fileInfo'>
+                <div onClick={this.state.isModalOpen?null:this.toggleModalOpen}>
+                    {this.state.isModalOpen ? this.showDocument() : null}
+                    <img src={DownArrow} alt={"DownArrow"} ></img>
+                    <span>{file.fileName}</span>
+                </div>
+                <div className='options'>
+                    <img src={SettingsIcon} alt={"SettingsIcon"}></img>
+                    <img src={DownloadIcon} alt={"DownloadIcon"}></img>
+                    <img src={DeleteIcon} alt={"DeleteIcon"}></img>
+                </div>
+            </div >
+        );
+    }
     renderMaterialList = () => {
         let imgsToggle = {
             application: [],
@@ -68,38 +112,50 @@ class ClassesFullInfo extends Component {
         return (
             <div>
                 {imgsToggle.application.length !== 0 ?
-                    <div className='materials-list-header' onClick={this.toggleDocumentsVisibility}>
-                        <span>documents </span>
-                        <img src={DropdownArrow} alt={"DropdownArrow"} style={this.state.documentsVisibility ? { transform: "rotate(180deg)" } : { transform: "rotate(0deg)" }}></img>
-                        <div className='materials-dropdown' style={this.state.documentsVisibility ? { visibility: "visible", height: "auto" } : { visibility: "hidden", height: "0px" }}>
-                            {imgsToggle.application.map(file => {
-                                return (<span>{file.fileId}</span>)
-                            })}
+                    <div>
+                        <div className='materials-list-header' onClick={this.toggleDocumentsVisibility}>
+                            <img src={DownArrow} alt={"DownArrow"} style={this.state.documentsVisibility ? { transform: "rotate(180deg)" } : { transform: "rotate(0deg)" }}></img>
+                            <span>documents </span>
                         </div>
+                        {this.state.documentsVisibility ?
+                            <div className='materials-dropdown' style={this.state.documentsVisibility ? { visibility: "visible", height: "auto" } : { visibility: "hidden", height: "0px" }}>
+                                {imgsToggle.application.map(file => {
+                                    return (this.renderFileInfo(file))
+                                })}
+                            </div>
+                            : null}
                     </div>
                     :
                     null}
                 {imgsToggle.image.length !== 0 ?
-                    <div className='materials-list-header' onClick={this.toggleNotesVisibility}>
-                        <span>notes </span>
-                        <img src={DropdownArrow} alt={"DropdownArrow"} style={this.state.notesVisibility ? { transform: "rotate(180deg)" } : { transform: "rotate(0deg)" }}></img>
-                        <div className='materials-dropdown' style={this.state.notesVisibility ? { visibility: "visible", height: "auto" } : { visibility: "hidden", height: "0px" }}>
-                            {imgsToggle.image.map(file => {
-                                return (<span>{file.fileId}</span>)
-                            })}
+                    <div >
+                        <div className='materials-list-header' onClick={this.toggleNotesVisibility}>
+                            <img src={DownArrow} alt={"DownArrow"} style={this.state.notesVisibility ? { transform: "rotate(180deg)" } : { transform: "rotate(0deg)" }}></img>
+                            <span>notes </span>
                         </div>
+                        {this.state.notesVisibility ?
+                            <div className='materials-dropdown' style={this.state.notesVisibility ? { visibility: "visible", height: "auto" } : { visibility: "hidden", height: "0px" }}>
+                                {imgsToggle.image.map(file => {
+                                    return (this.renderFileInfo(file))
+                                })}
+                            </div>
+                            : null}
                     </div>
                     :
                     null}
                 {imgsToggle.text.length !== 0 ?
-                    <div className='materials-list-header' onClick={this.togglePhotosVisibility}>
-                        <span>photos </span>
-                        <img src={DropdownArrow} alt={"DropdownArrow"} style={this.state.photosVisibility ? { transform: "rotate(180deg)" } : { transform: "rotate(0deg)" }}></img>
-                        <div className='materials-dropdown' style={this.state.photosVisibility ? { visibility: "visible", height: "auto" } : { visibility: "hidden", height: "0px" }}>
-                            {imgsToggle.text.map(file => {
-                                return (<span>{file.fileId}</span>)
-                            })}
+                    <div>
+                        <div className='materials-list-header' onClick={this.togglePhotosVisibility}>
+                            <img src={DownArrow} alt={"DownArrow"} style={this.state.photosVisibility ? { transform: "rotate(180deg)" } : { transform: "rotate(0deg)" }}></img>
+                            <span>photos </span>
                         </div>
+                        {this.state.photosVisibility ?
+                            <div className='materials-dropdown' style={this.state.photosVisibility ? { visibility: "visible", height: "auto" } : { visibility: "hidden", height: "0px" }}>
+                                {imgsToggle.text.map(file => {
+                                    return (this.renderFileInfo(file))
+                                })}
+                            </div>
+                            : null}
                     </div>
                     :
                     null}
@@ -112,7 +168,7 @@ class ClassesFullInfo extends Component {
         let endHour = new Date(this.props.classEntity.classesFullEndDate)
         return (
             <React.Fragment>
-                <div className="classes-list-info">
+                <div className="classes-full-info">
                     <div id="classes-hours">
                         {startHour.getHours() + ":" + (startHour.getMinutes() < 10 ? '0' : '') + startHour.getMinutes()}
                         <br />

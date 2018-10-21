@@ -5,38 +5,8 @@ import './Modal.css';
 
 class ModalClassesContent extends Component {
     state = {
-        classesSelected: null,
-        //classes: []
+        classesSelected: null
     }
-    /*componentDidMount = () => {
-        const classesPromises = this.props.classes.map(classEntity => {
-            let url = 'http://localhost:4141/api/files?fileOwnerId=' + this.props.userId + '&classesId=' + classEntity.classes_id;
-            return { promise: axios.get(url), id: classEntity.classes_id }//.catch(Error)
-        });
-        let newClassesArray = this.props.classes;
-
-        var bar = new Promise((resolve, reject) => {
-        Promise.all(classesPromises)
-            .then((results) => {
-                results.forEach(response => {
-                    response.promise.then(val => {
-
-                        newClassesArray.forEach(classObj => {
-                            if(classObj.classes_id === response.id){
-                                classObj.files=val.data;
-                            }
-                        })
-                    })
-                })
-                resolve()
-            })
-        });
-        bar.then(()=>{
-            this.setState({
-                classes:newClassesArray
-            })
-        })
-    }*/
     setClassesSelected = (classesSelected) => {
         this.setState({
             classesSelected: classesSelected

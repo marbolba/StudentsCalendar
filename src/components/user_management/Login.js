@@ -41,10 +41,10 @@ class Login extends Component {
                 .then((res) => {
                     this.props.loginUser(res.data)
                 }).catch((err) => {
-                    if (err.response.status!==403) {
-                        toast.error("Błąd sieci")
-                    } else {
+                    if (err.response && err!==undefined) {
                         toast.error("Nieprawidłowy login lub hasło")
+                    } else {
+                        toast.error("Błąd sieci",err)
                     }
                 })
         } else {
@@ -70,7 +70,7 @@ class Login extends Component {
                     console.log("error fetching data")
                 })
         } else {
-            toast.error("Prosze podac poprawdne dane")
+            toast.error("Prosze podac poprawne dane")
         }
     }
 

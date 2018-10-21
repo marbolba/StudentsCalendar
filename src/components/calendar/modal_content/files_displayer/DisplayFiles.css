@@ -1,0 +1,56 @@
+.ModalContent .sideBar {
+  width: 250px;
+  float: left;
+}
+.ModalContent .sideBar .materials-list-header {
+  position: relative;
+  cursor: pointer;
+  display: block;
+  padding: 4px;
+  height: 42px;
+  border: 1px solid black;
+  background: #f1e070;
+}
+.ModalContent .sideBar span {
+  font-size: 30px;
+}
+.ModalContent .sideBar .materials-dropdown .fileInfo {
+  display: block;
+  padding: 4px;
+  height: 42px;
+  border: 1px solid black;
+  cursor: pointer;
+  background: white;
+}
+.ModalContent .sideBar .materials-dropdown .fileInfo span {
+  width: 100%;
+  float: left;
+  font-size: 27px;
+  padding: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.ModalContent .sideBar .materials-dropdown .fileInfo img {
+  float: left;
+  height: 30px;
+  width: 30px;
+  padding: 5px;
+  transform: rotate(270deg);
+}
+.ModalContent .sideBar .materials-dropdown .fileInfo .options {
+  float: right;
+}
+.ModalContent .sideBar .materials-dropdown .fileInfo .options img {
+  float: left;
+  transform: rotate(0deg);
+  cursor: pointer;
+}
+.ModalContent .fileContent {
+  width: 750px;
+  height: 10px;
+  float: left;
+}
+.ModalContent .fileContent .fileDisplayer {
+  width: 100%;
+}
