@@ -1,0 +1,31 @@
+.groupPopup{
+        background-color: lightgray;
+        width: 350px;
+        margin: 0 auto;
+        padding: 10px;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    div{
+        span{
+            padding: 10px;
+            font-size: 20px;
+            display: block;
+        }
+        input{
+            margin: 0 auto;
+            padding: 10px;
+            display: block;
+            width: 90%;
+        }
+        textarea{
+            margin: 0 auto;
+            padding: 10px;
+            display: block;
+            width: 90%;
+            resize: vertical;
+        }
+        button{
+            margin: 10px 20px;
+        }
+    }
+}

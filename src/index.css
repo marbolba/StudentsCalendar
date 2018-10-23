@@ -3,10 +3,11 @@ html{
 }
 
 body {
+	height: calc(100% - 50px);
 	margin: 0;
   padding: 0;
 	background: linear-gradient(0deg, rgba(70,130,180,1) 0%, rgba(176,196,222,1) 100%);
-	color: ghostwhite;
+	color: black;
 }
 
 button{

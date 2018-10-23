@@ -1,0 +1,27 @@
+.base-view {
+  width: 90%;
+  height: 100%;
+  background-color: white;
+  border-radius: 5px;
+  margin: 0 auto;
+}
+.base-view .content-view {
+  padding: 40px;
+}
+
+.viewSelection {
+  width: 100%;
+  overflow: auto;
+}
+.viewSelection .viewOption {
+  float: left;
+  width: 50%;
+  padding: 20px 0;
+  text-align: center;
+  background-color: gray;
+  cursor: pointer;
+}
+.viewSelection .viewOption span {
+  color: black;
+  font-size: 20px;
+}

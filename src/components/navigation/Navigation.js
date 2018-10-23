@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 import Calendar from '../calendar/Calendar'
 import Courses from '../courses/Courses'
 import Login from '../user_management/Login'
+import SharedFiles from '../shared_files/SharedFiles'
+import GroupsManagement from '../groups/GroupsManagement'
 import './Navigation.css'
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { connect } from 'react-redux'
@@ -39,11 +41,13 @@ class Navigation extends Component {
         return (
             <BrowserRouter>
                 {this.props.userAuthorized ?
-                    <div>
+                    <React.Fragment>
                         <nav>
                             <ul>
                                 <li><NavLink exact to="/">Kalendarz</NavLink></li>
                                 <li><NavLink to="/przedmioty">Zajęcia</NavLink></li>
+                                <li><NavLink to="/udostepnione">Udostępnione Pliki</NavLink></li>
+                                <li><NavLink to="/grupy">Twoje Grupy</NavLink></li>
                                 <li id="user-management">
                                     <div id="user-manager">
                                         <img id="avatar" src={default_avatar} alt="avatar"></img>
@@ -64,19 +68,23 @@ class Navigation extends Component {
                             <Route path="/" component={Calendar} exact />
                             <Route path="/przedmioty" component={Courses} exact />
                             <Route path="/login" component={Login} exact />
+                            <Route path="/grupy" component={GroupsManagement} exact />
+                            <Route path="/udostepnione" component={SharedFiles} exact />
                         </Switch>
-                    </div>
+                    </React.Fragment>
                     :
-                    <div>
-                        <span style={{visibility:"hidden"}} ref={dropdown => this.dropdown = dropdown}></span>
-                        <img style={{visibility:"hidden"}} alt="expand button" ref={dropdown_arrow => this.dropdown_arrow = dropdown_arrow}></img>
+                    <React.Fragment>
+                        <span style={{ visibility: "hidden" }} ref={dropdown => this.dropdown = dropdown}></span>
+                        <img style={{ visibility: "hidden" }} alt="expand button" ref={dropdown_arrow => this.dropdown_arrow = dropdown_arrow}></img>
 
                         <Switch>
                             <Route path="/" component={Login} exact />
                             <Route path="/przedmioty" component={Login} exact />
                             <Route path="/login" component={Login} exact />
+                            <Route path="/grupy" component={Login} exact />
+                            <Route path="/udostepnione" component={Login} exact />
                         </Switch>
-                    </div>
+                    </React.Fragment>
                 }
             </BrowserRouter>
         );

@@ -5,9 +5,9 @@ import Navigation from './components/navigation/Navigation'
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <React.Fragment>
         <Navigation />
-      </div>
+      </React.Fragment>
     );
   }
 }
