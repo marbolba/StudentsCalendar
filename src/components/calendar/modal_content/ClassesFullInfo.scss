@@ -87,10 +87,28 @@
             }
             .options{
                 float: right;
+                position: relative;
                 img{
                     float: left;
                     transform: rotate(0deg);
                     cursor: pointer;
+                }
+                .groups-dropdown{
+                    width: 123px;
+                    padding: 3px 5px;
+                    background-color: #f1e070;
+                    position: absolute;
+                    left: 38px;
+                    cursor: default;
+                    z-index: 2;
+
+                    hr{
+                        margin: 0px;
+                    }
+
+                    span{
+                        font-size: 14px;
+                    }
                 }
             }
         }

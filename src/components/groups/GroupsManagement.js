@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import './GroupsManagement.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Api from '../../api/Api';
 
 
 class GroupsManagement extends Component {
@@ -21,8 +22,7 @@ class GroupsManagement extends Component {
         this.updateGroupList()
     }
     updateGroupList = () => {
-        let url = 'http://localhost:4141/api/groups/user?userId='+this.props.userId;
-        axios.get(url)
+        Api.getUsersGroups(this.props.userId)
             .then((response)=>{
                 this.setState({
                     groupList: response.data
@@ -67,7 +67,6 @@ class GroupsManagement extends Component {
                 "group_owner": this.props.userId,
                 "users": this.props.userId
             }
-            console.log(data)
             axios.post(url, data)
                 .then(() => {
                     this.updateGroupList();
@@ -83,7 +82,6 @@ class GroupsManagement extends Component {
             let data = {
                 "user_id": this.props.userId
             }
-            console.log(url, data)
             axios.post(url, data)
                 .then((response) => {
                     this.updateGroupList();
@@ -137,7 +135,6 @@ class GroupsManagement extends Component {
         }   
     }
     renderGroupListItem = (group) => {
-        console.log(this.state.groupList)
         return (
             <div className='groupListItem' >
                 <span>{group.groupName}</span>

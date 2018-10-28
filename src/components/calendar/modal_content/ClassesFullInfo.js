@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import './ClassesFullInfo.css';
 import axios from 'axios';
 import { connect } from "react-redux";
-import DownArrow from '../../../icon/down-arrow.png'
 import Modal from 'react-modal';
-import DisplayFiles from './files_displayer/DisplayFiles.js';
+import DisplayFiles from '../../files_displayer/DisplayFiles';
+import Api from '../../../api/Api'
 
+import DownArrow from '../../../icon/down-arrow.png'
 import SettingsIcon from '../../../icon/padlock.png'
 import DownloadIcon from '../../../icon/down-arrow.png'
 import DeleteIcon from '../../../icon/exit.png'
@@ -14,23 +15,24 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 class ClassesFullInfo extends Component {
-    //this.fileSelected <--- declare it somewhere
     state = {
         classEntity: null,
         selectedFile: null,
         documentsVisibility: false,
         notesVisibility: false,
         photosVisibility: false,
-        isModalOpen: false
+        isModalOpen: false,
+        shareToGroupVisibility: null,
+        usersGroups: []
     }
     componentWillMount() {
         Modal.setAppElement('body');
+        this.getUsersGroups();
         this.setState({
             classEntity:this.props.classEntity
         })
     }
     fileSelectedHandler = (event) => {
-        console.log(event.target.files[0]);
         this.setState({
             selectedFile: event.target.files[0]
         })
@@ -53,6 +55,20 @@ class ClassesFullInfo extends Component {
                 this.getThisClassesFiles()
             })
     }
+    getUsersGroups = () => {
+        Api.getUsersGroups(this.props.userId)
+            .then((response)=>{
+                this.setState({
+                    usersGroups: response.data
+                })
+            })
+    }
+    shareFileToGroup = (fileId,groupId) => { 
+        Api.shareFileToGroup(fileId,groupId)
+            .then(()=>{
+                toast.success("Udostępniono plik");
+            })
+    }
     getThisClassesFiles = () => {
         let newClassesArray = this.state.classEntity
         let url = 'http://localhost:4141/api/files?fileOwnerId=' + this.props.userId + '&classesId=' + this.state.classEntity.classes_id
@@ -63,6 +79,18 @@ class ClassesFullInfo extends Component {
                     classEntity: newClassesArray
                 })
             })
+    }
+    toggleShareToGroupVisibility = (fileId) => {
+        if(fileId!==this.state.shareToGroupVisibility){
+            this.setState({
+                shareToGroupVisibility: fileId
+            })
+        }else{
+            this.setState({
+                shareToGroupVisibility: null
+            })
+        }
+        
     }
     toggleDocumentsVisibility = () => {
         this.setState({
@@ -92,7 +120,7 @@ class ClassesFullInfo extends Component {
                 onRequestClose={this.toggleModalOpen}
                 contentLabel="Example Modal"
             >
-                <DisplayFiles classEntity={this.state.classEntity} fileSelected={this.fileSelected} />
+                <DisplayFiles files={this.state.classEntity.files} fileSelected={this.fileSelected} />
             </Modal>
         )
     }
@@ -108,9 +136,16 @@ class ClassesFullInfo extends Component {
                     <span>{file.fileName}</span>
                 </div>
                 <div className='options'>
-                    <img src={SettingsIcon} alt={"SettingsIcon"}></img>
+                    <img src={SettingsIcon} alt={"SettingsIcon"} onClick={this.toggleShareToGroupVisibility.bind(this,file.fileId)}></img>
                     <img src={DownloadIcon} alt={"DownloadIcon"}></img>
                     <img src={DeleteIcon} alt={"DeleteIcon"} onClick={this.deleteFile.bind(this, file)}></img>
+                    <div className='groups-dropdown' style={this.state.shareToGroupVisibility!==null && this.state.shareToGroupVisibility===file.fileId ? {visibility:"visible"}:{visibility:"hidden"}}>
+                        <span>Udostępnij do grupy</span>
+                        <hr />
+                        {this.state.usersGroups.map(group => {
+                            return ( <span onClick={this.shareFileToGroup.bind(this,file.fileId,group.group_id)} key={group.group_id}>{group.groupName}</span> )
+                        })}
+                    </div>
                 </div>
             </div >
         );

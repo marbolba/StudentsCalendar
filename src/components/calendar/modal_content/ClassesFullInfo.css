@@ -79,11 +79,27 @@
 }
 .materials .materials-dropdown .fileInfo .options {
   float: right;
+  position: relative;
 }
 .materials .materials-dropdown .fileInfo .options img {
   float: left;
   transform: rotate(0deg);
   cursor: pointer;
+}
+.materials .materials-dropdown .fileInfo .options .groups-dropdown {
+  width: 123px;
+  padding: 3px 5px;
+  background-color: #f1e070;
+  position: absolute;
+  left: 38px;
+  cursor: default;
+  z-index: 2;
+}
+.materials .materials-dropdown .fileInfo .options .groups-dropdown hr {
+  margin: 0px;
+}
+.materials .materials-dropdown .fileInfo .options .groups-dropdown span {
+  font-size: 14px;
 }
 
 .secondModal {

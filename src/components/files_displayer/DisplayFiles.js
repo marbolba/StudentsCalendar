@@ -11,7 +11,7 @@ class DisplayFiles extends Component {
         showFile: null
     }
     componentDidMount = () => {     
-        let selectedFile = this.props.classEntity.files.find((element)=>{
+        let selectedFile = this.props.files.find((element)=>{
             return element.fileId===this.props.fileSelected
         });
         this.showFile(selectedFile);
@@ -88,7 +88,7 @@ class DisplayFiles extends Component {
             text: []
         }
 
-        this.props.classEntity.files.forEach(file => {
+        this.props.files.forEach(file => {
             if (file.fileFormat.indexOf("application") === 0) {
                 imgsToggle.application.push(file);
             } else if (file.fileFormat.indexOf("image") === 0) {
