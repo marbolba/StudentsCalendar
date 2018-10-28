@@ -48,7 +48,7 @@ class Calendar extends Component {
         var dateIterate = new Date(date)
         dateIterate.setDate(1)
         var monthLength = this.daysInMonth(dateIterate.getMonth(), dateIterate.getFullYear())
-        var firstDayOfMonth = dateIterate.getDay() - 1;//0 - 6
+        var firstDayOfMonth = dateIterate.getDay() !== 0 ? dateIterate.getDay() - 1 : 6;//0 - 6
 
         var thisMonth = []
         for (var j = 0; j < monthLength + firstDayOfMonth; j++) {
@@ -97,7 +97,6 @@ class Calendar extends Component {
         cell.push(<th key="Niedziela">Nd</th>)
         rows.push(<tr key={-1}>{cell}</tr>)
 
-
         for (var i = 0; i < (parseInt(this.state.thisMonthDates.length / 7, 10) + 1); i++) {  //tygodnie
             cell = []
             for (var j = 0; j < 7; j++) {
@@ -113,9 +112,9 @@ class Calendar extends Component {
                         }
                         else {
                             cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} classes={this.getThisDateEvents(thisDate.getDate())} type="weekend" /></td>)
-                            if ((i * 7 + j + 1) % 7 !== 0) {
-                                rows.push(<tr key={i}>{cell}</tr>)
-                            }
+                        }
+                        if ((i * 7 + j + 1) % 7 === 0) {
+                            rows.push(<tr key={i}>{cell}</tr>)
                         }
                     }
                     else {

@@ -27,3 +27,37 @@
 .groupPopup div button {
   margin: 10px 20px;
 }
+
+.myGroups {
+  margin: 0 auto;
+}
+.myGroups .titleBar {
+  margin: inherit;
+  margin-top: 30px;
+  width: 80%;
+  display: block;
+  padding: 20px 0;
+  text-align: center;
+  background-color: gray;
+  cursor: pointer;
+}
+.myGroups .titleBar span {
+  color: black;
+  font-size: 20px;
+}
+.myGroups .groupsList {
+  margin: inherit;
+  width: 400px;
+  padding: 10px 20px;
+  background-color: yellow;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.myGroups .groupsList .groupListItem {
+  display: block;
+  padding: 10px 0;
+}
+.myGroups .groupsList .groupListItem span {
+  color: black;
+  font-size: 20px;
+}

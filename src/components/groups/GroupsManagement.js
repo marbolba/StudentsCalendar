@@ -10,16 +10,28 @@ class GroupsManagement extends Component {
     state = {
         addGroupPopup: false,
         searchGroupPopup: false,
+        showGroupList: true,
 
         newGroupName: '',
         newGroupDescr: '',
-        searchedGroupName: null
+        searchedGroupName: null,
+        groupList: []
     }
     componentDidMount = () => {
+        this.updateGroupList()
     }
-    toggleAddGroupPopup = () => {
+    updateGroupList = () => {
+        let url = 'http://localhost:4141/api/groups/user?userId='+this.props.userId;
+        axios.get(url)
+            .then((response)=>{
+                this.setState({
+                    groupList: response.data
+                })
+            })
+    }
+    toggleGroupList = () => {
         this.setState({
-            addGroupPopup: !this.state.addGroupPopup
+            showGroupList: !this.state.showGroupList
         })
     }
     toggleAddGroupPopup = () => {
@@ -30,7 +42,7 @@ class GroupsManagement extends Component {
             })
         } else {
             this.setState({
-                addGroupPopup: true
+                addGroupPopup: !this.state.addGroupPopup
             })
         }
     }
@@ -42,13 +54,13 @@ class GroupsManagement extends Component {
             })
         } else {
             this.setState({
-                searchGroupPopup: true
+                searchGroupPopup: !this.state.searchGroupPopup
             })
         }
     }
-    handleAddGroup = () =>{
-        if(this.state.newGroupName!==''){
-            let url='http://localhost:4141/api/groups'
+    handleAddGroup = () => {
+        if (this.state.newGroupName !== null && this.state.newGroupName !== '') {
+            let url = 'http://localhost:4141/api/groups'
             let data = {
                 "group_name": this.state.newGroupName,
                 "group_description": this.state.newGroupDescr,
@@ -56,28 +68,28 @@ class GroupsManagement extends Component {
                 "users": this.props.userId
             }
             console.log(data)
-            axios.post(url,data)
-                .then((response)=>{
-                    console.log(response)
-                    toast.success('Dodano grupę pomyślnie')
+            axios.post(url, data)
+                .then(() => {
+                    this.updateGroupList();
+                    toast.success('Dodano grupę pomyślnie');
                 })
-        }else{
+        } else {
             toast.error('Proszę podać nazwę grupy')
         }
     }
-    handleAddUserToGroup = () =>{
-        if(this.state.searchedGroupName!==null){
-            let url='http://localhost:4141/api/groups/user?groupId='+this.state.searchedGroupName
+    handleAddUserToGroup = () => {
+        if (this.state.searchedGroupName !== null && this.state.searchedGroupName !== '') {
+            let url = 'http://localhost:4141/api/groups/user?groupName=' + this.state.searchedGroupName
             let data = {
                 "user_id": this.props.userId
             }
-            console.log(url,data)
-            axios.post(url,data)
-                .then((response)=>{
-                    console.log(response)
+            console.log(url, data)
+            axios.post(url, data)
+                .then((response) => {
+                    this.updateGroupList();
                     toast.success('Dodano do grupy pomyślnie')
                 })
-        }else{
+        } else {
             toast.error('Proszę podać nazwę grupy')
         }
     }
@@ -103,11 +115,32 @@ class GroupsManagement extends Component {
             <div className='groupPopup'>
                 <div>
                     <span>Wyszukaj grupe</span>
-                    <input type='number' value={this.state.searchedGroupName} onChange={(e) => this.setState({ searchedGroupName: e.target.value })}></input>
+                    <input type='text' value={this.state.searchedGroupName} onChange={(e) => this.setState({ searchedGroupName: e.target.value })}></input>          
                 </div>
                 <div>
                     <button onClick={this.handleAddUserToGroup}>Dołącz do grupy</button>
                 </div>
+            </div>
+        )
+    }
+    renderGroupList = () => {
+        if(this.state.groupList.length!==0){
+            return (
+                <div className='groupsList'>
+                    {this.state.groupList.map(group=>{
+                        return this.renderGroupListItem(group)
+                    })}
+                </div>
+            )
+        }else{
+            return null;
+        }   
+    }
+    renderGroupListItem = (group) => {
+        console.log(this.state.groupList)
+        return (
+            <div className='groupListItem' >
+                <span>{group.groupName}</span>
             </div>
         )
     }
@@ -126,6 +159,12 @@ class GroupsManagement extends Component {
                     </div>
                     {this.state.addGroupPopup ? this.renderAddGroupPopup() : null}
                     {this.state.searchGroupPopup ? this.renderSearchGroupPopup() : null}
+                    <div className='myGroups'>
+                        <div className='titleBar' onClick={this.toggleGroupList}>
+                            <span>Twoje grupy</span>
+                        </div>
+                        {this.state.showGroupList && this.state.groupList.length!==0 ? this.renderGroupList() : null}
+                    </div>
                 </div>
                 <ToastContainer />
             </div>

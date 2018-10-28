@@ -13,7 +13,6 @@ class ClassesListInfo extends Component {
     }
 
     componentDidMount = () => {
-        console.log("getThisClassesFiles")
         this.getThisClassesFiles()
     }
 

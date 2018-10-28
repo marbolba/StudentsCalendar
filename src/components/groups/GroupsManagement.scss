@@ -29,3 +29,37 @@
         }
     }
 }
+.myGroups{
+    margin: 0 auto;
+    .titleBar{
+        margin: inherit;
+        margin-top: 30px;
+        width: 80%;
+        display: block;
+        padding: 20px 0;
+        text-align: center;
+        background-color: gray;
+        cursor: pointer;
+        span{
+            color: black;
+            font-size: 20px;
+        }
+    }
+    .groupsList{
+        margin: inherit;
+        width: 400px;
+        padding: 10px 20px;  
+        background-color: yellow;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        .groupListItem{
+            display: block;
+            padding: 10px 0;
+
+            span{
+                color: black;
+                font-size: 20px;
+            }
+        }
+    }
+}

@@ -14,7 +14,7 @@ class ModalClassesContent extends Component {
         });
     }
     render() {
-        console.log(this.state.classesSelected,this.props.classes)
+        let key=0;
         return (
             <div className="modal-classes-content">
                 {this.state.classesSelected == null ?
@@ -22,7 +22,7 @@ class ModalClassesContent extends Component {
                         <button>Dodaj wydarzenie</button>
                         {this.props.classes.map(classEntity =>
                             <ClassesListInfo classEntity={classEntity} 
-                                            setClassesSelected={this.setClassesSelected} />
+                                            setClassesSelected={this.setClassesSelected} key={key++}/>
                         )}
                     </React.Fragment>
                     :

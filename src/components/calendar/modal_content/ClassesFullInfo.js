@@ -98,7 +98,7 @@ class ClassesFullInfo extends Component {
     }
     renderFileInfo = (file) => {
         return (
-            <div className='fileInfo'>
+            <div className='fileInfo' key={file.fileId}>
                 <div onClick={this.state.isModalOpen ? null : () => {
                     this.fileSelected = file.fileId;
                     this.toggleModalOpen();
