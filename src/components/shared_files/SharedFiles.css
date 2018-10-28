@@ -12,6 +12,8 @@
 .viewSelection {
   width: 100%;
   overflow: auto;
+  border-radius: 3px;
+  box-shadow: 4px 4px 8px -2px rgba(0, 0, 0, 0.75);
 }
 .viewSelection .viewOption {
   float: left;

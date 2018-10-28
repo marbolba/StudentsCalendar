@@ -1,0 +1,27 @@
+.coursesView{
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 20px;
+    .coursesTable{
+        width: 100%; 
+        border-spacing:0; 
+        border-collapse: collapse;
+        .tableHead{
+            background-color: gray;
+            th{
+                height: 40px;
+            }
+        }
+        .tableBody{
+            background-color: beige;
+            tr{
+                border-bottom: 1px solid black;
+                cursor: pointer;
+            }
+            td{
+                height: 35px;
+                text-align: center;
+            }
+        }
+    }
+}

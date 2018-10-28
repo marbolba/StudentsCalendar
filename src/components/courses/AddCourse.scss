@@ -1,0 +1,70 @@
+.addCourse{
+    width: 400px;
+    margin: 0 auto;
+    box-shadow: 4px 4px 8px -2px rgba(0,0,0,0.75);
+    .addFormTopBar{
+        width: 100%;
+        background-color: gray;
+        padding: 20px 0;
+        text-align: center;
+
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        span{
+            text-align: center;
+            font-size: 21px;
+        }
+    }
+    .addFormBody{
+        padding: 20px 40px;
+        background-color: beige;
+
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        .formItem{
+            margin-bottom: 10px;
+            font-size: 20px;
+            span{
+                display: block;
+                padding: 5px 0;
+            }
+            input{
+                width: 100%;
+                padding: 5px 0;
+
+                border-radius: 8px;
+                outline: none;
+            }
+            select{
+                width: 100%;
+                height: 30px;
+                padding: 0 7px;
+                outline: none;
+            }
+            .timeInput{
+                display: block;
+                margin: 0 auto;
+                text-align: center;
+                width: 100px;
+            }
+            .datePicker{
+                width: 317px;
+            }
+            .submitButton{
+                margin: 0 auto;
+                width: 80%;
+                padding: 10px 0;
+                background-color: limegreen;
+                text-align: center;
+                cursor: pointer;
+
+                border-radius: 8px;
+                border: 2px solid darkgreen;
+                box-shadow: 4px 4px 8px -2px rgba(0,0,0,0.75);
+                span{
+                    display: block;
+                }
+            }
+        }
+    }
+}

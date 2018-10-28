@@ -1,0 +1,66 @@
+.addCourse {
+  width: 400px;
+  margin: 0 auto;
+  box-shadow: 4px 4px 8px -2px rgba(0, 0, 0, 0.75);
+}
+.addCourse .addFormTopBar {
+  width: 100%;
+  background-color: gray;
+  padding: 20px 0;
+  text-align: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.addCourse .addFormTopBar span {
+  text-align: center;
+  font-size: 21px;
+}
+.addCourse .addFormBody {
+  padding: 20px 40px;
+  background-color: beige;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.addCourse .addFormBody .formItem {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+.addCourse .addFormBody .formItem span {
+  display: block;
+  padding: 5px 0;
+}
+.addCourse .addFormBody .formItem input {
+  width: 100%;
+  padding: 5px 0;
+  border-radius: 8px;
+  outline: none;
+}
+.addCourse .addFormBody .formItem select {
+  width: 100%;
+  height: 30px;
+  padding: 0 7px;
+  outline: none;
+}
+.addCourse .addFormBody .formItem .timeInput {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  width: 100px;
+}
+.addCourse .addFormBody .formItem .datePicker {
+  width: 317px;
+}
+.addCourse .addFormBody .formItem .submitButton {
+  margin: 0 auto;
+  width: 80%;
+  padding: 10px 0;
+  background-color: limegreen;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 2px solid darkgreen;
+  box-shadow: 4px 4px 8px -2px rgba(0, 0, 0, 0.75);
+}
+.addCourse .addFormBody .formItem .submitButton span {
+  display: block;
+}

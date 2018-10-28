@@ -141,11 +141,13 @@ class SharedFiles extends Component {
                             <span>Udostępnione przez Ciebie materiały</span>
                         </div>
                     </div>
-                    <div className='filesView'> {this.state.filesView ?
-                        this.renderMyFilesView()
-                        :
-                        this.renderGroupsView()
-                    } </div>
+                    <div className='filesView'> 
+                        {this.state.filesView ?
+                            this.renderMyFilesView()
+                            :
+                            this.renderGroupsView() 
+                        } 
+                    </div>
                 </div>
             </div>
         );
