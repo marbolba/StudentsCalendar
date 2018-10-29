@@ -18,7 +18,7 @@ class ClassesListInfo extends Component {
 
     getThisClassesFiles = () => {
         let newClassesArray = this.props.classEntity
-        let url = 'http://localhost:4141/api/files?fileOwnerId=' + this.props.userId + '&classesId=' + this.props.classEntity.classes_id
+        let url = 'http://localhost:4141/api/files?fileOwnerId=' + this.props.userId + '&classesId=' + this.props.classEntity.classesId
         axios.get(url)
             .then((response) => {
                 newClassesArray.files = response.data
@@ -71,7 +71,7 @@ class ClassesListInfo extends Component {
         let startHour = new Date(this.props.classEntity.classesFullStartDate)
         let endHour = new Date(this.props.classEntity.classesFullEndDate)
         return (
-            <div className="classes-list-info" onClick={this.props.setClassesSelected.bind(this, this.props.classEntity)} key={this.props.classEntity.classes_id}>
+            <div className="classes-list-info" onClick={this.props.setClassesSelected.bind(this, this.props.classEntity)} key={this.props.classEntity.classesId}>
                 <div id="classes-hours">
                     {startHour.getHours() + ":" + (startHour.getMinutes() < 10 ? '0' : '') + startHour.getMinutes()}
                     <br />

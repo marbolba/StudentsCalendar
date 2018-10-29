@@ -6,7 +6,6 @@ class Api {
         return axios.get(apiBase + 'groups/user?userId=' + userId);
     }
     static shareFileToGroup = (fileId, groupId) => {
-        console.log(fileId, groupId)
         return axios.post(apiBase + 'groups/' + groupId + '/share?fileId=' + fileId)
     }
     static getGroupsFilesList = (groupId) => {

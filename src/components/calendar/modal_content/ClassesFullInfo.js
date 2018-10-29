@@ -38,7 +38,7 @@ class ClassesFullInfo extends Component {
         })
     }
     fileUploadHandler = () => {
-        let url = 'http://localhost:4141/api/files?fileOwnerId=' + this.props.userId + '&classesId=' + this.state.classEntity.classes_id
+        let url = 'http://localhost:4141/api/files?fileOwnerId=' + this.props.userId + '&classesId=' + this.state.classEntity.classesId
         const fd = new FormData();
         fd.append('file', this.state.selectedFile);
         axios.post(url, fd)
@@ -71,7 +71,7 @@ class ClassesFullInfo extends Component {
     }
     getThisClassesFiles = () => {
         let newClassesArray = this.state.classEntity
-        let url = 'http://localhost:4141/api/files?fileOwnerId=' + this.props.userId + '&classesId=' + this.state.classEntity.classes_id
+        let url = 'http://localhost:4141/api/files?fileOwnerId=' + this.props.userId + '&classesId=' + this.state.classEntity.classesId
         axios.get(url)
             .then((response) => {
                 newClassesArray.files = response.data
@@ -143,7 +143,7 @@ class ClassesFullInfo extends Component {
                         <span>Udostępnij do grupy</span>
                         <hr />
                         {this.state.usersGroups.map(group => {
-                            return ( <span onClick={this.shareFileToGroup.bind(this,file.fileId,group.group_id)} key={group.group_id}>{group.groupName}</span> )
+                            return ( <span onClick={this.shareFileToGroup.bind(this,file.fileId,group.groupId)} key={group.groupId}>{group.groupName}</span> )
                         })}
                     </div>
                 </div>

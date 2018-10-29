@@ -63,11 +63,7 @@ class Login extends Component {
             let url = "http://localhost:4141/api/user"
             axios.post(url, data)
                 .then((res) => {
-                    console.log(res.data)
                     this.props.loginUser(res.data)
-                })
-                .catch((e) => {
-                    console.log("error fetching data")
                 })
         } else {
             toast.error("Prosze podac poprawne dane")

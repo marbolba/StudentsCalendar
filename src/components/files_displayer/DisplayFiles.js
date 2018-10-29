@@ -32,7 +32,6 @@ class DisplayFiles extends Component {
         })
     }
     showFile = (file) => {
-        console.log("show file:",file)
         let url = 'http://localhost:4141/api/files?fileId=' + file.fileId;
         axios.get(url)
             .then((response) => {

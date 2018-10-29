@@ -15,7 +15,7 @@ class GroupsManagement extends Component {
 
         newGroupName: '',
         newGroupDescr: '',
-        searchedGroupName: null,
+        searchedGroupName: '',
         groupList: []
     }
     componentDidMount = () => {
@@ -62,9 +62,9 @@ class GroupsManagement extends Component {
         if (this.state.newGroupName !== null && this.state.newGroupName !== '') {
             let url = 'http://localhost:4141/api/groups'
             let data = {
-                "group_name": this.state.newGroupName,
-                "group_description": this.state.newGroupDescr,
-                "group_owner": this.props.userId,
+                "groupName": this.state.newGroupName,
+                "groupDescription": this.state.newGroupDescr,
+                "groupOwner": this.props.userId,
                 "users": this.props.userId
             }
             axios.post(url, data)
@@ -77,10 +77,10 @@ class GroupsManagement extends Component {
         }
     }
     handleAddUserToGroup = () => {
-        if (this.state.searchedGroupName !== null && this.state.searchedGroupName !== '') {
+        if (this.state.searchedGroupName !== '') {
             let url = 'http://localhost:4141/api/groups/user?groupName=' + this.state.searchedGroupName
             let data = {
-                "user_id": this.props.userId
+                "userId": this.props.userId
             }
             axios.post(url, data)
                 .then((response) => {
@@ -125,8 +125,8 @@ class GroupsManagement extends Component {
         if(this.state.groupList.length!==0){
             return (
                 <div className='groupsList'>
-                    {this.state.groupList.map(group=>{
-                        return this.renderGroupListItem(group)
+                    {this.state.groupList.map((group,index)=>{
+                        return this.renderGroupListItem(group,index)
                     })}
                 </div>
             )
@@ -134,9 +134,9 @@ class GroupsManagement extends Component {
             return null;
         }   
     }
-    renderGroupListItem = (group) => {
+    renderGroupListItem = (group,index) => {
         return (
-            <div className='groupListItem' >
+            <div className='groupListItem' key={index}>
                 <span>{group.groupName}</span>
             </div>
         )

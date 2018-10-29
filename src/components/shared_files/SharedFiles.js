@@ -24,8 +24,8 @@ class SharedFiles extends Component {
             .then((response) => {
                 let groupList = response.data;
                 groupList.forEach(group => {
-                    groupToggleTempList[group.group_id]=false;
-                    this.getGroupsFilesList(group.group_id)
+                    groupToggleTempList[group.groupId]=false;
+                    this.getGroupsFilesList(group.groupId)
                         .then((response) => {
                             group.files = response.data;
                         })
@@ -84,14 +84,14 @@ class SharedFiles extends Component {
     renderGroupsFiles = (group, index) => {
         return (
             <div className='singleGroup' key={index}>
-                <div className='groupHeader' onClick={this.toggleGroupList.bind(this,group.group_id)}>
+                <div className='groupHeader' onClick={this.toggleGroupList.bind(this,group.groupId)}>
                     <img src={DownArrow} alt="DownArrow" />
                     <div className='groupNameAndDescr'>
                         <div className='groupName'><span>{group.groupName}</span></div>
-                        <div className='groupDescription'><span>{group.group_description}</span></div>
+                        <div className='groupDescription'><span>{group.groupDescription}</span></div>
                     </div>
                 </div>
-                {this.state.groupToggleList[group.group_id] && group.files !== undefined ?
+                {this.state.groupToggleList[group.groupId] && group.files !== undefined ?
                     <div className='groupsClasses'>
                         {group.files.map((file, index) => {
                             return this.renderFileInfo(file, index, group.files)
@@ -117,7 +117,6 @@ class SharedFiles extends Component {
         )
     }
     showDocument = () => {
-        console.log(this.groupsFiles, this.fileSelected)
         return (
             <Modal
                 className='secondModal'
