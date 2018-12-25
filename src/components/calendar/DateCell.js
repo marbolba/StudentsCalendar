@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './DateCell.css';
-import AddEvent from '../../icon/add-event.png';
 import Exit from '../../icon/exit.png';
 import Modal from 'react-modal';
 import ModalClassesContent from './modal_content/ModalClassesContent';
@@ -65,7 +64,6 @@ class DateCell extends Component {
         return (
             <React.Fragment>
                 <div className='header'>
-                    <img src={AddEvent} alt="AddEvent" />
                     <span>{this.props.date.getDate()}</span>
                 </div>
                 <div className='body'>
@@ -99,7 +97,7 @@ class DateCell extends Component {
         )
     }
     rednerModal = () => {
-        var monthEnum = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień']
+        var monthEnum = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia']
         return (
             <Modal
                 isOpen={this.state.isModalOpen}
@@ -108,11 +106,13 @@ class DateCell extends Component {
                 className="modal"
             >
                 <div className="modal-top-bar">
-                    <span>{this.props.date.getDate()} {monthEnum[this.props.date.getMonth()]} {this.props.date.getFullYear()}</span>
-                    <img src={Exit} onClick={this.toggleModalOpen} alt="exit-button" />
+                    <div className="modal-top-bar-info">
+                        <span>{this.props.date.getDate()} {monthEnum[this.props.date.getMonth()]} {this.props.date.getFullYear()}</span>
+                        <img src={Exit} onClick={this.toggleModalOpen} alt="exit-button" />
+                    </div>
+                    <hr />
                 </div>
-                <hr />
-                <ModalClassesContent classes={this.props.classes}/>
+                <ModalClassesContent classes={this.props.classes} />
             </Modal>
         )
     }

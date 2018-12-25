@@ -1,0 +1,43 @@
+.fileList {
+  width: 100%;
+  background: #FEFEFE;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid black;
+  border-top: 0px;
+  box-shadow: inset 0px 0px 10px -2px black;
+  box-sizing: border-box;
+}
+.fileList .actionsMenu {
+  width: 100%;
+  margin: 20px auto;
+}
+.fileList .actionsMenu p {
+  font-size: 20px;
+  padding: 0 0 10px 20px;
+}
+.fileList .actionsMenu .action-button {
+  width: 30%;
+  height: 50px;
+  margin: 0 1.6%;
+  font-size: 16px;
+  background-position: 10px 11px;
+  background-size: 25px 25Px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.secondModal {
+  position: relative;
+  width: 90%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  background-color: floralwhite;
+  outline: none;
+  color: black;
+}

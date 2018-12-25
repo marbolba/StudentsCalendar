@@ -1,131 +1,153 @@
+@mixin obwodka() {
+    border: 1px solid black;
+}
+
 .classes-full-info{
     position: relative;
     display: block;
     width: 100%;
-    min-width: var(--cell-min-width);
-    height: 80px;
+    height: 100px;
+    background-color: #C2C2C2;
+    border-radius: 5px;
+    box-shadow: inset 1px 0px 10px -2px rgba(0,0,0,1);
+    @include obwodka();
 
-    background: rgb(241, 224, 112);
-
-    #classes-hours{
-        position: absolute;
-        width: 70px;
-        font-size: 34px;
-        padding-left: 3px;
-    }
-    #classes-name{
-        position: absolute;
-        left:85px;
-    
-        font-size: 34px;
-        width: 300px;
-    }
-    #classes-type{
+    .back-button{
+        float: left;    
+        width: 6%;
+        height: 100%;
+        box-sizing: border-box;
         position: relative;
-        float: right;
-        font-size: 27px;
-        padding: 3px 10px;
-    
-    
-        border-bottom: solid;
-        border-color: black;
-    }
-}
-.materials{
-    display: block;
-
-    .materials-header{
-        position: relative;
-        height: 30px;
-    }
-    .uploadFiles{
-        height: 30px;
-    }
-    #addMaterials{
-        float: right;
-    }
-    .materials-list-header{
-        position: relative;
-        width: 548px;
         cursor: pointer;
-
-
-        display: block;
-        padding: 4px;
-        height: 42px;
-        border: 1px solid black;
-
-        background: #f1e070;
+        
+        img{
+            transform: rotate(90deg);
+            width: 100%; 
+            position: absolute;
+            top: 32px;
+        }
     }
-    span{
-        font-size: 30px;
-    }
-    .materials-dropdown{
-        .fileInfo{
-            display: block;
-            padding: 4px;
-            height: 42px;
-            border: 1px solid black;
-            
-            cursor: pointer;
-            background: white;
-            span{
-                float: left;
-                font-size: 27px;
-                padding: 5px;
-                width: 375px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-            }
-            img{
-                float: left;
-                height: 30px;
-                width: 30px;
-                padding: 5px;
-                transform: rotate(270deg);
-            }
-            .options{
-                float: right;
-                position: relative;
-                img{
-                    float: left;
-                    transform: rotate(0deg);
-                    cursor: pointer;
-                }
-                .groups-dropdown{
-                    width: 123px;
-                    padding: 3px 5px;
-                    background-color: #f1e070;
-                    position: absolute;
-                    left: 38px;
-                    cursor: default;
-                    z-index: 2;
 
-                    hr{
-                        margin: 0px;
-                    }
-
-                    span{
-                        font-size: 14px;
-                    }
-                }
-            }
+    .classes-title-info{
+        width: 88%;
+        height: 100%;
+        float: left;
+        box-sizing: border-box;
+        #classes-name{
+            width: 100%;
+            float: left;    
+            height: 50%;
+            font-size: 38px;
+            font-weight: 500;
+            text-align: center;
+        }
+        #classes-hours{
+            float: left;
+            font-size: 34px;
+            width: 50%;
+            height: 50%;
+            text-align: center;
+        }
+        #classes-type{
+            float: left;
+            font-size: 34px;
+            width: 50%;
+            height: 50%;
+            text-align: center;
         }
     }
 }
-.secondModal{
-    position: relative;
-    width: 1000px;
-    height: 90%;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    background: lightgoldenrodyellow;
-    padding: 30px;
-    border-radius: 20px;
-    outline: none;
-    color: black;
+.materials-action-select{
+    width: 97%;
+    margin: 0 auto;
+    height: 43px;
+    background: #FEFEFE;
+    @include obwodka();
+    border-top: 0px;
+    box-sizing: border-box;
+    .show-materials{
+        text-align: center;
+        width: 50%;
+        font-size: 20px;
+        float: left;
+        cursor: pointer;
+        padding: 10px 0;
+        box-shadow: inset 1px 0px 10px -2px rgba(0,0,0,1);
+    }
+    .add-materials{
+        text-align: center;
+        width: 50%;
+        font-size: 20px;
+        float: left;
+        cursor: pointer;
+        padding: 10px 0;
+        box-shadow: inset 1px 0px 10px -2px rgba(0,0,0,1);
+    }
+    .show-materials--active{
+        background: rgba(0, 0, 0, 0.1);
+    }
+    .add-materials--active{
+        background: rgba(0, 0, 0, 0.1);
+    }
+}
+.materials{
+    width: 97%;
+    margin: 0 auto;
+}
+.add-file-container{
+    width: 97%;
+    margin: 0 auto;
+    background-color: #FEFEFE;
+    @include obwodka();
+    border-top: 0px;
+    box-sizing: border-box;
+    padding: 20px 10px;
+    box-shadow: inset 0px 0px 10px -2px rgba(0,0,0,1);
+
+    .file-upload-container{
+        width: 100%;
+        overflow:auto; 
+        .file-upload-select{
+            float: left;
+            width: 50%;
+            height: 300px;
+            padding-top: 30px;
+            box-sizing: border-box;
+        }
+        .file-upload-list{
+            float: left;
+            width: calc(50% - 20px);
+            height: 300px;
+            margin: 15px 10px;
+            background: rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            overflow-y: auto;
+    
+            @include obwodka();
+            box-shadow: inset 0px 0px 10px -2px rgba(0,0,0,1);
+            border-radius: 3px;
+            ul {
+                background: rgba(0, 0, 0, 0);
+                list-style-type: disc; 
+                list-style-position: inside; 
+            }
+            li{
+                width: calc(100% - 12px);
+                padding: 3px 0 3px 6px;
+                display: list-item;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+
+    .submit-files-container{
+        width: 100%;
+        overflow:auto; 
+        .submit-files-button{
+            margin: 0 10px;
+            cursor: pointer;
+        }
+    }
 }

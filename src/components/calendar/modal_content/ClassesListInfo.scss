@@ -1,0 +1,76 @@
+.classes-list-info{
+    position: relative;
+    display: block;
+    width: 100%;
+    min-width: var(--cell-min-width);
+    height: 80px;
+    border-bottom: 1px solid black;
+    box-sizing: border-box;
+    background: rgb(241, 224, 112);
+    cursor: pointer;
+    box-shadow: inset 0px 0px 10px -2px rgba(0,0,0,1);
+
+    #classes-hours{
+        float: left;
+        width: 90px;
+        height: 100%;
+        font-size: 34px;
+        padding-left: 3px;
+        box-sizing: border-box;
+    }
+    #classes-name{
+        float: left;
+        font-size: 34px;
+        width: calc(100% - 90px - 150px);
+        height: 100%;
+        text-align: center;
+        line-height: 75px;
+    }
+    #classes-type{
+        position: relative;
+        float: right;
+        font-size: 27px;
+        padding: 3px 10px;
+    
+    
+        border-bottom: solid;
+        border-width: 1px;
+        border-color: black;
+    }
+
+    #documents{
+        position: absolute;
+        right: 80px;
+        top: 40px;
+        margin: 4px;
+    
+        width: 32px;
+        height: 32px;
+    
+        cursor: pointer;
+    }
+
+    #photos{
+        position: absolute;
+        right: 40px;
+        top: 40px;
+        margin: 4px;
+    
+        width: 32px;
+        height: 32px;
+    
+        cursor: pointer;
+    }
+
+    #notes{
+        position: absolute;
+        right: 0;
+        top: 40px;
+        margin: 4px;
+    
+        width: 32px;
+        height: 32px;
+    
+        cursor: pointer;
+    }
+}

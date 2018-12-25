@@ -1,0 +1,127 @@
+:root {
+    --cell-min-width: 160px;
+    --cell-height: 155px;
+    --cell-margin: 0;
+    --cell-radius: 5px;
+}
+
+.dateCell {
+    min-width: var(--cell-min-width);
+    height: var(--cell-height);
+    margin: var(--cell-margin);
+    border-radius: var(--cell-radius);
+    background: #F4ECB8;
+}
+.fadedCell {
+    min-width: var(--cell-min-width);
+    height: var(--cell-height);
+    margin: var(--cell-margin);
+    border-radius: var(--cell-radius);
+}
+.currentCell {
+    min-width: var(--cell-min-width);
+    height: var(--cell-height);
+    margin: var(--cell-margin);
+    border-radius: var(--cell-radius);
+    background: #EFB93A;
+}
+.weekendCell {
+    min-width: var(--cell-min-width);
+    height: var(--cell-height);
+    margin: var(--cell-margin);
+    border-radius: var(--cell-radius);
+    background:#dbd3a4 ;
+}
+.header{
+    width: 100%;
+    height: 35px;
+    position: relative;
+    background-color: #C2C2C2;
+    border-top-left-radius: var(--cell-radius);
+    border-top-right-radius: var(--cell-radius);
+
+    span{
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        right: 5px;
+    }
+}
+
+.classes-short-info{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 40px;
+
+    background: rgb(241, 224, 112);
+
+    #classes-hours{
+        position: absolute;
+        width: 37px;
+        font-size: 17px;
+        padding-left: 3px;
+    }
+    #classes-name{
+        position: absolute;
+        left: 40px;
+        width: 70%;
+        font-size: 30px;
+        padding: 3px 10px;
+        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    #classes-type{
+        position: absolute;
+        right: 0px;
+        font-size: 30px;
+        padding: 3px 10px;
+    }
+}
+
+.modal{
+    position: relative;
+    width: 700px;
+    height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background: floralwhite;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: inset 0px 0px 10px -2px rgba(0,0,0,1);
+    outline: none;
+
+    color: black;
+}
+.modal-top-bar{
+    position: relative;
+    width: 700px;
+    height: 60px;
+    margin-bottom: 20px;
+
+    .modal-top-bar-info{
+        width: 100%;
+        height: 50px;
+
+        span{
+            float: left;
+            width: calc(100% - 40px);
+            height: 100%;
+        
+            font-size: 40px;
+            font-weight: bold;
+            text-align: center;
+        }
+    
+        img{
+            float: right;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+    }
+}

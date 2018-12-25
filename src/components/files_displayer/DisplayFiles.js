@@ -152,10 +152,13 @@ class DisplayFiles extends Component {
                     {this.renderSidebar()}
                 </div>
                 <div className='fileContent'>
-                    {this.state.showFile !== null ?
-                        this.displayFile()
-                        : null
-                    }
+                    <p className='fileName'>{this.state.showFile !== null ? this.state.showFile.fileName : null}</p>
+                    <div className='fileView'>
+                        {this.state.showFile !== null ?
+                            this.displayFile()
+                            : null
+                        }
+                    </div>
                 </div>
             </div>
         );

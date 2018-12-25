@@ -1,8 +1,16 @@
+.ModalContent {
+  height: 100%;
+  padding: 20px;
+  box-shadow: inset 0px 0px 10px -2px black;
+  box-sizing: border-box;
+}
 .ModalContent .sideBar {
   width: 250px;
   float: left;
+  padding-right: 20px;
 }
 .ModalContent .sideBar .materials-list-header {
+  box-shadow: inset 0px 0px 10px -2px black;
   position: relative;
   cursor: pointer;
   display: block;
@@ -14,7 +22,11 @@
 .ModalContent .sideBar span {
   font-size: 30px;
 }
+.ModalContent .sideBar .materials-dropdown {
+  padding-left: 5px;
+}
 .ModalContent .sideBar .materials-dropdown .fileInfo {
+  box-shadow: inset 0px 0px 10px -2px black;
   display: block;
   padding: 4px;
   height: 42px;
@@ -47,14 +59,27 @@
   cursor: pointer;
 }
 .ModalContent .fileContent {
-  width: 750px;
-  height: 10px;
+  width: calc(100% - 40px - 250px);
+  height: 100%;
   float: left;
 }
-.ModalContent .fileContent img {
-  width: 100%;
+.ModalContent .fileContent .fileName {
+  font-size: 30px;
+  text-align: center;
+  margin: 0 0 10px 0;
 }
-.ModalContent .fileContent iframe {
+.ModalContent .fileContent .fileView {
   width: 100%;
-  height: 1000px;
+  height: calc(100% - 44px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.ModalContent .fileContent .fileView img {
+  display: block;
+  margin: 0 auto;
+  height: 100%;
+}
+.ModalContent .fileContent .fileView iframe {
+  width: 100%;
+  height: 99%;
 }

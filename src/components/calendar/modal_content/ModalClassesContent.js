@@ -1,34 +1,41 @@
 import React, { Component } from 'react';
 import ClassesListInfo from './ClassesListInfo';
 import ClassesFullInfo from './ClassesFullInfo';
-import './Modal.css';
+import './ModalClassesContent.css';
+import AddEvent from '../../../icon/add-event.png';
 
 class ModalClassesContent extends Component {
     state = {
-        classesSelected: null,
-        refresh: false
+        classesSelected: null
     }
     setClassesSelected = (classesSelected) => {
         this.setState({
             classesSelected: classesSelected
         });
     }
+    addCustomEvent = () => {
+        console.log("adding custom event")
+    }
     render() {
-        let key=0;
         return (
             <div className="modal-classes-content">
                 {this.state.classesSelected == null ?
                     <React.Fragment>
-                        <button>Dodaj wydarzenie</button>
-                        {this.props.classes.map(classEntity =>
-                            <ClassesListInfo classEntity={classEntity} 
-                                            setClassesSelected={this.setClassesSelected} key={key++}/>
-                        )}
+                        <div className='modal-event-header'>
+                            <div className='event-label'>Twoje zajęcia</div>
+                            <img src={AddEvent} alt="AddEvent" title="Dodaj wydarzenie jednorazowe" onClick={this.addCustomEvent} />
+                        </div>
+                        <div className='modal-classes-list'>
+                            {this.props.classes.map((classEntity,index) =>
+                                <ClassesListInfo classEntity={classEntity}
+                                    setClassesSelected={this.setClassesSelected} key={index} />
+                            )}
+                        </div>
                     </React.Fragment>
                     :
                     <React.Fragment>
-                        <ClassesFullInfo classEntity={this.state.classesSelected} 
-                                        setClassesSelected={this.setClassesSelected} />
+                        <ClassesFullInfo classEntity={this.state.classesSelected}
+                            setClassesSelected={this.setClassesSelected} />
                     </React.Fragment>
                 }
             </div>

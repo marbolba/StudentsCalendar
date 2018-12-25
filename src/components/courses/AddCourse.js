@@ -24,7 +24,7 @@ class AddCourse extends Component {
             this.state.NewCourseEndTime !== "" && this.state.StartDate && this.state.EndDate) {
 
             let data = {
-                "userId": this.props.userId,
+                "courseOwner": this.props.userId,
                 "courseName": this.state.NewCourseName,
                 "courseType": this.state.NewCourseType,
                 "courseDay": this.state.NewCourseDay,

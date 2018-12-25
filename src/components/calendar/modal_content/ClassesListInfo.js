@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import './Modal.css';
+import Api from '../../../api/Api';
+import './ClassesListInfo.css';
 
 import Documents from '../../../icon/document.png';
 import Notes from '../../../icon/notes.png';
 import Photos from '../../../icon/photo.png';
-import axios from 'axios';
 
 class ClassesListInfo extends Component {
     state = {
@@ -18,8 +18,7 @@ class ClassesListInfo extends Component {
 
     getThisClassesFiles = () => {
         let newClassesArray = this.props.classEntity
-        let url = 'http://localhost:4141/api/files?fileOwnerId=' + this.props.userId + '&classesId=' + this.props.classEntity.classesId
-        axios.get(url)
+        Api.getClassesFiles(this.props.userId,this.props.classEntity.classesId)
             .then((response) => {
                 newClassesArray.files = response.data
                 this.setState({
@@ -77,12 +76,11 @@ class ClassesListInfo extends Component {
                     <br />
                     {endHour.getHours() + ":" + (endHour.getMinutes() < 10 ? '0' : '') + endHour.getMinutes()}
                 </div>
-                <div id="classes-type">
-                    {this.props.classEntity.classesType}
-                </div>
-
                 <div id="classes-name">
                     {this.props.classEntity.classesName}
+                </div>
+                <div id="classes-type">
+                    {this.props.classEntity.classesType}
                 </div>
                 {this.renderIcons()}
             </div>

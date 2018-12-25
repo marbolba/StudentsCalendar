@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 import './Courses.css'
-import axios from 'axios';
 import { connect } from 'react-redux'
 import AddCourse from './AddCourse'
+import Modal from 'react-modal';
+import FileList from '../files_displayer/FileList'
+import Api from '../../api/Api';
 
 class Courses extends Component {
     state = {
         coursesView: false,
-        CoursesTableData: null
+        CoursesTableData: null,
+        isDocumentsListModalOpen: false,
+        filesList: null,
+        selectedCourse: null
     }
     componentDidMount = () => {
+        Modal.setAppElement('body');
         this.getCoursesData()
     }
     toggleDisplayCourses = () => {
@@ -46,18 +52,66 @@ class Courses extends Component {
     }
     renderAddCourses = () => {
         return (
-            <AddCourse refreshCourses={this.getCoursesData}/>
+            <AddCourse refreshCourses={this.getCoursesData} />
         )
     }
+    showDocumentsListModal = () => {
+        console.log(this.state.selectedCourse)
+        return (
+            <Modal
+                className='documentsListModal'
+                isOpen={this.state.isDocumentsListModalOpen}
+                onRequestClose={this.toggleDocumentsListModalOpen}
+                contentLabel="Example Modal"
+            >
+                <React.Fragment>
+                    <div className='courses-files-header'>
+                        <p className='course-name-container'>{this.state.selectedCourse.courseName}</p>
+                        <p className='course-info-container'>{this.state.selectedCourse.courseName}</p>
+                    </div>
+                    <div className='files-list-container'>
+
+                    </div>
+                    <FileList files={this.state.filesList} refresh={this.fetchCoursesFiles} />
+                </React.Fragment>
+            </Modal>
+        )
+    }
+    toggleDocumentsListModalOpen = () => {
+        this.setState({
+            isDocumentsListModalOpen: !this.state.isDocumentsListModalOpen
+        })
+    }
+    fetchCoursesFiles = () => {
+        const loadData = new Promise((resolve, reject) => {
+            Api.fetchCoursesFiles(this.state.selectedCourse.courseId)
+            .then(res => {
+                this.setState({
+                    filesList: res.data
+                })
+                resolve();
+            })      
+        });
+        return loadData;
+    }
+    showCoursesFiles = (course) => {
+        this.setState({
+            selectedCourse:course
+        },()=>{
+            this.fetchCoursesFiles()
+            .then(()=>{
+                this.toggleDocumentsListModalOpen();
+            })
+        })
+    }
     getCoursesData = () => {
-        let url = "http://localhost:4141/api/courses?userId=" + this.props.userId
-        axios.get(url)
+        Api.getUsersCourses(this.props.userId)
             .then(res => {
                 let rows = []
                 let dayEnum = ["Nd", "Pon", "Wt", "Sr", "Czw", "Pt", "Sob"]
-                res.data.forEach(course => {
+                res.data.forEach((course,index) => {
                     rows.push(
-                        <tr>
+                        <tr onClick={this.showCoursesFiles.bind(this, course)} key={index}>
                             <td>
                                 {course.courseName}
                             </td>
@@ -102,6 +156,7 @@ class Courses extends Component {
                         }
                     </div>
                 </div>
+                {this.state.isDocumentsListModalOpen ? this.showDocumentsListModal() : null}
             </div>
         )
     }
