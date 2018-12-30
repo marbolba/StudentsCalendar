@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Api from '../../../api/Api';
-import './ClassesListInfo.css';
+import './ClassesListElement.css';
 
 import Documents from '../../../icon/document.png';
 import Notes from '../../../icon/notes.png';
 import Photos from '../../../icon/photo.png';
 
-class ClassesListInfo extends Component {
+class ClassesListElement extends Component {
     state = {
         classEntity: null
     }
@@ -94,4 +94,4 @@ const mapStateToProps = store => {
 }
 export default connect(
     mapStateToProps
-)(ClassesListInfo)
+)(ClassesListElement)

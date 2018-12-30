@@ -81,23 +81,23 @@ class DateCell extends Component {
                 </div>
                 <div className={itemsNumber > 3 ? 'bodyExtended': 'body'} >
                     <ul>
-                        {this.props.events.classes.map(classEntity =>
-                            this.renderShortClassesInfo(classEntity)
+                        {this.props.events.classes.map((classEntity,index) =>
+                            this.renderShortClassesInfo(classEntity,index)
                         )}
-                        {this.props.events.events.map(customEvent =>
-                            this.renderShortCustomEventInfo(customEvent)
+                        {this.props.events.events.map((customEvent,index) =>
+                            this.renderShortCustomEventInfo(customEvent,index)
                         )}
                     </ul>
                 </div>
             </React.Fragment>
         )
     }
-    renderShortClassesInfo = (classEntity) => {
+    renderShortClassesInfo = (classEntity,index) => {
         let startHour = new Date(classEntity.classesFullStartDate)
         let endHour = new Date(classEntity.classesFullEndDate)
         let classesTypeShort = classEntity.classesType.toString().toUpperCase().substr(0, 1)
         return (
-            <li className="classes-short-info" key={classEntity.classesId}>
+            <li className="classes-short-info" key={index}>
                 <div id="classes-hours">
                     {startHour.getHours() + ":" + (startHour.getMinutes() < 10 ? '0' : '') + startHour.getMinutes()}
                     <br />
@@ -112,9 +112,9 @@ class DateCell extends Component {
             </li>
         )
     }
-    renderShortCustomEventInfo = (customEvent) => {
+    renderShortCustomEventInfo = (customEvent,index) => {
         return (
-            <li className="event-short-info" >
+            <li className="event-short-info" key={index+100}>
                 <div id="event-hours">
                     {customEvent.startTime}
                     <br />
@@ -142,7 +142,7 @@ class DateCell extends Component {
                     </div>
                     <hr />
                 </div>
-                {/* <ModalClassesContent classes->events={this.props.events} addEventModalOpener={this.toggleAddCustomEventModalOpen}/> */}
+                {<ModalClassesContent events={this.props.events} addEventModalOpener={this.toggleAddCustomEventModalOpen}/> }
             </Modal>
         )
     }

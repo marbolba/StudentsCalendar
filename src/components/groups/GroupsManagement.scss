@@ -1,10 +1,30 @@
 .groupPopup{
-        background-color: lightgray;
-        width: 350px;
-        margin: 20px auto;
-        padding: 10px;
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
+    background-color: lightgray;
+    width: 350px;
+    margin: 20px auto;
+    padding: 10px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    position: relative;
+    .groups-list-dropdown{
+        margin: 0 auto;
+        width: 90%;
+        position: absolute;
+        left: 5%;
+        background-color: lightslategrey;
+        box-sizing: border-box;
+        padding: 5px 6px;
+        cursor: pointer;
+        .dropdown-group-name{
+            margin: 0;
+            font-size: 18px;
+        }
+        .dropdown-group-descr{
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.5;
+        }
+    }
     div{
         span{
             padding: 10px;

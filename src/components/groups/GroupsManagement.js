@@ -15,8 +15,10 @@ class GroupsManagement extends Component {
 
         newGroupName: '',
         newGroupDescr: '',
+        searchedGroup: {},
         searchedGroupName: '',
-        groupList: []
+        groupList: [],
+        groupsListDropdown: []
     }
     componentDidMount = () => {
         this.updateGroupList()
@@ -77,18 +79,21 @@ class GroupsManagement extends Component {
         }
     }
     handleAddUserToGroup = () => {
-        if (this.state.searchedGroupName !== '') {
-            let url = 'http://localhost:4141/api/groups/user?groupName=' + this.state.searchedGroupName
-            let data = {
-                "userId": this.props.userId
-            }
-            axios.post(url, data)
-                .then((response) => {
+        if (Object.keys(this.state.searchedGroup).length !== 0) {
+            Api.addUserToGroup(this.state.searchedGroup.groupId,this.props.userId)
+                .then(() => {
                     this.updateGroupList();
                     toast.success('Dodano do grupy pomyślnie')
                 })
+                .catch(()=>{
+                    toast.error('Użytkownik jest juz w grupie');
+                })
+                this.setState({
+                    searchedGroup: {},
+                    searchedGroupName: ''
+                })
         } else {
-            toast.error('Proszę podać nazwę grupy')
+            toast.error('Proszę wyszukać istniejącą grupę');
         }
     }
     renderAddGroupPopup = () => {
@@ -108,12 +113,47 @@ class GroupsManagement extends Component {
             </div>
         )
     }
+    updateGroupsListDropdown = (text) =>{
+        if(text!== ''){
+            Api.findGroupsStartingWith(text)
+            .then((resp)=>{
+                this.setState({
+                    searchedGroupName: text,
+                    groupsListDropdown: resp.data
+                })
+            })
+        }else{
+            this.setState({
+                searchedGroupName: '',
+                groupsListDropdown: []
+            })
+        }
+    }
+    selectGroup = (group) =>{
+        this.setState({
+            searchedGroupName: group.groupName,
+            searchedGroup: group,
+            groupsListDropdown: []
+        })
+    }
     renderSearchGroupPopup = () => {
         return (
             <div className='groupPopup'>
                 <div>
                     <span>Wyszukaj grupe</span>
-                    <input type='text' value={this.state.searchedGroupName} onChange={(e) => this.setState({ searchedGroupName: e.target.value })}></input>          
+                    <input type='text' value={this.state.searchedGroupName} onChange={e=>this.updateGroupsListDropdown(e.target.value)}></input>   
+                    {this.state.groupsListDropdown.length!==0 ? 
+                        <div className='groups-list-dropdown'>
+                            {this.state.groupsListDropdown.map((group,index)=>{
+                                return(
+                                <div onClick={this.selectGroup.bind(this,group)} key={index}>
+                                    <p className='dropdown-group-name'>{group.groupName}</p>
+                                    <p className='dropdown-group-descr'>{group.groupDescription}</p>
+                                </div>
+                                );
+                            })}
+                        </div>
+                        :null}         
                 </div>
                 <div>
                     <button onClick={this.handleAddUserToGroup}>Dołącz do grupy</button>

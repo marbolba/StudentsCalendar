@@ -13,7 +13,8 @@ class SharedFiles extends Component {
         groupList: [],
         myFilesGroupList: [],
         isModalOpen: false,
-        showGoupsFilesModal: false
+        showGoupsFilesModal: false,
+        selectedGroup: null
     }
     componentDidMount = () => {
         Modal.setAppElement('body');
@@ -31,6 +32,21 @@ class SharedFiles extends Component {
                             this.setState({
                                 groupList: groupList
                             })
+                        })
+                        .then(()=>{
+                            if(this.state.selectedGroup!=null){
+                                let newSelectedGroup = this.state.groupList.map(a => Object.assign({}, a));
+                                newSelectedGroup.filter(group=>{
+                                    return group.groupId === this.state.selectedGroup.groupId;
+                                })
+                                let mySharedFiles = newSelectedGroup[0].files.filter((file)=>{
+                                    return file.fileOwner === this.props.userId;
+                                })
+                                newSelectedGroup[0].files = mySharedFiles;
+                                this.setState({
+                                    selectedGroup : newSelectedGroup[0]
+                                })       
+                            }
                         })
                 })
             })
@@ -92,14 +108,14 @@ class SharedFiles extends Component {
             <Modal
                 className='documentsListModal'
                 isOpen={this.state.showGoupsFilesModal}
-                onRequestClose={this.toggleShowGoupsFilesModal}
+                onRequestClose={this.toggleShowGoupsFilesModal.bind(this,false)}
                 contentLabel="Example Modal"
             >
                 <React.Fragment>
                     <div className="modal-top-bar">
                         <div className="modal-top-bar-info">
                             <span>{this.state.filesView ? 'Udostępniane pliki do grupy' :  'Pliki udostępnione przez grupę'}</span>
-                            <img src={Exit} onClick={this.toggleShowGoupsFilesModal} alt="exit-button" />
+                            <img src={Exit} onClick={this.toggleShowGoupsFilesModal.bind(this,false)} alt="exit-button" />
                         </div>
                         <hr />
                     </div>
@@ -114,15 +130,23 @@ class SharedFiles extends Component {
             </Modal>
         )
     }
-    toggleShowGoupsFilesModal = () => {
-        this.setState({
-            showGoupsFilesModal: !this.state.showGoupsFilesModal
-        })
+    toggleShowGoupsFilesModal = (bool) => {
+        if(bool){
+            this.setState({
+                showGoupsFilesModal: bool
+            })
+        }else{
+            this.setState({
+                showGoupsFilesModal: bool,
+                selectedGroup: null
+            })
+        }
+        
     }
     showGroupsFiles = (group) => {
         this.setState({
             selectedGroup: group
-        }, this.toggleShowGoupsFilesModal())
+        }, this.toggleShowGoupsFilesModal(true))
     }
     renderGroupTableBody = () => {
         let rows = []

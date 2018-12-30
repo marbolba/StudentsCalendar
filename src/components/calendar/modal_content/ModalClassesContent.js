@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ClassesListInfo from './ClassesListInfo';
+import ClassesListElement from './ClassesListElement';
+import EventListElement from './EventListElement';
 import ClassesFullInfo from './ClassesFullInfo';
 import './ModalClassesContent.css';
 import AddEvent from '../../../icon/add-event.png';
@@ -20,13 +21,19 @@ class ModalClassesContent extends Component {
                     <React.Fragment>
                         <div className='modal-event-header'>
                             <div className='event-label'>Twoje zajęcia</div>
-                            <img src={AddEvent} alt="AddEvent" title="Dodaj wydarzenie jednorazowe" onClick={this.props.addEventModalOpener.bind(this,true)} />
+                            <img src={AddEvent} alt="AddEvent" title="Dodaj wydarzenie jednorazowe" onClick={this.props.addEventModalOpener.bind(this, true)} />
                         </div>
                         <div className='modal-classes-list'>
-                            {this.props.classes.map((classEntity,index) =>
-                                <ClassesListInfo classEntity={classEntity}
-                                    setClassesSelected={this.setClassesSelected} key={index} />
-                            )}
+                            {this.props.events.classes.map((classEntity, index) => {
+                                return (
+                                    <ClassesListElement classEntity={classEntity} setClassesSelected={this.setClassesSelected} key={index} />
+                                );
+                            })}
+                            {this.props.events.events.map((event, index) => {
+                                return (
+                                    <EventListElement event={event} key={index} />
+                                );
+                            })}
                         </div>
                     </React.Fragment>
                     :

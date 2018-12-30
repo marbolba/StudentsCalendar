@@ -11,6 +11,7 @@
 .fileList .actionsMenu {
   width: 100%;
   margin: 20px auto;
+  position: relative;
 }
 .fileList .actionsMenu p {
   font-size: 20px;
@@ -25,6 +26,27 @@
   background-size: 25px 25Px;
   background-repeat: no-repeat;
   cursor: pointer;
+}
+.fileList .actionsMenu .groups-dropdown {
+  width: 130px;
+  padding: 3px 5px;
+  background-color: #FEFEFE;
+  position: absolute;
+  left: calc(50% - 70px);
+  cursor: default;
+  z-index: 2;
+  border: 1px solid black;
+}
+.fileList .actionsMenu .groups-dropdown hr {
+  margin: 3px 0;
+}
+.fileList .actionsMenu .groups-dropdown span {
+  font-size: 14px;
+  display: block;
+}
+.fileList .actionsMenu .groups-dropdown .share-group-option {
+  cursor: pointer;
+  line-height: 19px;
 }
 
 .secondModal {

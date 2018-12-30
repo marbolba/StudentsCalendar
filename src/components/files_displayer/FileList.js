@@ -21,7 +21,7 @@ import "./react-table.css";
 class FileList extends Component {
     state = {
         isModalOpen: false,
-        shareToGroupVisibility: null,
+        shareToGroupVisibility: false,
         usersGroups: [],
         selected: {},
         selectAll: 0
@@ -31,7 +31,6 @@ class FileList extends Component {
     }
     componentDidMount = () => {
         Modal.setAppElement('body');
-        this.getUsersGroups();
         this.setState({
             files: this.props.files
         })
@@ -82,6 +81,23 @@ class FileList extends Component {
                 this.props.refresh();
             })
     }
+    downloadFile = () => {
+        let promises = []
+        Object.keys(this.state.selected).forEach((fileId) => {
+            promises.push(Api.downloadFile(fileId))
+        })
+        Promise.all(promises)
+            .then((resp) => {
+                Object.keys(this.state.selected).forEach((fileId) => {
+                    console.log(fileId)
+                    this.setState({link:'http://localhost:4141/api/files/download?fileId=' + fileId},()=>{
+                    window.location=document.getElementById('link').href;
+                })
+                })
+                
+                toast.success("Pobrano pliki");
+            })
+    }
     getUsersGroups = () => {
         Api.getUsersGroups(this.props.userId)
             .then((response) => {
@@ -91,24 +107,21 @@ class FileList extends Component {
             })
     }
     //TODO BACKEND - sprawdzac czy dany plik nie jest juz szerowany
-    shareFileToGroup = (fileId, groupId) => {
-        Api.shareFileToGroup(fileId, groupId)
-            .then(() => {
-                toast.success("Udostępniono plik");
+    shareFilesToGroup = (groupId) => {
+        let promises = []
+        Object.keys(this.state.selected).forEach((fileId) => {
+            promises.push(Api.shareFileToGroup(fileId, groupId))
+        })
+        Promise.all(promises)
+            .then((response) => {
+                toast.success("Udostępniono pliki");
             })
     }
 
-    toggleShareToGroupVisibility = (fileId) => {
-        if (fileId !== this.state.shareToGroupVisibility) {
-            this.setState({
-                shareToGroupVisibility: fileId
-            })
-        } else {
-            this.setState({
-                shareToGroupVisibility: null
-            })
-        }
-
+    toggleShareToGroupVisibility = () => {
+        this.setState({
+            shareToGroupVisibility: !this.state.shareToGroupVisibility
+        })
     }
     toggleModalOpen = () => {
         this.setState({
@@ -127,35 +140,10 @@ class FileList extends Component {
             </Modal>
         )
     }
-    //TO DELETE funkcjonalnosc ikonek
-    /*renderFileInfo = (file) => {
-        return (
-            <div className='fileInfo' key={file.fileId}>
-                <div onClick={this.state.isModalOpen ? null : () => {
-                    this.fileSelected = file.fileId;
-                    this.toggleModalOpen();
-                }}>
-                    <img src={DownArrow} alt={"DownArrow"} ></img>
-                    <span>{file.fileName}</span>
-                </div>
-                <div className='options'>
-                    <img src={SettingsIcon} alt={"SettingsIcon"} onClick={this.toggleShareToGroupVisibility.bind(this, file.fileId)}></img>
-                    <img src={DownloadIcon} alt={"DownloadIcon"}></img>
-                    <img src={DeleteIcon} alt={"DeleteIcon"} onClick={this.deleteFile.bind(this, file)}></img>
-                    <div className='groups-dropdown' style={this.state.shareToGroupVisibility !== null && this.state.shareToGroupVisibility === file.fileId ? { visibility: "visible" } : { visibility: "hidden" }}>
-                        <span>Udostępnij do grupy</span>
-                        <hr />
-                        {this.state.usersGroups.map(group => {
-                            return (<span onClick={this.shareFileToGroup.bind(this, file.fileId, group.groupId)} key={group.groupId}>{group.groupName}</span>)
-                        })}
-                    </div>
-                </div>
-            </div >
-        );
-    }*/
     render() {
         return (
             <div className='fileList'>
+                <a id='link' href={this.state.link} />
                 <ReactTable
                     data={this.state.files}
                     columns={[
@@ -234,12 +222,22 @@ class FileList extends Component {
                     <React.Fragment>
                         <div className='actionsMenu'>
                             <p>Akcje dla zaznaczonych plików:</p>
-                            <button className='action-button' disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${DownloadIcon})` }}>
+                            <button className='action-button' onClick={this.downloadFile} disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${DownloadIcon})` }}>
                                 Pobierz plik
                             </button>
-                            <button className='action-button' disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${SettingsIcon})` }}>
+                            <button className='action-button' onClick={() => { this.getUsersGroups(); this.toggleShareToGroupVisibility() }} disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${SettingsIcon})` }}>
                                 Udostępnij plik
                             </button>
+                            {this.state.shareToGroupVisibility ?
+                                <div className='groups-dropdown' >
+                                    <span>Udostępnij do grupy :</span>
+                                    <hr />
+                                    {this.state.usersGroups.map(group => {
+                                        return (<span className="share-group-option" onClick={this.shareFilesToGroup.bind(this, group.groupId)} key={group.groupId}>{group.groupName}</span>)
+                                    })}
+                                </div>
+                                : null
+                            }
                             <button className='action-button' onClick={this.deleteFiles} disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${DeleteIcon})` }}>
                                 Usuń plik
                             </button>
@@ -247,7 +245,7 @@ class FileList extends Component {
                         {this.state.isModalOpen ? this.showDocument() : null}
                         <ToastContainer />
                     </React.Fragment>
-                    : 
+                    :
                     <React.Fragment>
                         <div className='actionsMenu'>
                             <p>Akcje dla zaznaczonych plików:</p>

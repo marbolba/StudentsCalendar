@@ -34,7 +34,7 @@ class Api {
         return axios.get(url);
     }
     static getFile = (fileId) => {
-        let url = apiBase + 'api/files?fileId=' + fileId;
+        let url = apiBase + 'files?fileId=' + fileId;
         return axios.get(url);
     }
     static addCourse = (courseData) => {
@@ -52,6 +52,18 @@ class Api {
     static getUsersMonthsClasses = (userId, year, month, monthLength) => {
         let url = apiBase + "classes?userId=" + userId + "&year=" + year + "&month=" + month + "&lastDayOfMonth=" + monthLength;
         return axios.get(url);
+    }
+    static findGroupsStartingWith = (text) => {
+        let url = apiBase + "groups?startsWith="+text;
+        return axios.get(url);
+    }
+    static addUserToGroup = (groupId,userId) => {
+        let url = apiBase + 'groups/user?groupId=' + groupId + "&userId=" + userId
+        return axios.post(url)
+    }
+    static downloadFile = (fileId) => {
+        let url = apiBase + 'files/download?fileId=' + fileId;
+        return axios.get(url)
     }
 }
 export default Api;
