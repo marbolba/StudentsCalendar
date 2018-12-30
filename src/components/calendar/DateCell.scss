@@ -6,6 +6,7 @@
 }
 
 .dateCell {
+    position: relative;
     min-width: var(--cell-min-width);
     height: var(--cell-height);
     margin: var(--cell-margin);
@@ -54,6 +55,24 @@
         cursor: pointer;
     }
 }
+.body{
+    position:absolute;
+    left:0;
+    right:0;
+    cursor: pointer;
+}
+.bodyExtended{
+    position:absolute;
+    left:0;
+    right:0;
+    cursor: pointer;
+    max-height: 240px;
+    overflow-y: auto;
+}
+.bodyExtended:hover{
+    z-index: 1;
+    box-shadow: 0px 5px 18px 0px rgba(0,0,0,0.75);
+}
 
 .classes-short-info{
     position: relative;
@@ -62,19 +81,23 @@
     height: 40px;
 
     background: rgb(241, 224, 112);
+    box-sizing: border-box;
+    border-bottom: 1px solid black;
 
     #classes-hours{
         position: absolute;
-        width: 37px;
+        width: 40px;
         font-size: 17px;
         padding-left: 3px;
+        padding-right: 3px;
     }
     #classes-name{
         position: absolute;
-        left: 40px;
-        width: 70%;
+        left: 46px;
+        width: calc(100% - 78px);
         font-size: 30px;
-        padding: 3px 10px;
+        padding: 3px 0;
+        padding-left: 3px;
         
         white-space: nowrap;
         overflow: hidden;
@@ -83,8 +106,42 @@
     #classes-type{
         position: absolute;
         right: 0px;
+        width: 28px;
         font-size: 30px;
-        padding: 3px 10px;
+        padding: 3px 4px;
+        padding-left: 0;
+        text-align: center;
+    }
+}
+
+.event-short-info{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 40px;
+
+    background: rgb(207, 184, 30);
+    box-sizing: border-box;
+    border-bottom: 1px solid black;
+
+    #event-hours{
+        position: absolute;
+        width: 40px;
+        font-size: 17px;
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+    #event-name{
+        position: absolute;
+        left: 46px;
+        width: calc(100% - 46px);
+        font-size: 30px;
+        padding: 3px 0;
+        padding-left: 3px;
+        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
@@ -95,6 +152,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 10;
 
     background: floralwhite;
     padding: 30px;

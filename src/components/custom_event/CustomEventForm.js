@@ -29,6 +29,7 @@ class CustomEventForm extends Component {
             Api.addCustomEvent(this.props.userId,data)
                 .then(() => {
                     this.cleanInputForm();
+                    this.props.refreshCustomEvents();
                     toast.success("Dodano wydarzenie");
                 })
         }

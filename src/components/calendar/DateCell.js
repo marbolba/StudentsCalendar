@@ -69,7 +69,7 @@ class DateCell extends Component {
         }
     }
     renderDateContent = () => {
-        // {"events":[],"classes":[]}
+        let itemsNumber = this.props.events.classes.length + this.props.events.events.length;
         return (
             <React.Fragment>
                 <div className='header'>
@@ -79,7 +79,7 @@ class DateCell extends Component {
                     }} />
                     <span>{this.props.date.getDate()}</span>
                 </div>
-                <div className='body'>
+                <div className={itemsNumber > 3 ? 'bodyExtended': 'body'} >
                     <ul>
                         {this.props.events.classes.map(classEntity =>
                             this.renderShortClassesInfo(classEntity)
@@ -113,15 +113,14 @@ class DateCell extends Component {
         )
     }
     renderShortCustomEventInfo = (customEvent) => {
-        console.log(customEvent)
         return (
-            <li className="classes-short-info" >
-                <div id="classes-hours">
+            <li className="event-short-info" >
+                <div id="event-hours">
                     {customEvent.startTime}
                     <br />
                     {customEvent.endTime}
                 </div>
-                <div id="classes-name">
+                <div id="event-name">
                     {customEvent.name}
                 </div>
             </li>
@@ -147,6 +146,9 @@ class DateCell extends Component {
             </Modal>
         )
     }
+    refreshCustomEvents = () => {
+        this.props.refreshEventsOnly(this.props.date.getFullYear(),this.props.date.getMonth())
+    }
     rednerAddCustomEvent = () => {
         return (
             <Modal
@@ -162,7 +164,7 @@ class DateCell extends Component {
                     </div>
                     <hr />
                 </div>
-                <CustomEventForm date={this.props.date}/>
+                <CustomEventForm date={this.props.date} refreshCustomEvents={this.refreshCustomEvents}/>
             </Modal>
         )
     }

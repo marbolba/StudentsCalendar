@@ -9,7 +9,7 @@ class Calendar extends Component {
     state = {
         currentDate: null,
         thisMonthDates: [],
-        thisMonthEvents: {"events":[],"classes":[]},
+        thisMonthEvents: { "events": [], "classes": [] },
         isFetched: false
     }
     componentDidMount = () => {
@@ -17,6 +17,7 @@ class Calendar extends Component {
         this.setCurrentDate(date)
     }
     setCurrentDate = (date) => {
+        this.clearThisMonthsEvents()
         var thisDate = new Date(date)
         this.createThisMonthArray(thisDate)
         this.getThisMonthEvents(thisDate.getFullYear(), thisDate.getMonth())
@@ -35,11 +36,13 @@ class Calendar extends Component {
         return date;
     }
     setPreviousMonth = () => {
+        this.clearThisMonthsEvents()
         var thisDate = new Date(this.state.currentDate)
         thisDate.setMonth(thisDate.getMonth() - 1)
         this.setCurrentDate(thisDate)
     }
     setNextMonth = () => {
+        this.clearThisMonthsEvents()
         var thisDate = new Date(this.state.currentDate)
         thisDate.setMonth(thisDate.getMonth() + 1)
         this.setCurrentDate(thisDate)
@@ -63,20 +66,25 @@ class Calendar extends Component {
             thisMonthDates: thisMonth
         })
     }
+    clearThisMonthsEvents = () => {
+        this.setState({
+            thisMonthEvents: { "events": [], "classes": [] }
+        })
+    }
     getThisMonthEvents = (year, month) => {
         let getThisMonthEvents = new Promise((resolve, reject) => {
-            var monthLength = parseInt(this.daysInMonth(month, year), 10)
+            let monthLength = parseInt(this.daysInMonth(month, year), 10)
             let promisesTable = [Api.getUsersMonthsEvents(this.props.userId, parseInt(year, 10), parseInt(month + 1, 10), monthLength),
-                                 Api.getUsersMonthsClasses(this.props.userId, parseInt(year, 10), parseInt(month + 1, 10), monthLength)]
-            
+            Api.getUsersMonthsClasses(this.props.userId, parseInt(year, 10), parseInt(month + 1, 10), monthLength)]
+
             let newThisMonthsEventObj = {}
             Promise.all(promisesTable)
-                .then(responses=>{
-                    responses.forEach((resp,index)=>{
+                .then(responses => {
+                    responses.forEach((resp, index) => {
                         //zrobione po kolejnosci...
-                        if(index===0){
+                        if (index === 0) {
                             newThisMonthsEventObj.events = resp.data;
-                        }else{
+                        } else {
                             newThisMonthsEventObj.classes = resp.data
                         }
                     })
@@ -89,8 +97,19 @@ class Calendar extends Component {
         return getThisMonthEvents
 
     }
+    refreshThisMonthEventsOnly = (year, month) => {
+        let monthLength = parseInt(this.daysInMonth(month, year), 10)
+        Api.getUsersMonthsEvents(this.props.userId, parseInt(year, 10), parseInt(month + 1, 10), monthLength)
+            .then(resp => {
+                let newThisMonthsEventObj = this.state.thisMonthEvents
+                newThisMonthsEventObj.events = resp.data
+                this.setState({
+                    thisMonthEvents: newThisMonthsEventObj
+                })
+            })
+    }
     getThisDateEvents = (day) => {
-        let thisDayEvents = {"events":[],"classes":[]}
+        let thisDayEvents = { "events": [], "classes": [] }
         thisDayEvents.classes = this.state.thisMonthEvents.classes.filter(classEntity => {
             return new Date(classEntity.classesFullStartDate).getDate() === day
         });
@@ -119,13 +138,22 @@ class Calendar extends Component {
                         var thisDate = new Date(this.state.currentDate)
                         thisDate.setDate(this.state.thisMonthDates[(i * 7 + j)])
                         if (thisDate.getDate() === (new Date()).getDate() && thisDate.getMonth() === (new Date()).getMonth() && thisDate.getFullYear() === (new Date()).getFullYear()) {
-                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} events={this.getThisDateEvents(thisDate.getDate())} type="current" /></td>)
+                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate}
+                                events={this.getThisDateEvents(thisDate.getDate())}
+                                type="current"
+                                refreshEventsOnly={this.refreshThisMonthEventsOnly} /></td>)
                         }
                         else if (!(((i * 7 + j + 1) % 7 !== 0) ^ ((i * 7 + j + 1) % 7 !== 6))) {
-                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} events={this.getThisDateEvents(thisDate.getDate())} type="date" /></td>)
+                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate}
+                                events={this.getThisDateEvents(thisDate.getDate())}
+                                type="date" 
+                                refreshEventsOnly={this.refreshThisMonthEventsOnly} /></td>)
                         }
                         else {
-                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} events={this.getThisDateEvents(thisDate.getDate())} type="weekend" /></td>)
+                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate}
+                                events={this.getThisDateEvents(thisDate.getDate())}
+                                type="weekend" 
+                                refreshEventsOnly={this.refreshThisMonthEventsOnly} /></td>)
                         }
                         if ((i * 7 + j + 1) % 7 === 0) {
                             rows.push(<tr key={i}>{cell}</tr>)

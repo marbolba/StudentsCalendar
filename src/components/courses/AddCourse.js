@@ -48,8 +48,10 @@ class AddCourse extends Component {
     }
     cleanInputForm = () => {
         //TODO this two dont realy work 
-        document.getElementById("appt-timeS").value = "Typ";
+        document.getElementById("appt-timeS").value = "";
         document.getElementById("appt-timeE").value = "";
+        document.getElementById("courseDay").value = "";
+        document.getElementById("courseType").value = "Typ";
         this.setState({
             NewCourseName: "",
             NewCourseType: "Typ",
@@ -74,7 +76,7 @@ class AddCourse extends Component {
                     </div>
                     <div className='formItem'>
                         <span>Określ typ zajęć</span>
-                        <select name="courseType" onChange={(e)=>{this.setState({NewCourseType: e.target.value})}}>
+                        <select id="courseType" name="courseType" onChange={(e)=>{this.setState({NewCourseType: e.target.value})}}>
                             <option value="Typ">Typ</option>
                             <option value="Wykład">Wykład</option>
                             <option value="Laboratoria">Laboratoria</option>
@@ -145,7 +147,7 @@ class AddCourse extends Component {
                     </div>
                     <div className='formItem'>
                         <span>Dzień zajęć</span>
-                        <select name="courseDay" onChange={(e)=>{this.setState({NewCourseDay: e.target.value})}}>
+                        <select id="courseDay" name="courseDay" onChange={(e)=>{this.setState({NewCourseDay: e.target.value})}}>
                             <option value="">Dzień</option>
                             <option value="1">Poniedziałek</option>
                             <option value="2">Wtorek</option>
