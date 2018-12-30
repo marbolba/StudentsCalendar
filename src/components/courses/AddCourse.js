@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './AddCourse.css'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import axios from 'axios';
+import Api from '../../api/Api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { connect } from 'react-redux'
@@ -34,16 +34,15 @@ class AddCourse extends Component {
                 "endDate": this.state.EndDate.toISOString().slice(0, 10)
             }
 
-            let url = "http://localhost:4141/api/courses"
-            axios.post(url, data)
+            Api.addCourse(data)
                 .then(() => {
                     this.props.refreshCourses();
                     this.cleanInputForm();
-                    toast.success("Added new Course");
+                    toast.success("Dodano nowy kurs");
                 })
         }
         else {
-            toast.error("Please fill data properly");
+            toast.error("Proszę wypełnić wymagane dane");
         }
 
     }

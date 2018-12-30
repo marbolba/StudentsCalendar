@@ -116,9 +116,9 @@ class ClassesFullInfo extends Component {
                         <div className='submit-files-container'>
                             <button className='submit-files-button' onClick={this.fileUploadHandler}>Dodaj materiały</button>
                         </div>
+                        <ToastContainer />
                     </div>
                 }
-                <ToastContainer />
             </React.Fragment >
         );
     };

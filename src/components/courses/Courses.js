@@ -5,6 +5,7 @@ import AddCourse from './AddCourse'
 import Modal from 'react-modal';
 import FileList from '../files_displayer/FileList'
 import Api from '../../api/Api';
+import Exit from '../../icon/exit.png';
 
 class Courses extends Component {
     state = {
@@ -56,7 +57,7 @@ class Courses extends Component {
         )
     }
     showDocumentsListModal = () => {
-        console.log(this.state.selectedCourse)
+        let dayEnum = ["Nd", "Pon", "Wt", "Śr", "Czw", "Pt", "Sob"]
         return (
             <Modal
                 className='documentsListModal'
@@ -65,14 +66,21 @@ class Courses extends Component {
                 contentLabel="Example Modal"
             >
                 <React.Fragment>
+                    <div className="modal-top-bar">
+                        <div className="modal-top-bar-info">
+                            <span>Pliki tego przedmiotu</span>
+                            <img src={Exit} onClick={this.toggleDocumentsListModalOpen} alt="exit-button" />
+                        </div>
+                        <hr />
+                    </div>
                     <div className='courses-files-header'>
                         <p className='course-name-container'>{this.state.selectedCourse.courseName}</p>
-                        <p className='course-info-container'>{this.state.selectedCourse.courseName}</p>
+                        <p className='course-info-container1'>{this.state.selectedCourse.courseType}</p>
+                        <p className='course-info-container2'>{dayEnum[this.state.selectedCourse.courseDay]} {this.state.selectedCourse.startTime}-{this.state.selectedCourse.endTime}</p>
                     </div>
                     <div className='files-list-container'>
-
+                        <FileList files={this.state.filesList} refresh={this.fetchCoursesFiles} />
                     </div>
-                    <FileList files={this.state.filesList} refresh={this.fetchCoursesFiles} />
                 </React.Fragment>
             </Modal>
         )
@@ -85,31 +93,31 @@ class Courses extends Component {
     fetchCoursesFiles = () => {
         const loadData = new Promise((resolve, reject) => {
             Api.fetchCoursesFiles(this.state.selectedCourse.courseId)
-            .then(res => {
-                this.setState({
-                    filesList: res.data
+                .then(res => {
+                    this.setState({
+                        filesList: res.data
+                    })
+                    resolve();
                 })
-                resolve();
-            })      
         });
         return loadData;
     }
     showCoursesFiles = (course) => {
         this.setState({
-            selectedCourse:course
-        },()=>{
+            selectedCourse: course
+        }, () => {
             this.fetchCoursesFiles()
-            .then(()=>{
-                this.toggleDocumentsListModalOpen();
-            })
+                .then(() => {
+                    this.toggleDocumentsListModalOpen();
+                })
         })
     }
     getCoursesData = () => {
         Api.getUsersCourses(this.props.userId)
             .then(res => {
                 let rows = []
-                let dayEnum = ["Nd", "Pon", "Wt", "Sr", "Czw", "Pt", "Sob"]
-                res.data.forEach((course,index) => {
+                let dayEnum = ["Nd", "Pon", "Wt", "Śr", "Czw", "Pt", "Sob"]
+                res.data.forEach((course, index) => {
                     rows.push(
                         <tr onClick={this.showCoursesFiles.bind(this, course)} key={index}>
                             <td>

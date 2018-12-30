@@ -46,6 +46,13 @@
         position: absolute;
         right: 5px;
     }
+
+    img{
+        width: 30px;
+        height: 30px;
+        margin: 2px 5px;
+        cursor: pointer;
+    }
 }
 
 .classes-short-info{
@@ -109,7 +116,8 @@
 
         span{
             float: left;
-            width: calc(100% - 40px);
+            padding-left: 40px;
+            width: calc(100% - 80px);
             height: 100%;
         
             font-size: 40px;
@@ -123,5 +131,8 @@
             height: 40px;
             cursor: pointer;
         }
+    }
+    hr{
+        width: 100%;
     }
 }

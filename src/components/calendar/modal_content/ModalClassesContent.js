@@ -13,9 +13,6 @@ class ModalClassesContent extends Component {
             classesSelected: classesSelected
         });
     }
-    addCustomEvent = () => {
-        console.log("adding custom event")
-    }
     render() {
         return (
             <div className="modal-classes-content">
@@ -23,7 +20,7 @@ class ModalClassesContent extends Component {
                     <React.Fragment>
                         <div className='modal-event-header'>
                             <div className='event-label'>Twoje zajęcia</div>
-                            <img src={AddEvent} alt="AddEvent" title="Dodaj wydarzenie jednorazowe" onClick={this.addCustomEvent} />
+                            <img src={AddEvent} alt="AddEvent" title="Dodaj wydarzenie jednorazowe" onClick={this.props.addEventModalOpener.bind(this,true)} />
                         </div>
                         <div className='modal-classes-list'>
                             {this.props.classes.map((classEntity,index) =>

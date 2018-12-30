@@ -50,6 +50,12 @@
   position: absolute;
   right: 5px;
 }
+.header img {
+  width: 30px;
+  height: 30px;
+  margin: 2px 5px;
+  cursor: pointer;
+}
 
 .classes-short-info {
   position: relative;
@@ -108,7 +114,8 @@
 }
 .modal-top-bar .modal-top-bar-info span {
   float: left;
-  width: calc(100% - 40px);
+  padding-left: 40px;
+  width: calc(100% - 80px);
   height: 100%;
   font-size: 40px;
   font-weight: bold;
@@ -119,4 +126,7 @@
   width: 40px;
   height: 40px;
   cursor: pointer;
+}
+.modal-top-bar hr {
+  width: 100%;
 }

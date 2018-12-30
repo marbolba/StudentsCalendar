@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import './DisplayFiles.css';
-import axios from 'axios';
+import Api from '../../api/Api';
 
 class DisplayFiles extends Component {
     state = {
@@ -32,8 +32,7 @@ class DisplayFiles extends Component {
         })
     }
     showFile = (file) => {
-        let url = 'http://localhost:4141/api/files?fileId=' + file.fileId;
-        axios.get(url)
+        Api.getFile(file.fileId)
             .then((response) => {
                 this.setState({
                     showFile: response.data

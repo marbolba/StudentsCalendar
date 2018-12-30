@@ -1,12 +1,13 @@
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './FileList.css';
 import { connect } from "react-redux";
 import Modal from 'react-modal';
 import DisplayFiles from './DisplayFiles';
 import Api from '../../api/Api'
 
-import {ToastContainer,toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 //TODO SettingsIcon should be ShareIcon
@@ -24,6 +25,9 @@ class FileList extends Component {
         usersGroups: [],
         selected: {},
         selectAll: 0
+    }
+    static defaultProps = {
+        mode: 'normal'
     }
     componentDidMount = () => {
         Modal.setAppElement('body');
@@ -69,9 +73,9 @@ class FileList extends Component {
     }
     deleteFiles = () => {
         let promises = []
-        Object.keys(this.state.selected).forEach((fileId)=>{
+        Object.keys(this.state.selected).forEach((fileId) => {
             promises.push(Api.deleteFile(fileId))
-        })        
+        })
         Promise.all(promises)
             .then((response) => {
                 toast.success("Usunięto pliki pomyślnie");
@@ -199,12 +203,17 @@ class FileList extends Component {
                             accessor: "fileSize"
                         },
                         {
-                            Header: "Rozszerzenie",
-                            accessor: "fileFormat"
+                            Header: "Data dodania",
+                            accessor: "editDate",
+                            Cell: v => {
+                                let date = new Date(v.original.editDate);
+                                return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + " - " + date.getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
+                            }
                         }
+
                     ]}
                     //ta wysokosc powinna sie rozciagac do max  rozmiaru strony
-                    pageSize={this.state.files!==undefined ? this.state.files.length : 5 }
+                    pageSize={this.state.files !== undefined ? this.state.files.length : 5}
                     className="-striped -highlight"
                     previousText={'Poprzednia'}
                     nextText={'Następna'}
@@ -221,24 +230,46 @@ class FileList extends Component {
                         }
                     })}
                 />
-                <div className='actionsMenu'>
-                    <p>Akcje dla zaznaczonych plików:</p>
-                    <button className='action-button' disabled={Object.keys(this.state.selected).length === 0} style={{backgroundImage: `url(${DownloadIcon})`}}>
-                        Pobierz plik
-                    </button>
-                    <button className='action-button' disabled={Object.keys(this.state.selected).length === 0} style={{backgroundImage: `url(${SettingsIcon})`}}>
-                        Udostępnij plik
-                    </button>
-                    <button className='action-button' onClick={this.deleteFiles} disabled={Object.keys(this.state.selected).length === 0} style={{backgroundImage: `url(${DeleteIcon})`}}>
-                        Usuń plik
-                    </button>
-                </div>
-                {this.state.isModalOpen ? this.showDocument() : null}
-                <ToastContainer />
+                {this.props.mode === "normal" ?
+                    <React.Fragment>
+                        <div className='actionsMenu'>
+                            <p>Akcje dla zaznaczonych plików:</p>
+                            <button className='action-button' disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${DownloadIcon})` }}>
+                                Pobierz plik
+                            </button>
+                            <button className='action-button' disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${SettingsIcon})` }}>
+                                Udostępnij plik
+                            </button>
+                            <button className='action-button' onClick={this.deleteFiles} disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${DeleteIcon})` }}>
+                                Usuń plik
+                            </button>
+                        </div>
+                        {this.state.isModalOpen ? this.showDocument() : null}
+                        <ToastContainer />
+                    </React.Fragment>
+                    : 
+                    <React.Fragment>
+                        <div className='actionsMenu'>
+                            <p>Akcje dla zaznaczonych plików:</p>
+                            <button className='action-button' disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${DownloadIcon})` }}>
+                                Pobierz plik
+                            </button>
+                        </div>
+                        {this.state.isModalOpen ? this.showDocument() : null}
+                        <ToastContainer />
+                    </React.Fragment>
+                }
+
             </div>
         );
     }
 };
+FileList.propTypes = {
+    files: PropTypes.array.isRequired,
+    refresh: PropTypes.func,
+    mode: PropTypes.string
+};
+
 const mapStateToProps = store => {
     return {
         userId: store.user.userId

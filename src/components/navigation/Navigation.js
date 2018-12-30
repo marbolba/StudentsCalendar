@@ -17,24 +17,23 @@ class Navigation extends Component {
         user_drop_down_toggle: false,
     }
 
-    componentWillMount() {
-        document.addEventListener('mousedown', this.handleOutDropdownClick, false);
-    }
-    componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleOutDropdownClick, false);
-    }
-
     handleOutDropdownClick = (event) => {
-        if (!this.dropdown.contains(event.target) && !this.dropdown_arrow.contains(event.target)) {
-            this.setState({
-                user_drop_down_toggle: false
-            })
+        if (this.state.user_drop_down_toggle && !this.dropdown.contains(event.target) && !this.dropdown_arrow.contains(event.target)) {
+            this.toggle_dropdown_visibility();
         }
     }
     toggle_dropdown_visibility = () => {
-        this.setState({
-            user_drop_down_toggle: !this.state.user_drop_down_toggle
-        })
+        if(this.state.user_drop_down_toggle){
+            document.removeEventListener('mousedown', this.handleOutDropdownClick, false);
+            this.setState({
+                user_drop_down_toggle: false
+            });
+        }else{
+            document.addEventListener('mousedown', this.handleOutDropdownClick, false);
+            this.setState({
+                user_drop_down_toggle: true
+            });
+        }
     }
 
     render() {

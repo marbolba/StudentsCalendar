@@ -1,0 +1,85 @@
+@mixin obwodka() {
+    border: 1px solid black;
+}
+
+.addCustomEvent{
+    margin: 20px;
+    height: calc(100% - 80px);
+    
+    .modal-event-header{
+        width: 100%;
+        height: 80px;
+        background-color: #C2C2C2;
+        box-sizing: border-box;
+        @include obwodka;
+        box-shadow: inset 0px 0px 10px -2px rgba(0,0,0,1);
+        border-radius: 5px;
+        .event-label{
+            height: 100%;
+            text-align: center;
+            font-size: 44px;
+            font-weight: 500;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 11px;
+        }
+    }
+    .modal-classes-list{
+        width: 400px;
+        margin: 0 auto;
+        background: #F4ECB8;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        @include obwodka;
+        border-top: 0px;
+        box-shadow: inset 0px 0px 10px -2px rgba(0,0,0,1);
+        box-sizing: border-box;
+        padding: 20px 40px;
+
+        .formItem{
+            margin-bottom: 10px;
+            font-size: 20px;
+            span{
+                display: block;
+                padding: 5px 0;
+            }
+            input{
+                width: 100%;
+                padding: 5px 0;
+
+                border-radius: 8px;
+                outline: none;
+            }
+            select{
+                width: 100%;
+                height: 30px;
+                padding: 0 7px;
+                outline: none;
+            }
+            .timeInput{
+                display: block;
+                margin: 0 auto;
+                text-align: center;
+                width: 100px;
+            }
+            .datePicker{
+                width: 317px;
+            }
+            .submitButton{
+                margin: 0 auto;
+                width: 80%;
+                padding: 10px 0;
+                background-color: limegreen;
+                text-align: center;
+                cursor: pointer;
+
+                border-radius: 8px;
+                border: 2px solid darkgreen;
+                box-shadow: 4px 4px 8px -2px rgba(0,0,0,0.75);
+                span{
+                    display: block;
+                }
+            }
+        }
+    }
+}

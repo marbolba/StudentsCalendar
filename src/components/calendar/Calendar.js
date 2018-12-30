@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import DateCell from './DateCell';
 import './Calendar.css';
 import { connect } from "react-redux";
-import axios from "axios";
+import Api from '../../api/Api';
 
 
 class Calendar extends Component {
     state = {
         currentDate: null,
         thisMonthDates: [],
-        thisMonthEvents: [],
+        thisMonthEvents: {"events":[],"classes":[]},
         isFetched: false
     }
     componentDidMount = () => {
@@ -66,12 +66,23 @@ class Calendar extends Component {
     getThisMonthEvents = (year, month) => {
         let getThisMonthEvents = new Promise((resolve, reject) => {
             var monthLength = parseInt(this.daysInMonth(month, year), 10)
-            let url = "http://localhost:4141/api/classes?userId=" + parseInt(this.props.userId, 10) + "&year=" + parseInt(year, 10) + "&month=" + parseInt(month + 1, 10) + "&lastDayOfMonth=" + monthLength
-            axios.get(url)
-                .then(response => {
+            let promisesTable = [Api.getUsersMonthsEvents(this.props.userId, parseInt(year, 10), parseInt(month + 1, 10), monthLength),
+                                 Api.getUsersMonthsClasses(this.props.userId, parseInt(year, 10), parseInt(month + 1, 10), monthLength)]
+            
+            let newThisMonthsEventObj = {}
+            Promise.all(promisesTable)
+                .then(responses=>{
+                    responses.forEach((resp,index)=>{
+                        //zrobione po kolejnosci...
+                        if(index===0){
+                            newThisMonthsEventObj.events = resp.data;
+                        }else{
+                            newThisMonthsEventObj.classes = resp.data
+                        }
+                    })
                     resolve()
                     this.setState({
-                        thisMonthEvents: response.data
+                        thisMonthEvents: newThisMonthsEventObj
                     })
                 })
         })
@@ -79,11 +90,14 @@ class Calendar extends Component {
 
     }
     getThisDateEvents = (day) => {
-        let found = this.state.thisMonthEvents.filter(classEntity => {
+        let thisDayEvents = {"events":[],"classes":[]}
+        thisDayEvents.classes = this.state.thisMonthEvents.classes.filter(classEntity => {
             return new Date(classEntity.classesFullStartDate).getDate() === day
         });
-        return found
-
+        thisDayEvents.events = this.state.thisMonthEvents.events.filter(event => {
+            return new Date(event.eventDate).getDate() === day
+        });
+        return thisDayEvents
     }
     getThisMonthCallendar = () => {
         let rows = []
@@ -105,13 +119,13 @@ class Calendar extends Component {
                         var thisDate = new Date(this.state.currentDate)
                         thisDate.setDate(this.state.thisMonthDates[(i * 7 + j)])
                         if (thisDate.getDate() === (new Date()).getDate() && thisDate.getMonth() === (new Date()).getMonth() && thisDate.getFullYear() === (new Date()).getFullYear()) {
-                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} classes={this.getThisDateEvents(thisDate.getDate())} type="current" /></td>)
+                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} events={this.getThisDateEvents(thisDate.getDate())} type="current" /></td>)
                         }
                         else if (!(((i * 7 + j + 1) % 7 !== 0) ^ ((i * 7 + j + 1) % 7 !== 6))) {
-                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} classes={this.getThisDateEvents(thisDate.getDate())} type="date" /></td>)
+                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} events={this.getThisDateEvents(thisDate.getDate())} type="date" /></td>)
                         }
                         else {
-                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} classes={this.getThisDateEvents(thisDate.getDate())} type="weekend" /></td>)
+                            cell.push(<td key={(i * 7 + j)}><DateCell date={thisDate} events={this.getThisDateEvents(thisDate.getDate())} type="weekend" /></td>)
                         }
                         if ((i * 7 + j + 1) % 7 === 0) {
                             rows.push(<tr key={i}>{cell}</tr>)

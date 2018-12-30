@@ -2,130 +2,163 @@ import React, { Component } from 'react';
 import Api from '../../api/Api';
 import { connect } from 'react-redux';
 import './SharedFiles.css';
-import DisplayFiles from '../files_displayer/DisplayFiles';
 import Modal from 'react-modal';
-
-import DownArrow from '../../icon/down-arrow.png'
-
+import FileList from '../files_displayer/FileList';
+import Exit from '../../icon/exit.png';
 
 class SharedFiles extends Component {
     state = {
+        isFetched: false,
         filesView: false,
         groupList: [],
+        myFilesGroupList: [],
         isModalOpen: false,
-        groupToggleList: []
+        showGoupsFilesModal: false
     }
     componentDidMount = () => {
-        this.getUsersGroups()
+        Modal.setAppElement('body');
+        this.getUsersGroups();
     }
     getUsersGroups = () => {
-        let groupToggleTempList = []
         Api.getUsersGroups(this.props.userId)
             .then((response) => {
                 let groupList = response.data;
                 groupList.forEach(group => {
-                    groupToggleTempList[group.groupId]=false;
-                    this.getGroupsFilesList(group.groupId)
-                        .then((response) => {
-                            group.files = response.data;
+                    group.files = []
+                    Api.getGroupsFilesList(group.groupId)
+                        .then((res) => {
+                            group.files = res.data;
+                            this.setState({
+                                groupList: groupList
+                            })
                         })
                 })
-                this.setState({
-                    groupList: groupList,
-                    groupToggleList: groupToggleTempList
-                })
             })
-    }
-    getGroupsFilesList = (groupId) => {
-        return Api.getGroupsFilesList(groupId)
-    }
-    toggleGroupList = (groupId) => {
-        let groupToggleTempList = this.state.groupToggleList;
-        groupToggleTempList[groupId] = !groupToggleTempList[groupId];
-        this.setState({
-            groupToggleList : groupToggleTempList
-        })
     }
     toggleModalOpen = () => {
         this.setState({
             isModalOpen: !this.state.isModalOpen
         })
     }
-    toggleGroupFiles = () => {
-        if (this.state.filesView !== false) {
-            this.setState({
-                filesView: !this.state.filesView
-            })
-        }
-    }
-    toggleMyFiles = () => {
-        if (this.state.filesView !== true) {
-            this.setState({
-                filesView: !this.state.filesView
-            })
-        }
+    toggleFilesView = (bool) => {
+        this.setState({
+            filesView: bool
+        })
     }
     renderMyFilesView = () => {
         return (
-            <div className='myFilesView'>
-                my
+            <div className='coursesView'>
+                <table className='coursesTable'>
+                    <thead className='tableHead'>
+                        <tr>
+                            <th>Grupa</th>
+                            <th>Opis</th>
+                            <th style={{ width: '200px' }}>Udostępnione pliki</th>
+                        </tr>
+                    </thead>
+                    <tbody className='tableBody'>
+                        {this.renderGroupMyFilesTableBody()}
+                    </tbody>
+                </table>
             </div>
         )
+    }
+    renderGroupMyFilesTableBody = () => {
+        let rows = []
+        let myGroupList = this.state.groupList.map(a => Object.assign({}, a));
+        myGroupList.forEach((group, index) => {
+            let mySharedFiles = group.files.filter((file)=>{
+                return file.fileOwner === this.props.userId;
+            })
+            group.files = mySharedFiles;
+            rows.push(
+                <tr onClick={this.showGroupsFiles.bind(this, group)} key={index}>
+                    <td>
+                        {group.groupName}
+                    </td>
+                    <td>
+                        {group.groupDescription}
+                    </td>
+                    <td>
+                        {group.files.length}
+                    </td>
+                </tr>
+            )
+        })
+        return rows;
+    }
+    showFilesListModal = () => {
+        return (
+            <Modal
+                className='documentsListModal'
+                isOpen={this.state.showGoupsFilesModal}
+                onRequestClose={this.toggleShowGoupsFilesModal}
+                contentLabel="Example Modal"
+            >
+                <React.Fragment>
+                    <div className="modal-top-bar">
+                        <div className="modal-top-bar-info">
+                            <span>{this.state.filesView ? 'Udostępniane pliki do grupy' :  'Pliki udostępnione przez grupę'}</span>
+                            <img src={Exit} onClick={this.toggleShowGoupsFilesModal} alt="exit-button" />
+                        </div>
+                        <hr />
+                    </div>
+                    <div className='courses-files-header'>
+                        <p className='course-name-container'>{this.state.selectedGroup.groupName}</p>
+                        <p className='course-info-container'>{this.state.selectedGroup.groupDescription}</p>
+                    </div>
+                    <div className='files-list-container'>
+                        <FileList files={this.state.selectedGroup.files} refresh={this.getUsersGroups} mode={this.state.filesView ? 'normal' : 'non-edit'}/>
+                    </div>
+                </React.Fragment>
+            </Modal>
+        )
+    }
+    toggleShowGoupsFilesModal = () => {
+        this.setState({
+            showGoupsFilesModal: !this.state.showGoupsFilesModal
+        })
+    }
+    showGroupsFiles = (group) => {
+        this.setState({
+            selectedGroup: group
+        }, this.toggleShowGoupsFilesModal())
+    }
+    renderGroupTableBody = () => {
+        let rows = []
+        this.state.groupList.forEach((group, index) => {
+            rows.push(
+                <tr onClick={this.showGroupsFiles.bind(this, group)} key={index}>
+                    <td>
+                        {group.groupName}
+                    </td>
+                    <td>
+                        {group.groupDescription}
+                    </td>
+                    <td>
+                        {group.files.length}
+                    </td>
+                </tr>
+            )
+        })
+        return rows;
     }
     renderGroupsView = () => {
         return (
-            <div className='groupsView'>
-                {this.state.groupList.map((group, index) => {
-                    return (this.renderGroupsFiles(group, index))
-                })}
+            <div className='coursesView'>
+                <table className='coursesTable'>
+                    <thead className='tableHead'>
+                        <tr>
+                            <th>Grupa</th>
+                            <th>Opis</th>
+                            <th style={{ width: '200px' }}>Współdzielone pliki</th>
+                        </tr>
+                    </thead>
+                    <tbody className='tableBody'>
+                        {this.renderGroupTableBody()}
+                    </tbody>
+                </table>
             </div>
-        )
-    }
-    renderGroupsFiles = (group, index) => {
-        return (
-            <div className='singleGroup' key={index}>
-                <div className='groupHeader' onClick={this.toggleGroupList.bind(this,group.groupId)}>
-                    <img src={DownArrow} alt="DownArrow" />
-                    <div className='groupNameAndDescr'>
-                        <div className='groupName'><span>{group.groupName}</span></div>
-                        <div className='groupDescription'><span>{group.groupDescription}</span></div>
-                    </div>
-                </div>
-                {this.state.groupToggleList[group.groupId] && group.files !== undefined ?
-                    <div className='groupsClasses'>
-                        {group.files.map((file, index) => {
-                            return this.renderFileInfo(file, index, group.files)
-                        })}
-                    </div>
-                    : null}
-            </div>
-        )
-    }
-    renderFileInfo = (file, index, groupsFiles) => {
-        return (
-            <div className='groupsFileInfo' key={index} onClick={this.state.isModalOpen ? null : () => {
-                this.groupsFiles = groupsFiles
-                this.fileSelected = file.fileId;
-                this.toggleModalOpen();
-            }}>
-                <img src={DownArrow} alt={"DownArrow"} ></img>
-                <div className='groupFileName' >
-                    <span>{file.fileName}</span>
-                </div>
-                {this.state.isModalOpen ? this.showDocument() : null}
-            </div>
-        )
-    }
-    showDocument = () => {
-        return (
-            <Modal
-                className='secondModal'
-                isOpen={this.state.isModalOpen}
-                onRequestClose={this.toggleModalOpen}
-                contentLabel="Example Modal"
-            >
-                <DisplayFiles files={this.groupsFiles} fileSelected={this.fileSelected} />
-            </Modal>
         )
     }
     render() {
@@ -133,21 +166,22 @@ class SharedFiles extends Component {
             <div className='base-view'>
                 <div className='content-view'>
                     <div className='viewSelection'>
-                        <div className='viewOption' onClick={this.toggleGroupFiles}>
+                        <div className='viewOption' onClick={this.toggleFilesView.bind(this, false)}>
                             <span>Udostępnione materiały z twoich grup</span>
                         </div>
-                        <div className='viewOption' onClick={this.toggleMyFiles}>
+                        <div className='viewOption' onClick={this.toggleFilesView.bind(this, true)}>
                             <span>Udostępnione przez Ciebie materiały</span>
                         </div>
                     </div>
-                    <div className='filesView'> 
+                    <div /*className='filesView'*/>
                         {this.state.filesView ?
                             this.renderMyFilesView()
                             :
-                            this.renderGroupsView() 
-                        } 
+                            this.renderGroupsView()
+                        }
                     </div>
                 </div>
+                {this.state.showGoupsFilesModal ? this.showFilesListModal() : null}
             </div>
         );
     }

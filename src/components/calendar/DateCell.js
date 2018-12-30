@@ -3,6 +3,8 @@ import './DateCell.css';
 import Exit from '../../icon/exit.png';
 import Modal from 'react-modal';
 import ModalClassesContent from './modal_content/ModalClassesContent';
+import AddEvent from '../../icon/add-event.png';
+import CustomEventForm from '../custom_event/CustomEventForm';
 
 /**
  * Props list:
@@ -11,7 +13,8 @@ import ModalClassesContent from './modal_content/ModalClassesContent';
  */
 class DateCell extends Component {
     state = {
-        isModalOpen: false
+        isModalOpen: false,
+        isAddCustomEventModalOpen: false
     }
     componentWillMount() {
         Modal.setAppElement('body');
@@ -19,6 +22,11 @@ class DateCell extends Component {
     toggleModalOpen = () => {
         this.setState({
             isModalOpen: !this.state.isModalOpen
+        })
+    }
+    toggleAddCustomEventModalOpen = (bool) => {
+        this.setState({
+            isAddCustomEventModalOpen: bool
         })
     }
     onDateCellClick = () => {
@@ -61,22 +69,30 @@ class DateCell extends Component {
         }
     }
     renderDateContent = () => {
+        // {"events":[],"classes":[]}
         return (
             <React.Fragment>
                 <div className='header'>
+                    <img src={AddEvent} alt="AddEvent" title="Dodaj wydarzenie jednorazowe" onClick={(e) => {
+                        this.toggleAddCustomEventModalOpen( true)
+                        e.stopPropagation();
+                    }} />
                     <span>{this.props.date.getDate()}</span>
                 </div>
                 <div className='body'>
                     <ul>
-                        {this.props.classes.map(classEntity =>
-                            this.renderShortInfo(classEntity)
+                        {this.props.events.classes.map(classEntity =>
+                            this.renderShortClassesInfo(classEntity)
+                        )}
+                        {this.props.events.events.map(customEvent =>
+                            this.renderShortCustomEventInfo(customEvent)
                         )}
                     </ul>
                 </div>
             </React.Fragment>
         )
     }
-    renderShortInfo = (classEntity) => {
+    renderShortClassesInfo = (classEntity) => {
         let startHour = new Date(classEntity.classesFullStartDate)
         let endHour = new Date(classEntity.classesFullEndDate)
         let classesTypeShort = classEntity.classesType.toString().toUpperCase().substr(0, 1)
@@ -92,6 +108,21 @@ class DateCell extends Component {
                 </div>
                 <div id="classes-type">
                     {classesTypeShort}
+                </div>
+            </li>
+        )
+    }
+    renderShortCustomEventInfo = (customEvent) => {
+        console.log(customEvent)
+        return (
+            <li className="classes-short-info" >
+                <div id="classes-hours">
+                    {customEvent.startTime}
+                    <br />
+                    {customEvent.endTime}
+                </div>
+                <div id="classes-name">
+                    {customEvent.name}
                 </div>
             </li>
         )
@@ -112,7 +143,26 @@ class DateCell extends Component {
                     </div>
                     <hr />
                 </div>
-                <ModalClassesContent classes={this.props.classes} />
+                {/* <ModalClassesContent classes->events={this.props.events} addEventModalOpener={this.toggleAddCustomEventModalOpen}/> */}
+            </Modal>
+        )
+    }
+    rednerAddCustomEvent = () => {
+        return (
+            <Modal
+                isOpen={this.state.isAddCustomEventModalOpen}
+                onRequestClose={this.toggleAddCustomEventModalOpen.bind(this,false)}
+                contentLabel="Example Modal"
+                className="modal"
+            >
+                <div className="modal-top-bar">
+                    <div className="modal-top-bar-info">
+                        <span>Dodaj wydarzenie jednorazowe</span>
+                        <img src={Exit} onClick={this.toggleAddCustomEventModalOpen.bind(this,false)} alt="exit-button" />
+                    </div>
+                    <hr />
+                </div>
+                <CustomEventForm date={this.props.date}/>
             </Modal>
         )
     }
@@ -120,6 +170,10 @@ class DateCell extends Component {
         return (
             <React.Fragment>
                 {this.renderContent()}
+                {this.state.isAddCustomEventModalOpen ?
+                    this.rednerAddCustomEvent()
+                    : null
+                }
                 {this.props.date !== null ?
                     this.rednerModal()
                     :
