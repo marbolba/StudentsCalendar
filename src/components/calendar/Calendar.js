@@ -85,7 +85,7 @@ class Calendar extends Component {
                         if (index === 0) {
                             newThisMonthsEventObj.events = resp.data;
                         } else {
-                            newThisMonthsEventObj.classes = resp.data
+                            newThisMonthsEventObj.classes = resp.data;
                         }
                     })
                     resolve()
@@ -108,15 +108,31 @@ class Calendar extends Component {
                 })
             })
     }
+    sortByHours = (a,b) => {
+        let firstHour = parseInt(a.startTime.substring(0,2),10);
+        let firstMinutes = parseInt(a.startTime.substring(3,5),10);
+        let secondHour = parseInt(b.startTime.substring(0,2),10);
+        let secondMinutes = parseInt(b.startTime.substring(3,5),10);
+        if (firstHour < secondHour)
+            return -1;
+        if (firstHour > secondHour)
+            return 1;
+        if (firstMinutes < secondMinutes)
+            return -1;
+        if (firstMinutes > secondMinutes)
+            return 1;
+        return 0;
+    }
     getThisDateEvents = (day) => {
         let thisDayEvents = { "events": [], "classes": [] }
         thisDayEvents.classes = this.state.thisMonthEvents.classes.filter(classEntity => {
             return new Date(classEntity.classesFullStartDate).getDate() === day
         });
         thisDayEvents.events = this.state.thisMonthEvents.events.filter(event => {
-            return new Date(event.eventDate).getDate() === day
+            return new Date(event.eventDate).getDate() === day;
         });
-        return thisDayEvents
+        thisDayEvents.events.sort(this.sortByHours)
+        return thisDayEvents;
     }
     getThisMonthCallendar = () => {
         let rows = []

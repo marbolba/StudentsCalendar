@@ -24,7 +24,8 @@ class FileList extends Component {
         shareToGroupVisibility: false,
         usersGroups: [],
         selected: {},
-        selectAll: 0
+        selectAll: 0,
+        downloadLinks: []
     }
     static defaultProps = {
         mode: 'normal'
@@ -82,21 +83,19 @@ class FileList extends Component {
             })
     }
     downloadFile = () => {
-        let promises = []
+        let newDownloadLinksArray = this.state.downloadLinks;
         Object.keys(this.state.selected).forEach((fileId) => {
-            promises.push(Api.downloadFile(fileId))
+            newDownloadLinksArray.push('http://localhost:4141/api/files/download?fileId=' + fileId);
         })
-        Promise.all(promises)
-            .then((resp) => {
-                Object.keys(this.state.selected).forEach((fileId) => {
-                    console.log(fileId)
-                    this.setState({link:'http://localhost:4141/api/files/download?fileId=' + fileId},()=>{
-                    window.location=document.getElementById('link').href;
-                })
-                })
-                
-                toast.success("Pobrano pliki");
-            })
+        var link = document.createElement('a');
+        link.setAttribute('download', null);
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        for (var i = 0; i < newDownloadLinksArray.length; i++) {
+            link.setAttribute('href', newDownloadLinksArray[i]);
+            link.click();
+        }
+        document.body.removeChild(link);
     }
     getUsersGroups = () => {
         Api.getUsersGroups(this.props.userId)
@@ -143,121 +142,126 @@ class FileList extends Component {
     render() {
         return (
             <div className='fileList'>
-                <a id='link' href={this.state.link} />
-                <ReactTable
-                    data={this.state.files}
-                    columns={[
-                        {
-                            id: "checkbox",
-                            accessor: "",
-                            Header: x => {
-                                return (
-                                    <input
-                                        type="checkbox"
-                                        className="checkbox"
-                                        checked={this.state.selectAll === 1}
-                                        ref={input => {
-                                            if (input) {
-                                                input.indeterminate = this.state.selectAll === 2;
-                                            }
-                                        }}
-                                        onChange={() => this.toggleSelectAll()}
-                                    />
-                                );
-                            },
-                            Cell: ({ original }) => {
-                                return (
-                                    <input
-                                        type="checkbox"
-                                        className="checkbox"
-                                        checked={this.state.selected[original.fileId] === true}
-                                        onClick={(e) => {
-                                            this.toggleRow(original.fileId)
-                                            e.stopPropagation();
-                                        }}
-                                    />
-                                );
-                            },
-                            sortable: false,
-                            width: 33,
-                            resizable: false
-                        },
-                        {
-                            Header: "Nazwa",
-                            accessor: "fileName"
-                        },
-                        {
-                            Header: "Rozmiar",
-                            accessor: "fileSize"
-                        },
-                        {
-                            Header: "Data dodania",
-                            accessor: "editDate",
-                            Cell: v => {
-                                let date = new Date(v.original.editDate);
-                                return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + " - " + date.getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
-                            }
-                        }
-
-                    ]}
-                    //ta wysokosc powinna sie rozciagac do max  rozmiaru strony
-                    pageSize={this.state.files !== undefined ? this.state.files.length : 5}
-                    className="-striped -highlight"
-                    previousText={'Poprzednia'}
-                    nextText={'Następna'}
-                    pageText={'Strona'}
-                    ofText={'z'}
-                    rowsText={'wyników'}
-                    noDataText={'Brak plików'}
-                    getTrProps={(state, rowInfo) => ({
-                        onClick: () => {
-                            if (!this.state.isModalOpen) {
-                                this.fileSelected = rowInfo.original.fileId;
-                                this.toggleModalOpen();
-                            }
-                        }
-                    })}
-                />
-                {this.props.mode === "normal" ?
+                {this.state.files.length !== 0 ?
                     <React.Fragment>
-                        <div className='actionsMenu'>
-                            <p>Akcje dla zaznaczonych plików:</p>
-                            <button className='action-button' onClick={this.downloadFile} disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${DownloadIcon})` }}>
-                                Pobierz plik
-                            </button>
-                            <button className='action-button' onClick={() => { this.getUsersGroups(); this.toggleShareToGroupVisibility() }} disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${SettingsIcon})` }}>
-                                Udostępnij plik
-                            </button>
-                            {this.state.shareToGroupVisibility ?
-                                <div className='groups-dropdown' >
-                                    <span>Udostępnij do grupy :</span>
-                                    <hr />
-                                    {this.state.usersGroups.map(group => {
-                                        return (<span className="share-group-option" onClick={this.shareFilesToGroup.bind(this, group.groupId)} key={group.groupId}>{group.groupName}</span>)
-                                    })}
+                        <ReactTable
+                            data={this.state.files}
+                            columns={[
+                                {
+                                    id: "checkbox",
+                                    accessor: "",
+                                    Header: x => {
+                                        return (
+                                            <input
+                                                type="checkbox"
+                                                className="checkbox"
+                                                checked={this.state.selectAll === 1}
+                                                ref={input => {
+                                                    if (input) {
+                                                        input.indeterminate = this.state.selectAll === 2;
+                                                    }
+                                                }}
+                                                onChange={() => this.toggleSelectAll()}
+                                            />
+                                        );
+                                    },
+                                    Cell: ({ original }) => {
+                                        return (
+                                            <input
+                                                type="checkbox"
+                                                className="checkbox"
+                                                checked={this.state.selected[original.fileId] === true}
+                                                onClick={(e) => {
+                                                    this.toggleRow(original.fileId)
+                                                    e.stopPropagation();
+                                                }}
+                                            />
+                                        );
+                                    },
+                                    sortable: false,
+                                    width: 33,
+                                    resizable: false
+                                },
+                                {
+                                    Header: "Nazwa",
+                                    accessor: "fileName"
+                                },
+                                {
+                                    Header: "Rozmiar",
+                                    accessor: "fileSize"
+                                },
+                                {
+                                    Header: "Data dodania",
+                                    accessor: "editDate",
+                                    Cell: v => {
+                                        let date = new Date(v.original.editDate);
+                                        return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + " - " + date.getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
+                                    }
+                                }
+
+                            ]}
+                            //ta wysokosc powinna sie rozciagac do max  rozmiaru strony
+                            pageSize={this.state.files !== undefined ? this.state.files.length : 5}
+                            className="-striped -highlight"
+                            previousText={'Poprzednia'}
+                            nextText={'Następna'}
+                            pageText={'Strona'}
+                            ofText={'z'}
+                            rowsText={'wyników'}
+                            noDataText={'Brak plików'}
+                            getTrProps={(state, rowInfo) => ({
+                                onClick: () => {
+                                    if (!this.state.isModalOpen) {
+                                        this.fileSelected = rowInfo.original.fileId;
+                                        this.toggleModalOpen();
+                                    }
+                                }
+                            })}
+                        />
+                        {this.props.mode === "normal" ?
+                            <React.Fragment>
+                                <div className='actionsMenu'>
+                                    <p>Akcje dla zaznaczonych plików:</p>
+                                    <button className='action-button' onClick={this.downloadFile} disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${DownloadIcon})` }}>
+                                        Pobierz plik
+                                    </button>
+                                    <button className='action-button' onClick={() => { this.getUsersGroups(); this.toggleShareToGroupVisibility() }} disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${SettingsIcon})` }}>
+                                        Udostępnij plik
+                                    </button>
+                                    {this.state.shareToGroupVisibility ?
+                                        <div className='groups-dropdown' >
+                                            <span>Udostępnij do grupy :</span>
+                                            <hr />
+                                            {this.state.usersGroups.map(group => {
+                                                return (<span className="share-group-option" onClick={this.shareFilesToGroup.bind(this, group.groupId)} key={group.groupId}>{group.groupName}</span>)
+                                            })}
+                                        </div>
+                                        : null
+                                    }
+                                    <button className='action-button' onClick={this.deleteFiles} disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${DeleteIcon})` }}>
+                                        Usuń plik
+                                    </button>
                                 </div>
-                                : null
-                            }
-                            <button className='action-button' onClick={this.deleteFiles} disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${DeleteIcon})` }}>
-                                Usuń plik
+                                {this.state.isModalOpen ? this.showDocument() : null}
+                                <ToastContainer />
+                            </React.Fragment>
+                            :
+                            <React.Fragment>
+                                <div className='actionsMenu'>
+                                    <p>Akcje dla zaznaczonych plików:</p>
+                                    <button className='action-button' onClick={this.downloadFile} disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${DownloadIcon})` }}>
+                                        Pobierz plik
                             </button>
-                        </div>
-                        {this.state.isModalOpen ? this.showDocument() : null}
-                        <ToastContainer />
+                                </div>
+                                {this.state.isModalOpen ? this.showDocument() : null}
+                                <ToastContainer />
+                            </React.Fragment>
+                        }
                     </React.Fragment>
-                    :
-                    <React.Fragment>
-                        <div className='actionsMenu'>
-                            <p>Akcje dla zaznaczonych plików:</p>
-                            <button className='action-button' disabled={Object.keys(this.state.selected).length === 0} style={{ backgroundImage: `url(${DownloadIcon})` }}>
-                                Pobierz plik
-                            </button>
-                        </div>
-                        {this.state.isModalOpen ? this.showDocument() : null}
-                        <ToastContainer />
-                    </React.Fragment>
-                }
-
+                    : 
+                    <div className='no-files-placeholder'>
+                        Nie dodano żadnych materiałów  
+                    </div>}
             </div>
         );
     }

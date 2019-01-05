@@ -36,15 +36,15 @@ class SharedFiles extends Component {
                         .then(()=>{
                             if(this.state.selectedGroup!=null){
                                 let newSelectedGroup = this.state.groupList.map(a => Object.assign({}, a));
-                                newSelectedGroup.filter(group=>{
+                                let filtered = newSelectedGroup.filter(group=>{
                                     return group.groupId === this.state.selectedGroup.groupId;
                                 })
-                                let mySharedFiles = newSelectedGroup[0].files.filter((file)=>{
+                                let mySharedFiles = filtered[0].files.filter((file)=>{
                                     return file.fileOwner === this.props.userId;
                                 })
-                                newSelectedGroup[0].files = mySharedFiles;
+                                filtered[0].files = mySharedFiles;
                                 this.setState({
-                                    selectedGroup : newSelectedGroup[0]
+                                    selectedGroup : filtered[0]
                                 })       
                             }
                         })

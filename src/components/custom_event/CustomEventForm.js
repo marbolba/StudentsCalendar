@@ -23,7 +23,7 @@ class CustomEventForm extends Component {
                 "description": this.state.customEventDescr,
                 "startTime": this.state.customEventStartTime,
                 "endTime": this.state.customEventEndTime,
-                "eventDate" : this.props.date.getFullYear() + "-" + (this.props.date.getMonth()+1 < 10 ? "0"+this.props.date.getMonth()+1 : this.props.date.getMonth()+1) + "-" + (this.props.date.getDate() < 10 ? "0"+this.props.date.getDate() : this.props.date.getDate())
+                "eventDate" : this.props.date.getFullYear() + "-" + ((this.props.date.getMonth()+1) < 10 ? "0"+(this.props.date.getMonth()+1) : (this.props.date.getMonth()+1)) + "-" + (this.props.date.getDate() < 10 ? "0"+this.props.date.getDate() : this.props.date.getDate())
             }
 
             Api.addCustomEvent(this.props.userId,data)
@@ -39,7 +39,6 @@ class CustomEventForm extends Component {
 
     }
     cleanInputForm = () => {
-        //TODO this two dont realy work 
         document.getElementById("appt-timeS").value = "";
         document.getElementById("appt-timeE").value = "";
         this.setState({
