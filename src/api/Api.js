@@ -58,12 +58,16 @@ class Api {
         return axios.get(url);
     }
     static addUserToGroup = (groupId,userId) => {
-        let url = apiBase + 'groups/user?groupId=' + groupId + "&userId=" + userId
-        return axios.post(url)
+        let url = apiBase + 'groups/user?groupId=' + groupId + "&userId=" + userId;
+        return axios.post(url);
     }
     static downloadFile = (fileId) => {
         let url = apiBase + 'files/download?fileId=' + fileId;
-        return axios.get(url)
+        return axios.get(url);
+    }
+    static createGroup = (data) => {
+        let url = 'http://localhost:4141/api/groups';
+        return axios.post(url, data);
     }
 }
 export default Api;
